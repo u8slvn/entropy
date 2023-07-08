@@ -11,6 +11,15 @@ python = "^3.11"
 pygame = "^2.5.0"
 
 
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.3.3"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+combine_as_imports = true
+lines_after_imports = 2
+src_paths = ["entropy", "demo"]

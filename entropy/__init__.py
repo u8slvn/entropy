@@ -1,7 +1,9 @@
-import pygame
 from sys import exit
 
+import pygame
+
 from entropy.components.fps import FPS
+
 
 pygame.init()
 

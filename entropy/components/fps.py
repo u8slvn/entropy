@@ -1,10 +1,9 @@
 import pygame
 
-from entropy.colors import WHITE, BLACK
+from entropy.colors import BLACK, WHITE
 
 
 class FPS:
-
     def __init__(self, value: float) -> None:
         self.value = value
         self.font = pygame.font.SysFont("Verdana", 12)
