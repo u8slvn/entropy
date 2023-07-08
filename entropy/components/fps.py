@@ -27,6 +27,8 @@ class FPS:
         if self.visible:
             self.text = self._build_text()
 
-    def render(self, display) -> None:
+    def render(self, display: pygame.Surface) -> None:
         if self.visible:
-            display.blit(self.text, (200, 150))
+            pos_x = display.get_width() - self.text.get_width()
+            pos_y = display.get_height() - self.text.get_height()
+            display.blit(self.text, (pos_x, pos_y))
