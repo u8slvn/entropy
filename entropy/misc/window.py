@@ -3,7 +3,6 @@ from __future__ import annotations
 import pygame
 
 import entropy
-from entropy.colors import BLACK
 
 
 class Window:
@@ -27,8 +26,8 @@ class Window:
     def _build_screen(self) -> pygame.Surface:
         if self.fullscreen:
             return pygame.display.set_mode(
-                self.convert_aspect_ratio_size(entropy.monitor.size),
-                pygame.SCALED | pygame.FULLSCREEN,
+                self.convert_to_screen_ratio(entropy.monitor.size),
+                pygame.FULLSCREEN,
             )
 
         return pygame.display.set_mode(self.dimension, pygame.RESIZABLE)
@@ -41,7 +40,7 @@ class Window:
         self.fullscreen = not self.fullscreen
         self.screen = self._build_screen()
 
-    def convert_aspect_ratio_size(self, size: tuple[int, int]) -> tuple[int, int]:
+    def convert_to_screen_ratio(self, size: tuple[int, int]) -> tuple[int, int]:
         width, height = size
 
         if width / height == self.aspect_ratio:
@@ -53,9 +52,8 @@ class Window:
 
     def draw(self, display: pygame.Surface):
         screen_size = self.screen.get_size()
-        display_size = self.convert_aspect_ratio_size(size=screen_size)
+        display_size = self.convert_to_screen_ratio(size=screen_size)
 
-        self.screen.fill(BLACK)
         self.screen.blit(
             pygame.transform.scale(display, display_size),
             (

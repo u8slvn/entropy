@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from sys import exit
+from typing import TYPE_CHECKING
 
 import pygame
 
@@ -9,13 +10,22 @@ from entropy import states
 from entropy.components.fps import FPS
 
 
+if TYPE_CHECKING:
+    from entropy.states import State
+
+
 class Game:
     def __init__(self) -> None:
         self.display = pygame.Surface((1920, 1080))
         self.running = False
+        self.states: dict[str, State] = {}
+        self.state: State | None = None
+        self.fps = FPS(entropy.window.clock)
+
+    def load(self) -> None:
+        entropy.assets.load()
         self.states = states.loads(game=self)
         self.state = self.states["SPLASH"]
-        self.fps = FPS(entropy.window.clock)
 
     def transition_to(self, state: str) -> None:
         self.state.teardown()
@@ -28,6 +38,8 @@ class Game:
             elif event.type == pygame.VIDEORESIZE:
                 entropy.window.resize(dimension=(event.w, event.h))
             elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_f:
+                    entropy.window.toggle_fullscreen()
                 self.fps.toggle(key=event.key)
 
             self.state.process_event(event=event)
@@ -43,6 +55,7 @@ class Game:
 
     def start(self) -> None:
         self.running = True
+        self.load()
 
         while self.running:
             self.process_events()
