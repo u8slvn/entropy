@@ -5,8 +5,10 @@ from typing import TYPE_CHECKING
 
 import pygame
 
+import entropy
 from entropy.components.fps import FPS
-from entropy.misc.window import Monitor, Resolution, Window
+from entropy.states.menu import Menu
+from entropy.states.splash import Splash
 
 
 if TYPE_CHECKING:
@@ -14,26 +16,21 @@ if TYPE_CHECKING:
 
 
 class Game:
-    def __init__(self, title: str, monitor: Monitor) -> None:
-        self.window = Window(title=title, resolution=Resolution(1280, 720), fps=60)
+    def __init__(self) -> None:
         self.display = pygame.Surface((1920, 1080))
-        self.monitor = monitor
         self.running = False
-        self.states: dict[str, State] = {}
+        self.states = {
+            "SPLASH": Splash(game=self),
+            "MENU": Menu(game=self),
+        }
         self.state: State | None = None
-        self.resolutions = dict[str, Resolution]
-        self.fps = FPS(self.window.clock)
+        self.fps = FPS(entropy.window.clock)
 
     def setup_states(
         self, states: dict[str, State], default_state: str = "SPLASH"
     ) -> None:
         self.states = states
         self.state = self.states[default_state]
-
-    def setup_resolution(
-        self, resolutions: dict[str, Resolution], default_resolution: str
-    ) -> None:
-        self.resolutions = resolutions
 
     def transition_to(self, state: str) -> None:
         self.state.teardown()
@@ -55,7 +52,7 @@ class Game:
     def render(self):
         self.state.render(self.display)
         self.fps.render(self.display)
-        self.window.process(self.display)
+        entropy.window.draw(self.display)
 
     def start(self) -> None:
         self.running = True

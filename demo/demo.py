@@ -1,5 +1,5 @@
-from entropy import create_game
+import entropy
 
 
-demo = create_game(title="Demo")
-demo.start()
+entropy.init(title="Demo", fps=60, aspect_ratio=16 / 9)
+entropy.start()

@@ -1,51 +1,45 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pygame
 
 from entropy.colors import BLACK
 
 
-class Monitor:
-    def __init__(self) -> None:
-        self.info = pygame.display.Info()
-        self.driver = pygame.display.get_driver()
-
-
-class Resolution:
-    def __init__(self, width: int, height: int) -> None:
-        self.width = width
-        self.height = height
-        self.flags = 0
-
-    @property
-    def size(self) -> tuple[int, int]:
-        return self.width, self.height
-
-    def __str__(self) -> str:
-        return f"{self.width} x {self.height}"
-
-
-class FullScreenResolution(Resolution):
-    def __init__(self, monitor: Monitor):
-        super().__init__(width=monitor.info.current_w, height=monitor.info.current_h)
-        self.flags = pygame.FULLSCREEN
-
-    def __str__(self):
-        return "Fullscreen"
+if TYPE_CHECKING:
+    from entropy.misc.resolution import Resolution
 
 
 class Window:
-    def __init__(self, resolution: Resolution, title: str, fps: float) -> None:
-        self.fps = fps
+    def __init__(
+        self, resolution: Resolution, fps: float, title: str, aspect_ratio: float
+    ) -> None:
         self.screen = pygame.display.set_mode(resolution.size, resolution.flags)
+        self.fps = fps
         self.clock = pygame.time.Clock()
+        self.aspect_ratio = aspect_ratio
+
         pygame.display.set_caption(title=title)
 
-    def process(self, display: pygame.Surface):
-        self.screen.fill(BLACK)
+    def resize(self, resolution: Resolution):
+        self.screen = pygame.display.set_mode(resolution.size, resolution.flags)
 
+    @property
+    def aspect_ratio_size(self) -> tuple[int, int]:
+        screen_w, screen_h = self.screen.get_size()
+
+        if screen_w / screen_h == self.aspect_ratio:
+            return screen_w, screen_h
+        elif screen_h > screen_w / self.aspect_ratio:
+            return screen_w, int(screen_w / self.aspect_ratio)
+        else:
+            return int(screen_h * self.aspect_ratio), screen_h
+
+    def draw(self, display: pygame.Surface):
+        self.screen.fill(BLACK)
         self.screen.blit(
-            pygame.transform.scale(display, self.screen.get_size()), (0, 0)
+            pygame.transform.scale(display, self.aspect_ratio_size), (0, 0)
         )
         pygame.display.flip()
         self.clock.tick(self.fps)
