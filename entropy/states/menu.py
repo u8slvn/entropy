@@ -29,7 +29,7 @@ class Menu(State):
     def update(self) -> None:
         pass
 
-    def draw(self, display) -> None:
+    def render(self, display) -> None:
         display.fill(WHITE)
         pos_x = (display.get_width() - self.text.get_width()) / 2
         pos_y = (display.get_height() - self.text.get_height()) / 2

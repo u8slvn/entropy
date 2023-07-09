@@ -1,5 +1,5 @@
-from entropy import Game
+from entropy import create_game
 
 
-demo = Game(title="Demo")
+demo = create_game(title="Demo")
 demo.start()

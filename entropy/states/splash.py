@@ -6,7 +6,6 @@ import pygame.event
 
 from entropy.colors import BLACK, WHITE
 from entropy.states import State
-from entropy.states.menu import Menu
 
 
 if TYPE_CHECKING:
@@ -34,16 +33,18 @@ class Splash(State):
 
     def process_event(self, event: pygame.event.Event) -> None:
         if event.type == pygame.KEYUP or self.countdown == 0:
-            self.game.transition_to(Menu)
+            self.game.transition_to("MENU")
         elif event.type == self.countdown_event:
             self.countdown -= 1
 
     def update(self) -> None:
-        self.alpha = min(round((self.alpha + self.alpha_rate) / 3), 255)
-        print(self.alpha)
+        if self.countdown < 5:
+            self.alpha = max(self.alpha - self.alpha_rate, 0)
+        else:
+            self.alpha = min(self.alpha + self.alpha_rate, 255)
         self.text.set_alpha(self.alpha)
 
-    def draw(self, display) -> None:
+    def render(self, display) -> None:
         display.fill(BLACK)
         pos_x = (display.get_width() - self.text.get_width()) / 2
         pos_y = (display.get_height() - self.text.get_height()) / 2
@@ -51,4 +52,4 @@ class Splash(State):
 
     def teardown(self) -> None:
         self.alpha = 0
-        self.countdown = 15
+        self.countdown = 10

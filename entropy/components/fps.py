@@ -6,10 +6,9 @@ from entropy.colors import BLACK, WHITE
 
 
 class FPS:
-    def __init__(self, value: float) -> None:
-        self.value = value
+    def __init__(self, clock) -> None:
+        self.clock = clock
         self.font = pygame.font.SysFont("Verdana", 12)
-        self.clock = pygame.time.Clock()
         self.visible = False
         self.format = "{fps} FPS"
         self.text = self._build_text()
@@ -21,9 +20,6 @@ class FPS:
     def toggle(self, key: int) -> None:
         if key == pygame.K_F5:
             self.visible = not self.visible
-
-    def tick(self) -> None:
-        self.clock.tick(self.value)
 
     def update(self) -> None:
         if self.visible:

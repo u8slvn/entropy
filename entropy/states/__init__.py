@@ -27,7 +27,7 @@ class State(ABC):
         ...
 
     @abstractmethod
-    def draw(self, display) -> None:
+    def render(self, display) -> None:
         ...
 
     @abstractmethod
