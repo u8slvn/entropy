@@ -4,44 +4,34 @@ import pygame
 
 from entropy.misc.game import Game
 from entropy.misc.monitor import Monitor
-from entropy.misc.resolution import Resolutions
 from entropy.misc.window import Window
-from entropy.states.menu import Menu
-from entropy.states.splash import Splash
+
+
+__all__ = ["init", "start", "monitor", "window", "game"]
 
 
 monitor: Monitor
-resolutions: Resolutions
 window: Window
 game: Game
 
 
 def init(title: str, fps: float, aspect_ratio: float) -> None:
-    global monitor, window, game, resolutions
+    global monitor, window, game
 
     pygame.init()
 
+    # _Y_OFFSET = (pygame.display.Info().current_w - SCREEN_SIZE[0]) // 2
+    # os.environ['SDL_VIDEO_WINDOW_POS'] = '{},{}'.format(_Y_OFFSET, 25)
+
     monitor = Monitor()
-    resolutions = Resolutions.build_resolutions(
-        static_res=[
-            ("SD", 720, 480),
-            ("SHD", 1280, 720),
-            ("FHD", 1920, 1080),
-        ],
-        monitor=monitor,
-    )
     window = Window(
         title=title,
-        resolution=resolutions.get("FULLSCREEN"),
         fps=fps,
         aspect_ratio=aspect_ratio,
+        dimension=(1280, 720),
+        fullscreen=False,
     )
     game = Game()
-    states = {
-        "SPLASH": Splash(game=game),
-        "MENU": Menu(game=game),
-    }
-    game.setup_states(states=states, default_state="SPLASH")
 
 
 def start() -> None:

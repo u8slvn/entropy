@@ -1,35 +1,19 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
+
+from entropy.states.base import State
+from entropy.states.menu import Menu
+from entropy.states.splash import Splash
 
 
 if TYPE_CHECKING:
-    import pygame
-
     from entropy import Game
 
+__all__ = ["State", "loads"]
 
-class State(ABC):
-    def __init__(self, game: Game) -> None:
-        self.game = game
 
-    @abstractmethod
-    def setup(self) -> None:
-        ...
+def loads(game: Game) -> dict[str, State]:
+    states = [Splash, Menu]
 
-    @abstractmethod
-    def process_event(self, event: pygame.event.Event) -> None:
-        ...
-
-    @abstractmethod
-    def update(self) -> None:
-        ...
-
-    @abstractmethod
-    def render(self, display) -> None:
-        ...
-
-    @abstractmethod
-    def teardown(self) -> None:
-        ...
+    return {state.__name__.upper(): state(game=game) for state in states}

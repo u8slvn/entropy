@@ -1,45 +1,68 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 import pygame
 
+import entropy
 from entropy.colors import BLACK
-
-
-if TYPE_CHECKING:
-    from entropy.misc.resolution import Resolution
 
 
 class Window:
     def __init__(
-        self, resolution: Resolution, fps: float, title: str, aspect_ratio: float
+        self,
+        title: str,
+        fps: float,
+        aspect_ratio: float,
+        dimension: tuple[int, int],
+        fullscreen: bool,
     ) -> None:
-        self.screen = pygame.display.set_mode(resolution.size, resolution.flags)
         self.fps = fps
-        self.clock = pygame.time.Clock()
         self.aspect_ratio = aspect_ratio
+        self.dimension = dimension
+        self.fullscreen = fullscreen
+        self.screen = self._build_screen()
+        self.clock = pygame.time.Clock()
 
         pygame.display.set_caption(title=title)
 
-    def resize(self, resolution: Resolution):
-        self.screen = pygame.display.set_mode(resolution.size, resolution.flags)
+    def _build_screen(self) -> pygame.Surface:
+        if self.fullscreen:
+            return pygame.display.set_mode(
+                self.convert_aspect_ratio_size(entropy.monitor.size),
+                pygame.SCALED | pygame.FULLSCREEN,
+            )
 
-    @property
-    def aspect_ratio_size(self) -> tuple[int, int]:
-        screen_w, screen_h = self.screen.get_size()
+        return pygame.display.set_mode(self.dimension, pygame.RESIZABLE)
 
-        if screen_w / screen_h == self.aspect_ratio:
-            return screen_w, screen_h
-        elif screen_h > screen_w / self.aspect_ratio:
-            return screen_w, int(screen_w / self.aspect_ratio)
+    def resize(self, dimension: tuple[int, int]):
+        self.dimension = dimension
+        self.screen = self._build_screen()
+
+    def toggle_fullscreen(self):
+        self.fullscreen = not self.fullscreen
+        self.screen = self._build_screen()
+
+    def convert_aspect_ratio_size(self, size: tuple[int, int]) -> tuple[int, int]:
+        width, height = size
+
+        if width / height == self.aspect_ratio:
+            return width, height
+        elif height > width / self.aspect_ratio:
+            return width, int(width / self.aspect_ratio)
         else:
-            return int(screen_h * self.aspect_ratio), screen_h
+            return int(height * self.aspect_ratio), height
 
     def draw(self, display: pygame.Surface):
+        screen_size = self.screen.get_size()
+        display_size = self.convert_aspect_ratio_size(size=screen_size)
+
         self.screen.fill(BLACK)
         self.screen.blit(
-            pygame.transform.scale(display, self.aspect_ratio_size), (0, 0)
+            pygame.transform.scale(display, display_size),
+            (
+                (screen_size[0] - display_size[0]) // 2,  # center w display in screen
+                (screen_size[1] - display_size[1]) // 2,  # center h display in screen
+            ),
         )
+
         pygame.display.flip()
         self.clock.tick(self.fps)
