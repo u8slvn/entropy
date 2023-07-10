@@ -27,7 +27,7 @@ class State(ABC):
         ...
 
     @abstractmethod
-    def render(self, display) -> None:
+    def render(self, display: pygame.Surface) -> None:
         ...
 
     @abstractmethod

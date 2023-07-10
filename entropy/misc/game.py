@@ -15,14 +15,20 @@ if TYPE_CHECKING:
 
 
 class Game:
-    def __init__(self) -> None:
-        self.display = pygame.Surface((1920, 1080))
+    def __init__(self, dimension: tuple[int, int]) -> None:
+        self.display = pygame.Surface(dimension)
         self.running = False
         self.states: dict[str, State] = {}
         self.state: State | None = None
         self.fps = FPS(entropy.window.clock)
 
+    @property
+    def aspect_ratio(self) -> float:
+        width, height = self.display.get_size()
+        return width / height
+
     def load(self) -> None:
+        entropy.window.refresh_screen()
         entropy.assets.load()
         self.states = states.loads(game=self)
         self.state = self.states["SPLASH"]
@@ -49,13 +55,13 @@ class Game:
         self.fps.update()
 
     def render(self):
-        self.state.render(self.display)
-        self.fps.render(self.display)
-        entropy.window.draw(self.display)
+        self.state.render(display=self.display)
+        self.fps.render(display=self.display)
+        entropy.window.draw(display=self.display)
 
     def start(self) -> None:
-        self.running = True
         self.load()
+        self.running = True
 
         while self.running:
             self.process_events()

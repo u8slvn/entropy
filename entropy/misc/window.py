@@ -3,6 +3,8 @@ from __future__ import annotations
 import pygame
 
 import entropy
+from entropy.misc.loader import Loader
+from entropy.utils.display import convert_size_to_ratio
 
 
 class Window:
@@ -10,57 +12,53 @@ class Window:
         self,
         title: str,
         fps: float,
-        aspect_ratio: float,
         dimension: tuple[int, int],
         fullscreen: bool,
     ) -> None:
         self.fps = fps
-        self.aspect_ratio = aspect_ratio
         self.dimension = dimension
         self.fullscreen = fullscreen
-        self.screen = self._build_screen()
+        # The screen is configured for the loader by default
+        self.screen = pygame.display.set_mode(Loader.dimension, pygame.NOFRAME)
         self.clock = pygame.time.Clock()
 
         pygame.display.set_caption(title=title)
 
-    def _build_screen(self) -> pygame.Surface:
+    def refresh_screen(self) -> None:
         if self.fullscreen:
-            return pygame.display.set_mode(
-                self.convert_to_screen_ratio(entropy.monitor.size),
-                pygame.FULLSCREEN,
+            size = convert_size_to_ratio(
+                ratio=entropy.game.aspect_ratio, size=entropy.monitor.size
             )
-
-        return pygame.display.set_mode(self.dimension, pygame.RESIZABLE)
+            self.screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
+        else:
+            self.screen = pygame.display.set_mode(self.dimension, pygame.RESIZABLE)
 
     def resize(self, dimension: tuple[int, int]):
         self.dimension = dimension
-        self.screen = self._build_screen()
+        self.refresh_screen()
 
     def toggle_fullscreen(self):
         self.fullscreen = not self.fullscreen
-        self.screen = self._build_screen()
+        self.refresh_screen()
 
-    def convert_to_screen_ratio(self, size: tuple[int, int]) -> tuple[int, int]:
-        width, height = size
+    def draw(self, display: pygame.Surface, keep_ratio: bool = True):
+        if keep_ratio:
+            screen_size = self.screen.get_size()
+            display_size = convert_size_to_ratio(
+                ratio=entropy.game.aspect_ratio, size=screen_size
+            )
 
-        if width / height == self.aspect_ratio:
-            return width, height
-        elif height > width / self.aspect_ratio:
-            return width, int(width / self.aspect_ratio)
+            self.screen.blit(
+                pygame.transform.scale(display, display_size),
+                (
+                    (screen_size[0] - display_size[0])
+                    // 2,  # center w display in screen
+                    (screen_size[1] - display_size[1])
+                    // 2,  # center h display in screen
+                ),
+            )
         else:
-            return int(height * self.aspect_ratio), height
-
-    def draw(self, display: pygame.Surface):
-        screen_size = self.screen.get_size()
-        display_size = self.convert_to_screen_ratio(size=screen_size)
-
-        self.screen.blit(
-            pygame.transform.scale(display, display_size),
-            (
-                (screen_size[0] - display_size[0]) // 2,  # center w display in screen
-                (screen_size[1] - display_size[1]) // 2,  # center h display in screen
-            ),
-        )
+            self.screen.blit(display, (0, 0))
 
         pygame.display.flip()
         self.clock.tick(self.fps)
