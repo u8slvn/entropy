@@ -7,7 +7,6 @@ import pygame
 from entropy.locations import ASSETS_DIR
 from entropy.misc.assets import Assets
 from entropy.misc.game import Game
-from entropy.misc.loader import Loader
 from entropy.misc.monitor import Monitor
 from entropy.misc.window import Window
 
@@ -20,7 +19,7 @@ window: Window
 game: Game
 
 
-def init(title: str, fps: float, fonts_path: str) -> None:
+def init(title: str, fps: float, fonts_path: str, images_path: str) -> None:
     global monitor, window, game, assets
 
     os.environ["SDL_VIDEO_CENTERED"] = "1"
@@ -29,7 +28,10 @@ def init(title: str, fps: float, fonts_path: str) -> None:
 
     assets = Assets()
     assets.fonts.add_dir(path=ASSETS_DIR.joinpath("fonts"))
+    assets.images.add_dir(path=ASSETS_DIR.joinpath("gui"))
+
     assets.fonts.add_dir(path=fonts_path)
+    assets.images.add_dir(path=images_path)
 
     monitor = Monitor()
     window = Window(
@@ -38,13 +40,13 @@ def init(title: str, fps: float, fonts_path: str) -> None:
         dimension=(1280, 720),
         fullscreen=False,
     )
-
-    game = Game(dimension=(1920, 1080))
+    game = Game(dimension=(1920, 1080), window=window)
 
 
 def start() -> None:
     global game
 
-    loader = Loader()
-    loader.load()
+    # loader = Loader()
+    # loader.load()
+
     game.start()

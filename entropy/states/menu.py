@@ -2,38 +2,50 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import pygame.event
+import pygame
 
+import entropy
 from entropy.colors import BLACK, WHITE
+from entropy.components.background import Background
+from entropy.components.button import Button
 from entropy.states import State
 
 
 if TYPE_CHECKING:
-    import pygame
-
-    from entropy import Game
+    from entropy.misc.game import Game
 
 
 class Menu(State):
+    position = (0, 100)
+
     def __init__(self, game: Game):
         super().__init__(game=game)
-        self.font = pygame.font.SysFont("Verdana", 16)
-        self.text = self.font.render("THIS IS THE MENU", True, BLACK)
+        self.bg = Background("menu-bg")
+        self.button = Button(
+            text="hello",
+            font=entropy.assets.fonts.get("LanaPixel", 20),
+            color=BLACK,
+            color_hover=WHITE,
+            image=entropy.assets.images.get("main-menu-btn"),
+            image_hover=entropy.assets.images.get("main-menu-btn-hover"),
+            x=600,
+            y=600,
+        )
+        self.buttons = pygame.sprite.Group()
+        self.buttons.add(self.button)
 
     def setup(self) -> None:
-        pass
+        self.button.re_scale()
 
     def process_event(self, event: pygame.event.Event) -> None:
         ...
 
     def update(self) -> None:
-        pass
+        self.buttons.update()
 
-    def render(self, display: pygame.Surface) -> None:
-        display.fill(WHITE)
-        pos_x = (display.get_width() - self.text.get_width()) / 2
-        pos_y = (display.get_height() - self.text.get_height()) / 2
-        display.blit(self.text, (pos_x, pos_y))
+    def draw(self, display: pygame.Surface) -> None:
+        self.bg.draw(display=display)
+        self.buttons.draw(display)
 
     def teardown(self) -> None:
         pass

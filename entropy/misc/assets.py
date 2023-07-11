@@ -47,12 +47,16 @@ class FontsManager(AssetsManager):
 
 class ImagesManager(AssetsManager):
     extensions = [".png"]
+    alpha_suffix = "-a"
 
     def cast(self, file: Path) -> Any:
-        return file
+        if file.stem.endswith(self.alpha_suffix):
+            return pygame.image.load(file).convert_alpha()
 
-    def get(self, name: str, size: int) -> pygame.font.Font:
-        return pygame.font.Font(self.assets[name], size)
+        return pygame.image.load(file).convert()
+
+    def get(self, name: str) -> pygame.Surface:
+        return self.assets[name]
 
 
 class Assets:

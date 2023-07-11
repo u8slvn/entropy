@@ -45,7 +45,7 @@ class Splash(State):
             self.alpha = min(self.alpha + self.alpha_rate, 255)
         self.text.set_alpha(self.alpha)
 
-    def render(self, display) -> None:
+    def draw(self, display) -> None:
         display.fill(BLACK)
         pos_x = (display.get_width() - self.text.get_width()) / 2
         pos_y = (display.get_height() - self.text.get_height()) / 2

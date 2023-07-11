@@ -8,6 +8,8 @@ import pygame
 import entropy
 from entropy import states
 from entropy.components.fps import FPS
+from entropy.misc.rescaler import ReScaler
+from entropy.misc.window import Window
 
 
 if TYPE_CHECKING:
@@ -15,8 +17,10 @@ if TYPE_CHECKING:
 
 
 class Game:
-    def __init__(self, dimension: tuple[int, int]) -> None:
-        self.display = pygame.Surface(dimension)
+    def __init__(self, dimension: tuple[int, int], window: Window) -> None:
+        self.dimension = dimension
+        self.window = window
+        self.rescaler = ReScaler(window=window)
         self.running = False
         self.states: dict[str, State] = {}
         self.state: State | None = None
@@ -24,11 +28,9 @@ class Game:
 
     @property
     def aspect_ratio(self) -> float:
-        width, height = self.display.get_size()
-        return width / height
+        return self.dimension[0] / self.dimension[1]
 
     def load(self) -> None:
-        entropy.window.refresh_screen()
         entropy.assets.load()
         self.states = states.loads(game=self)
         self.state = self.states["SPLASH"]
@@ -41,12 +43,14 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-            elif event.type == pygame.VIDEORESIZE:
+            elif event.type == pygame.VIDEORESIZE and not entropy.window.fullscreen:
                 entropy.window.resize(dimension=(event.w, event.h))
+                self.state.setup()
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_f:
                     entropy.window.toggle_fullscreen()
-                self.fps.toggle(key=event.key)
+                    self.state.setup()
+                self.fps.handle_event(event=event)
 
             self.state.process_event(event=event)
 
@@ -54,10 +58,10 @@ class Game:
         self.state.update()
         self.fps.update()
 
-    def render(self):
-        self.state.render(display=self.display)
-        self.fps.render(display=self.display)
-        entropy.window.draw(display=self.display)
+    def draw(self):
+        self.state.draw(display=self.window.screen)
+        self.fps.draw(display=self.window.screen)
+        entropy.window.render()
 
     def start(self) -> None:
         self.load()
@@ -66,7 +70,7 @@ class Game:
         while self.running:
             self.process_events()
             self.update()
-            self.render()
+            self.draw()
 
         pygame.quit()
         exit()
