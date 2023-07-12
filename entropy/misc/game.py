@@ -5,10 +5,10 @@ from typing import TYPE_CHECKING
 import pygame
 
 import entropy
-from entropy import states
 from entropy.misc.rect import rect_collection
 from entropy.misc.resolution import Resolution, r720P, r900P
 from entropy.misc.scale import Scaler
+from entropy.states import states
 
 
 if TYPE_CHECKING:
@@ -48,13 +48,13 @@ class Game:
     def setup(self) -> None:
         entropy.assets.setup(game=self)
         self.rect_collection.setup(scaler=self.scaler)
-        self.states = states.loads(game=self)
-        self.state = self.states["SPLASH"]
-        self.rect_collection.scale()
+        self.transition_to("SPLASH")
 
-    def transition_to(self, state: str) -> None:
-        self.state.teardown()
-        self.state = self.states[state]
+    def transition_to(self, state_name: str) -> None:
+        if self.state is not None:
+            self.state.teardown()
+        self.state = states[state_name](game=self)
+        self.rect_collection.scale()
 
     def resize_screen(
         self, resolution: Resolution | None = None, fullscreen=False

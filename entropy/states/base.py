@@ -1,18 +1,24 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Type
 
 
 if TYPE_CHECKING:
     import pygame
 
-    from entropy import Game
+    from entropy.misc.game import Game
+
+states: dict[str, Type[State]] = {}
 
 
 class State(ABC):
     def __init__(self, game: Game) -> None:
         self.game = game
+
+    def __init_subclass__(cls, **kwargs):
+        global states
+        states[cls.__name__.upper()] = cls
 
     @abstractmethod
     def setup(self) -> None:
