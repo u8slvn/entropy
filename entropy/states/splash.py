@@ -23,7 +23,7 @@ class Splash(State):
 
         self.alpha = 0
         self.alpha_rate = 1
-        self.font = entropy.assets.fonts.get("LanaPixel", "BIG")
+        self.font = entropy.assets.fonts.get("LanaPixel", "big")
         self.text = self.font.render("ENTROPY", True, WHITE, BLACK)
         self.text.set_alpha(self.alpha)
 
@@ -45,11 +45,11 @@ class Splash(State):
             self.alpha = min(self.alpha + self.alpha_rate, 255)
         self.text.set_alpha(self.alpha)
 
-    def draw(self, display) -> None:
-        display.fill(BLACK)
-        pos_x = (display.get_width() - self.text.get_width()) / 2
-        pos_y = (display.get_height() - self.text.get_height()) / 2
-        display.blit(self.text, (pos_x, pos_y))
+    def draw(self, surface) -> None:
+        surface.fill(BLACK)
+        pos_x = (surface.get_width() - self.text.get_width()) / 2
+        pos_y = (surface.get_height() - self.text.get_height()) / 2
+        surface.blit(self.text, (pos_x, pos_y))
 
     def teardown(self) -> None:
         self.alpha = 0

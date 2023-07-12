@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import os
 
-import pygame
+import pygame as pg
 
 from entropy.locations import ASSETS_DIR
 from entropy.misc.assets import AssetsLibrary
 from entropy.misc.game import Game
-from entropy.misc.resolution import r900P, r1080P
 
 
 __all__ = ["assets", "game"]
@@ -21,7 +20,7 @@ def init(title: str, fps: float, images_path: str) -> None:
 
     os.environ["SDL_VIDEO_CENTERED"] = "1"
 
-    pygame.init()
+    pg.init()
 
     assets = AssetsLibrary()
     assets.fonts.add_font(
@@ -33,8 +32,7 @@ def init(title: str, fps: float, images_path: str) -> None:
     game = Game(
         title=title,
         fps=fps,
-        screen_resolution=r900P,
-        max_resolution=r1080P,
+        render_resolution=(1920, 1080),
         fullscreen=False,
     )
 

@@ -1,8 +1,5 @@
-def convert_dimension_to_ratio(
-    ratio: float, dimension: tuple[int, int]
-) -> tuple[int, int]:
+def dimension_to_ratio(dimension: tuple[int, int], ratio: float) -> tuple[int, int]:
     width, height = dimension
-
     if width / height == ratio:
         return width, height
     elif height > width / ratio:

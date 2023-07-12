@@ -33,7 +33,7 @@ class State(ABC):
         ...
 
     @abstractmethod
-    def draw(self, display: pygame.Surface) -> None:
+    def draw(self, surface: pygame.Surface) -> None:
         ...
 
     @abstractmethod
