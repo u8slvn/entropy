@@ -1,15 +1,20 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pygame
 
-import entropy
 from entropy.components import Component
 
 
+if TYPE_CHECKING:
+    from entropy.misc.assets import Image
+
+
 class Background(Component):
-    def __init__(self, image_name: str) -> None:
+    def __init__(self, image: Image) -> None:
         self.position = (0, 0)
-        self.image = entropy.assets.images.get(name=image_name)
+        self.image = image
 
     def draw(self, display: pygame.Surface) -> None:
-        display.blit(self.image, self.position)
+        display.blit(self.image.surface, self.position)

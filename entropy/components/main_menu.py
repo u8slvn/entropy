@@ -10,22 +10,10 @@ from entropy.components import Component
 from entropy.components.button import Button
 
 
-# class Bite(pygame.sprite.Sprite):
-#     def __init__(self):
-#         super().__init__()
-#         self.image = pygame.image.load(ASSETS_DIR.joinpath("gui/main-menu-btn.png"))
-#         self.rect = self.image.get_rect()
-#         self.rect.topleft = (0, 0)
-
-
 class MainMenu(Component):
     def __init__(self):
         self._no_save = True
         self.btn_margin = 30
-        # self.continue_btn = ContinueButton()
-        # self.new_game_btn = NewGameButton()
-        # self.settings_btn = SettingsButton()
-        # self.quit_btn = QuitButton()
         self.btn = Button(
             text="hello",
             font=entropy.assets.fonts.get("LanaPixel", 20),

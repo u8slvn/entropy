@@ -5,48 +5,36 @@ import os
 import pygame
 
 from entropy.locations import ASSETS_DIR
-from entropy.misc.assets import Assets
 from entropy.misc.game import Game
-from entropy.misc.monitor import Monitor
-from entropy.misc.window import Window
+from entropy.misc.resolution import r900P, r1080P
 
 
-__all__ = ["init", "start", "assets", "monitor", "window", "game"]
-
-assets: Assets
-monitor: Monitor
-window: Window
 game: Game
 
 
 def init(title: str, fps: float, fonts_path: str, images_path: str) -> None:
-    global monitor, window, game, assets
+    global game
 
     os.environ["SDL_VIDEO_CENTERED"] = "1"
 
     pygame.init()
 
-    assets = Assets()
-    assets.fonts.add_dir(path=ASSETS_DIR.joinpath("fonts"))
-    assets.images.add_dir(path=ASSETS_DIR.joinpath("gui"))
-
-    assets.fonts.add_dir(path=fonts_path)
-    assets.images.add_dir(path=images_path)
-
-    monitor = Monitor()
-    window = Window(
+    game = Game(
         title=title,
         fps=fps,
-        dimension=(1280, 720),
+        screen_resolution=r900P,
+        max_resolution=r1080P,
         fullscreen=False,
     )
-    game = Game(dimension=(1920, 1080), window=window)
+
+    game.assets.fonts.add_dir(path=ASSETS_DIR.joinpath("fonts"))
+    game.assets.images.add_dir(path=ASSETS_DIR.joinpath("gui"))
+
+    game.assets.fonts.add_dir(path=fonts_path)
+    game.assets.images.add_dir(path=images_path)
 
 
 def start() -> None:
     global game
-
-    # loader = Loader()
-    # loader.load()
 
     game.start()

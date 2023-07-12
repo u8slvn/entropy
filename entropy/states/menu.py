@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING
 
 import pygame
 
-import entropy
 from entropy.colors import BLACK, WHITE
 from entropy.components.background import Background
 from entropy.components.button import Button
@@ -20,15 +19,15 @@ class Menu(State):
 
     def __init__(self, game: Game):
         super().__init__(game=game)
-        self.bg = Background("menu-bg")
+        self.bg = Background(image=self.game.assets.images.get("menu-bg"))
         self.button = Button(
             text="hello",
-            font=entropy.assets.fonts.get("LanaPixel", 20),
+            font=self.game.assets.fonts.get("LanaPixel", 20),
             color=BLACK,
             color_hover=WHITE,
-            image=entropy.assets.images.get("main-menu-btn"),
-            image_hover=entropy.assets.images.get("main-menu-btn-hover"),
-            x=600,
+            bg_image=self.game.assets.images.get("main-menu-btn"),
+            bg_image_hover=self.game.assets.images.get("main-menu-btn-hover"),
+            x=0,
             y=600,
         )
         self.buttons = pygame.sprite.Group()
