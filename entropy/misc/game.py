@@ -4,8 +4,9 @@ from typing import TYPE_CHECKING
 
 import pygame
 
+import entropy
 from entropy import states
-from entropy.misc.assets import Assets
+from entropy.misc.rect import rect_collection
 from entropy.misc.resolution import Resolution, r720P, r900P
 from entropy.misc.scale import Scaler
 
@@ -39,12 +40,17 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.scaler = Scaler(game=self)
-        self.assets = Assets(game=self)
+        self.rect_collection = rect_collection
 
-    def load(self) -> None:
-        self.assets.load()
+    def at_max_resolution(self) -> bool:
+        return self.fullscreen or self.screen_resolution == self.max_resolution
+
+    def setup(self) -> None:
+        entropy.assets.setup(game=self)
+        self.rect_collection.setup(scaler=self.scaler)
         self.states = states.loads(game=self)
         self.state = self.states["SPLASH"]
+        self.rect_collection.scale()
 
     def transition_to(self, state: str) -> None:
         self.state.teardown()
@@ -62,8 +68,8 @@ class Game:
             self.screen_resolution = resolution or self.screen_resolution
             self.screen = pygame.display.set_mode(self.screen_resolution.size)
 
-        self.assets.scale()
-        self.state.setup()
+        entropy.assets.scale()
+        self.rect_collection.scale()
 
     def process_events(self) -> None:
         for event in pygame.event.get():
@@ -91,7 +97,7 @@ class Game:
         self.clock.tick(self.fps)
 
     def start(self) -> None:
-        self.load()
+        self.setup()
         self.running = True
 
         while self.running:

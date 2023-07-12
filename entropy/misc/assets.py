@@ -37,15 +37,17 @@ class Font(Asset):
         cls, file: Path, sizes: dict[str, int], resolution: Resolution
     ) -> Font:
         name = file.stem
-        fonts = {alias: pygame.font.Font(file, size) for alias, size in sizes.items()}
+        fonts = {
+            alias.upper(): pygame.font.Font(file, size) for alias, size in sizes.items()
+        }
         scale_percents = {
             alias: size / resolution.height for alias, size in sizes.items()
         }
 
         return cls(name=name, fonts=fonts, scale_percents=scale_percents)
 
-    def size(self, alias: str) -> pygame.font.Font:
-        return self.fonts[alias]
+    def size(self, size: str) -> pygame.font.Font:
+        return self.fonts[size]
 
 
 class Image(Asset):
@@ -86,7 +88,7 @@ class Image(Asset):
 TAsset = TypeVar("TAsset", bound="Asset")
 
 
-class AssetsManager(ABC):
+class AssetsCollection(ABC):
     asset_type: TAsset
 
     def __init__(self) -> None:
@@ -97,7 +99,7 @@ class AssetsManager(ABC):
         ...
 
 
-class DirAssetManager(AssetsManager):
+class DirAssetsCollection(AssetsCollection):
     extensions: list[str]
 
     def __init__(self) -> None:
@@ -124,12 +126,12 @@ class DirAssetManager(AssetsManager):
         return self.assets[name]
 
 
-class ImagesManager(DirAssetManager):
+class ImagesCollection(DirAssetsCollection):
     asset_type = Image
     extensions = [".png"]
 
 
-class FontsManager(AssetsManager):
+class FontsCollection(AssetsCollection):
     asset_type = Font
 
     def __init__(self) -> None:
@@ -140,7 +142,7 @@ class FontsManager(AssetsManager):
         path = Path(path) if isinstance(path, str) else path
         self._font_configs.append((path, sizes))
 
-    def get(self, name: str, size: int) -> Font:
+    def get(self, name: str, size: str) -> Font:
         return self.assets[name].size(size)
 
     def load(self, resolution: Resolution) -> None:
@@ -150,17 +152,18 @@ class FontsManager(AssetsManager):
             self.assets[asset.name] = asset
 
 
-class Assets:
-    def __init__(self, game: Game) -> None:
-        self.game = game
-        self.fonts = FontsManager()
-        self.images = ImagesManager()
+class AssetsLibrary:
+    def __init__(self) -> None:
+        self.game: Game | None = None
+        self.fonts = FontsCollection()
+        self.images = ImagesCollection()
 
-    def load(self) -> None:
+    def setup(self, game: Game):
+        self.game = game
         self.fonts.load(resolution=self.game.max_resolution)
         self.images.load(resolution=self.game.max_resolution)
         self.scale()
 
     def scale(self) -> None:
         for _, image in self.images.assets.items():
-            self.game.scaler.scale(image=image)
+            self.game.scaler.scale(image)

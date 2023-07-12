@@ -8,7 +8,7 @@ from entropy.states.splash import Splash
 
 
 if TYPE_CHECKING:
-    from entropy import Game
+    from entropy.misc.game import Game
 
 __all__ = ["State", "loads"]
 

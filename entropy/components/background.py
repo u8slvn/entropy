@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 import pygame
 
-from entropy.components import Component
+from entropy.components.base import Component
 
 
 if TYPE_CHECKING:

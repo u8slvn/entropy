@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 import pygame.event
 
+import entropy
 from entropy.colors import BLACK, WHITE
 from entropy.states import State
 
@@ -11,7 +12,7 @@ from entropy.states import State
 if TYPE_CHECKING:
     import pygame
 
-    from entropy import Game
+    from entropy.misc.game import Game
 
 
 class Splash(State):
@@ -22,7 +23,7 @@ class Splash(State):
 
         self.alpha = 0
         self.alpha_rate = 1
-        self.font = self.game.assets.fonts.get("LanaPixel", "big")
+        self.font = entropy.assets.fonts.get("LanaPixel", "BIG")
         self.text = self.font.render("ENTROPY", True, WHITE, BLACK)
         self.text.set_alpha(self.alpha)
 

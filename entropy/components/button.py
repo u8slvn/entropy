@@ -1,7 +1,7 @@
 import pygame
 
-import entropy
 from entropy.misc.assets import Image
+from entropy.misc.rect import Rect
 
 
 class Button(pygame.sprite.Sprite):
@@ -26,24 +26,15 @@ class Button(pygame.sprite.Sprite):
         self._image = bg_image
         self.hover = False
         self.clicked = False
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (x, y)
-
-        self.x_percent = x / entropy.game.max_resolution.width
-        self.y_percent = y / entropy.game.max_resolution.height
-
-        self.re_scale()
+        self._rect = Rect.from_image(x=x, y=y, image=bg_image)
 
     @property
     def image(self) -> pygame.Surface:
         return self._image.surface
 
-    def re_scale(self):
-        screen_rect = entropy.game.screen.get_rect()
-        self.rect.x = self.x_percent * screen_rect.width
-        self.rect.width = self._image.scale_percent_w * screen_rect.width
-        self.rect.y = self.y_percent * screen_rect.height
-        self.rect.height = self._image.scale_percent_h * screen_rect.height
+    @property
+    def rect(self) -> pygame.Rect:
+        return self._rect.rect
 
     def update(self) -> None:
         if self.rect.collidepoint(pygame.mouse.get_pos()):
