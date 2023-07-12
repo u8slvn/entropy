@@ -22,7 +22,7 @@ class Splash(State):
 
         self.alpha = 0
         self.alpha_rate = 1
-        self.font = self.game.assets.fonts.get("LanaPixel", 50)
+        self.font = self.game.assets.fonts.get("LanaPixel", "big")
         self.text = self.font.render("ENTROPY", True, WHITE, BLACK)
         self.text.set_alpha(self.alpha)
 

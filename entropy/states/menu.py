@@ -22,7 +22,7 @@ class Menu(State):
         self.bg = Background(image=self.game.assets.images.get("menu-bg"))
         self.button = Button(
             text="hello",
-            font=self.game.assets.fonts.get("LanaPixel", 20),
+            font=self.game.assets.fonts.get("LanaPixel", "small"),
             color=BLACK,
             color_hover=WHITE,
             bg_image=self.game.assets.images.get("main-menu-btn"),

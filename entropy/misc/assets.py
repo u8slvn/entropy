@@ -1,9 +1,8 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from collections import deque
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Type
+from typing import TYPE_CHECKING, TypeVar
 
 import pygame.font
 
@@ -14,14 +13,9 @@ if TYPE_CHECKING:
     from entropy.misc.game import Game
 
 
-class Asset(ABC):
+class Asset:
     def __init__(self, name: str) -> None:
         self.name = name
-
-    @classmethod
-    @abstractmethod
-    def from_file(cls, file: Path, resolution: Resolution) -> Asset | list[Asset]:
-        ...
 
 
 class Font(Asset):
@@ -30,8 +24,8 @@ class Font(Asset):
     def __init__(
         self,
         name: str,
-        fonts: dict[int, pygame.font.Font],
-        scale_percents: dict[int, float],
+        fonts: dict[str, pygame.font.Font],
+        scale_percents: dict[str, float],
     ) -> None:
         super().__init__(name=name)
         self.originals = fonts
@@ -39,16 +33,19 @@ class Font(Asset):
         self.scale_percents = scale_percents
 
     @classmethod
-    def from_file(cls, file: Path, resolution: Resolution) -> Font:
-        name, sizes = file.stem.split(cls.split_char)
-        sizes = sizes.split("-")
-        fonts = {int(size): pygame.font.Font(file, int(size)) for size in sizes}
-        scale_percents = {size: size / resolution.height for size in fonts.keys()}
+    def from_file(
+        cls, file: Path, sizes: dict[str, int], resolution: Resolution
+    ) -> Font:
+        name = file.stem
+        fonts = {alias: pygame.font.Font(file, size) for alias, size in sizes.items()}
+        scale_percents = {
+            alias: size / resolution.height for alias, size in sizes.items()
+        }
 
         return cls(name=name, fonts=fonts, scale_percents=scale_percents)
 
-    def size(self, _size: int) -> pygame.font.Font:
-        return self.fonts[_size]
+    def size(self, alias: str) -> pygame.font.Font:
+        return self.fonts[alias]
 
 
 class Image(Asset):
@@ -86,13 +83,26 @@ class Image(Asset):
         return cls(name=name, image=image, scale_percent=scale_percent)
 
 
+TAsset = TypeVar("TAsset", bound="Asset")
+
+
 class AssetsManager(ABC):
-    asset_type: Type[Asset]
+    asset_type: TAsset
+
+    def __init__(self) -> None:
+        self.assets: dict[str, TAsset] = {}
+
+    @abstractmethod
+    def load(self, resolution: Resolution) -> None:
+        ...
+
+
+class DirAssetManager(AssetsManager):
     extensions: list[str]
 
     def __init__(self) -> None:
-        self._files: deque[Path] = deque()
-        self.assets: dict[str, Any] = {}
+        super().__init__()
+        self._files: list[Path] = []
 
     def add_dir(self, path: str | Path) -> None:
         path = Path(path) if isinstance(path, str) else path
@@ -102,10 +112,6 @@ class AssetsManager(ABC):
             elif item.suffix in self.extensions:
                 self._files.append(item)
 
-    @property
-    def nb_files(self) -> int:
-        return len(self._files)
-
     def load(self, resolution: Resolution) -> None:
         for file in self._files:
             asset = self.asset_type.from_file(
@@ -114,25 +120,38 @@ class AssetsManager(ABC):
             )
             self.assets[asset.name] = asset
 
+    def get(self, name: str) -> Asset:
+        return self.assets[name]
+
+
+class ImagesManager(DirAssetManager):
+    asset_type = Image
+    extensions = [".png"]
+
 
 class FontsManager(AssetsManager):
     asset_type = Font
-    extensions = [".ttf"]
+
+    def __init__(self) -> None:
+        super().__init__()
+        self._font_configs: list[tuple[Path, dict[str, int]]] = []
+
+    def add_font(self, path: str | Path, **sizes: int):
+        path = Path(path) if isinstance(path, str) else path
+        self._font_configs.append((path, sizes))
 
     def get(self, name: str, size: int) -> Font:
         return self.assets[name].size(size)
 
-
-class ImagesManager(AssetsManager):
-    asset_type = Image
-    extensions = [".png"]
-
-    def get(self, name: str) -> Image:
-        return self.assets[name]
+    def load(self, resolution: Resolution) -> None:
+        for config in self._font_configs:
+            file, sizes = config
+            asset = Font.from_file(file=file, sizes=sizes, resolution=resolution)
+            self.assets[asset.name] = asset
 
 
 class Assets:
-    def __init__(self, game: Game):
+    def __init__(self, game: Game) -> None:
         self.game = game
         self.fonts = FontsManager()
         self.images = ImagesManager()

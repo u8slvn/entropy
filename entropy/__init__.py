@@ -12,7 +12,7 @@ from entropy.misc.resolution import r900P, r1080P
 game: Game
 
 
-def init(title: str, fps: float, fonts_path: str, images_path: str) -> None:
+def init(title: str, fps: float, images_path: str) -> None:
     global game
 
     os.environ["SDL_VIDEO_CENTERED"] = "1"
@@ -27,10 +27,11 @@ def init(title: str, fps: float, fonts_path: str, images_path: str) -> None:
         fullscreen=False,
     )
 
-    game.assets.fonts.add_dir(path=ASSETS_DIR.joinpath("fonts"))
-    game.assets.images.add_dir(path=ASSETS_DIR.joinpath("gui"))
+    game.assets.fonts.add_font(
+        path=ASSETS_DIR.joinpath("fonts/LanaPixel.ttf"), small=20, big=40
+    )
 
-    game.assets.fonts.add_dir(path=fonts_path)
+    game.assets.images.add_dir(path=ASSETS_DIR.joinpath("gui"))
     game.assets.images.add_dir(path=images_path)
 
 
