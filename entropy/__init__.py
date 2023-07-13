@@ -4,23 +4,31 @@ import os
 
 import pygame as pg
 
-from entropy.game import Game
+from entropy.control import Control
 from entropy.locations import ASSETS_DIR
 from entropy.misc.assets import AssetsLibrary
+from entropy.misc.window import Window
+from entropy.states import States
 
 
-__all__ = ["assets", "game"]
+__all__ = ["assets", "control"]
 
 assets: AssetsLibrary
-game: Game
+control: Control
 
 
 def init(title: str, fps: float, images_path: str) -> None:
-    global game, assets
+    global control, assets
 
     os.environ["SDL_VIDEO_CENTERED"] = "1"
 
     pg.init()
+
+    window = Window(
+        title=title,
+        render_resolution=(1920, 1080),
+        fullscreen=False,
+    )
 
     assets = AssetsLibrary()
     assets.fonts.add_font(
@@ -28,16 +36,17 @@ def init(title: str, fps: float, images_path: str) -> None:
     )
     assets.images.add_dir(path=ASSETS_DIR.joinpath("gui"))
     assets.images.add_dir(path=images_path)
+    assets.load()
 
-    game = Game(
-        title=title,
-        fps=fps,
-        render_resolution=(1920, 1080),
-        fullscreen=False,
+    control = Control(
+        window=window,
+        fps=60.0,
+        states=States.load(),
+        state="SPLASH",
     )
 
 
 def start() -> None:
-    global game
+    global control, assets
 
-    game.start()
+    control.start()

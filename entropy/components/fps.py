@@ -3,10 +3,9 @@ from __future__ import annotations
 import pygame
 
 from entropy.colors import BLACK, WHITE
-from entropy.components import Component
 
 
-class FPS(Component):
+class FPS:
     def __init__(self, clock) -> None:
         self.clock = clock
         self.font = pygame.font.SysFont("Verdana", 12)

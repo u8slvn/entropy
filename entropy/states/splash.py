@@ -1,33 +1,27 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
-import pygame.event
+import pygame as pg
 
 import entropy
 from entropy.colors import BLACK, WHITE
 from entropy.states import State
 
 
-if TYPE_CHECKING:
-    import pygame as pg
-
-
 class Splash(State):
     def __init__(self):
         super().__init__()
         self.countdown = 10
-        self.countdown_event = pygame.USEREVENT + 1
+        self.countdown_event = pg.USEREVENT + 1
         self.alpha = 0
         self.alpha_rate = 1
         self.font = entropy.assets.fonts.get("LanaPixel", "big")
         self.text = self.font.render("ENTROPY", True, WHITE, BLACK)
         self.text.set_alpha(self.alpha)
-        pygame.time.set_timer(self.countdown_event, 1000)
+        pg.time.set_timer(self.countdown_event, 1000)
 
     def handle_event(self, event: pg.event.Event, mouse_pos: tuple[int, int]) -> None:
-        if event.type == pygame.KEYUP or self.countdown == 0:
-            self.game.transition_to("MENU")
+        if event.type == pg.KEYUP or self.countdown == 0:
+            self.control.transition_to("MENU")  # type: ignore
         elif event.type == self.countdown_event:
             self.countdown -= 1
 
