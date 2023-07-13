@@ -10,29 +10,22 @@ from entropy.states import State
 
 
 if TYPE_CHECKING:
-    import pygame
-
-    from entropy.misc.game import Game
+    import pygame as pg
 
 
 class Splash(State):
-    def __init__(self, game: Game):
-        super().__init__(game=game)
+    def __init__(self):
+        super().__init__()
         self.countdown = 10
         self.countdown_event = pygame.USEREVENT + 1
-
         self.alpha = 0
         self.alpha_rate = 1
         self.font = entropy.assets.fonts.get("LanaPixel", "big")
         self.text = self.font.render("ENTROPY", True, WHITE, BLACK)
         self.text.set_alpha(self.alpha)
-
         pygame.time.set_timer(self.countdown_event, 1000)
 
-    def setup(self) -> None:
-        ...
-
-    def process_event(self, event: pygame.event.Event) -> None:
+    def handle_event(self, event: pg.event.Event, mouse_pos: tuple[int, int]) -> None:
         if event.type == pygame.KEYUP or self.countdown == 0:
             self.game.transition_to("MENU")
         elif event.type == self.countdown_event:
@@ -47,10 +40,11 @@ class Splash(State):
 
     def draw(self, surface) -> None:
         surface.fill(BLACK)
-        pos_x = (surface.get_width() - self.text.get_width()) / 2
-        pos_y = (surface.get_height() - self.text.get_height()) / 2
-        surface.blit(self.text, (pos_x, pos_y))
+        x = (surface.get_width() - self.text.get_width()) // 2
+        y = (surface.get_height() - self.text.get_height()) // 2
+        surface.blit(self.text, (x, y))
 
-    def teardown(self) -> None:
+    def cleanup(self) -> None:
+        super().cleanup()
         self.alpha = 0
         self.countdown = 10

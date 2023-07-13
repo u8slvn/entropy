@@ -4,9 +4,9 @@ import os
 
 import pygame as pg
 
+from entropy.game import Game
 from entropy.locations import ASSETS_DIR
 from entropy.misc.assets import AssetsLibrary
-from entropy.misc.game import Game
 
 
 __all__ = ["assets", "game"]
