@@ -21,7 +21,7 @@ class Splash(State):
 
     def handle_event(self, event: pg.event.Event) -> None:
         if event.type == pg.KEYUP or self.countdown == 0:
-            self.control.transition_to("MENU")  # type: ignore
+            self.control.transition_to("TITLESCREEN")  # type: ignore
         elif event.type == self.countdown_event:
             self.countdown -= 1
 

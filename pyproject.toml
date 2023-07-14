@@ -19,6 +19,9 @@ mypy = "^1.4.1"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.black]
+line_length = 99
+
 [tool.isort]
 profile = "black"
 combine_as_imports = true

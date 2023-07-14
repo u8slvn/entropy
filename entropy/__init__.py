@@ -13,6 +13,9 @@ from entropy.states import States
 
 __all__ = ["assets", "control"]
 
+from entropy.utils import Resolution
+
+
 assets: AssetsLibrary
 control: Control
 
@@ -26,14 +29,12 @@ def init(title: str, fps: float, images_path: str) -> None:
 
     window = Window(
         title=title,
-        render_resolution=(1920, 1080),
+        render_resolution=Resolution(w=1920, h=1080),
         fullscreen=False,
     )
 
     assets = AssetsLibrary()
-    assets.fonts.add_font(
-        path=ASSETS_DIR.joinpath("fonts/LanaPixel.ttf"), small=20, big=40
-    )
+    assets.fonts.add_font(path=ASSETS_DIR.joinpath("fonts/LanaPixel.ttf"), small=20, big=40)
     assets.images.add_dir(path=ASSETS_DIR.joinpath("gui"))
     assets.images.add_dir(path=images_path)
     assets.load()

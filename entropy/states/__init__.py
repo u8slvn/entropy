@@ -16,8 +16,8 @@ class States:
     @classmethod
     def load(cls) -> dict[str, State]:
         # TODO: add auto load
-        from entropy.states.menu import Menu  # noqa
         from entropy.states.splash import Splash  # noqa
+        from entropy.states.title_screen import TitleScreen  # noqa
 
         return {name.upper(): state() for name, state in State.states.items()}
 

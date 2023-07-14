@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 import pygame as pg
 
 from entropy.misc.mouse import Mouse
+from entropy.utils import Resolution
 
 
 if TYPE_CHECKING:
@@ -40,7 +41,7 @@ class Control:
             if event.type == pg.QUIT:
                 self.running = False
             elif event.type == pg.VIDEORESIZE and not self.window.fullscreen:
-                self.window.resize_screen(dimension=(event.w, event.h))
+                self.window.resize_screen(resolution=Resolution(event.w, event.h))
             elif event.type == pg.KEYUP:
                 if event.key == pg.K_f:
                     self.window.toggle_fullscreen()
