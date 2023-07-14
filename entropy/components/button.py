@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import pygame as pg
 
-import entropy
 from entropy.components.text import Text
 from entropy.misc.mouse import Mouse
 from entropy.utils import Pos
@@ -58,16 +57,3 @@ class TextButton(Button):
     def draw(self, surface: pg.Surface) -> None:
         super().draw(surface=surface)
         surface.blit(self.text.surface, self.text.rect)
-
-
-class TitleScreenButton(TextButton):
-    def __init__(self, text: str, pos: Pos) -> None:
-        font = entropy.assets.fonts.get("LanaPixel", "small")
-        super().__init__(
-            text=Text(text=text, font=font, color="black"),
-            text_hover=Text(text=text, font=font, color="white"),
-            image=entropy.assets.images.get("main-menu-btn"),
-            image_hover=entropy.assets.images.get("main-menu-btn-hover"),
-            pos=pos,
-            sound_hover=entropy.assets.sound.get("hover"),
-        )
