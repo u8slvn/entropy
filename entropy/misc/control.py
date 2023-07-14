@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from time import sleep
 from typing import TYPE_CHECKING
 
 import pygame as pg
@@ -64,5 +65,10 @@ class Control:
             self.render()
             self.clock.tick(self.fps)
 
+        self.stop()
+
+    @staticmethod
+    def stop(delay: float = 0.0):
+        sleep(delay)
         pg.quit()
         exit()
