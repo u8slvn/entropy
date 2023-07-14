@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Any
 
-import pygame.font
+import pygame as pg
 
 
 class AssetsCollection(ABC):
@@ -29,12 +29,12 @@ class DirAssetsCollection(AssetsCollection, ABC):
                 self._files.append(item)
 
     @abstractmethod
-    def load_file(self, file: Path) -> Any:
+    def _load_file(self, file: Path) -> Any:
         ...
 
     def load(self) -> None:
         for file in self._files:
-            self.assets[file.stem] = self.load_file(file=file)
+            self.assets[file.stem] = self._load_file(file=file)
 
     def get(self, name: str) -> Any:
         return self.assets[name]
@@ -44,29 +44,29 @@ class ImagesCollection(DirAssetsCollection):
     extensions = [".png"]
     alpha_suffix = "-a"
 
-    def load_file(self, file: Path) -> pygame.Surface:
+    def _load_file(self, file: Path) -> pg.Surface:
         if file.stem.endswith(self.alpha_suffix):
-            return pygame.image.load(file).convert_alpha()
+            return pg.image.load(file).convert_alpha()
         else:
-            return pygame.image.load(file).convert()
+            return pg.image.load(file).convert()
 
 
 class FontsCollection(AssetsCollection):
     def __init__(self) -> None:
-        self.assets: dict[str, dict[str, pygame.font.Font]] = {}
+        self.assets: dict[str, dict[str, pg.font.Font]] = {}
         self._font_configs: list[tuple[Path, dict[str, int]]] = []
 
     def add_font(self, path: str | Path, **sizes: int):
         path = Path(path) if isinstance(path, str) else path
         self._font_configs.append((path, sizes))
 
-    def get(self, name: str, size: str) -> pygame.font.Font:
+    def get(self, name: str, size: str) -> pg.font.Font:
         return self.assets[name][size]
 
     def load(self) -> None:
         for config in self._font_configs:
             file, sizes = config
-            asset = {key: pygame.font.Font(file, size) for key, size in sizes.items()}
+            asset = {key: pg.font.Font(file, size) for key, size in sizes.items()}
             self.assets[file.stem] = asset
 
 

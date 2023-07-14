@@ -19,7 +19,7 @@ class Splash(State):
         self.text.set_alpha(self.alpha)
         pg.time.set_timer(self.countdown_event, 1000)
 
-    def handle_event(self, event: pg.event.Event, mouse_pos: tuple[int, int]) -> None:
+    def handle_event(self, event: pg.event.Event) -> None:
         if event.type == pg.KEYUP or self.countdown == 0:
             self.control.transition_to("MENU")  # type: ignore
         elif event.type == self.countdown_event:

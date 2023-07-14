@@ -17,7 +17,7 @@ class Menu(State):
         super().__init__()
         self.background = entropy.assets.images.get("menu-bg")
 
-    def handle_event(self, event: pg.event.Event, mouse_pos: tuple[int, int]) -> None:
+    def handle_event(self, event: pg.event.Event) -> None:
         pass
 
     def update(self) -> None:

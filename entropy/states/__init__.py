@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Type
 if TYPE_CHECKING:
     import pygame as pg
 
-    from entropy.control import Control
+    from entropy.misc.control import Control
 
 __all__ = ["State", "States"]
 
@@ -38,7 +38,7 @@ class State(ABC):
         self.control = None
 
     @abstractmethod
-    def handle_event(self, event: pg.event.Event, mouse_pos: tuple[int, int]) -> None:
+    def handle_event(self, event: pg.event.Event) -> None:
         ...
 
     @abstractmethod

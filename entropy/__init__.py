@@ -4,9 +4,9 @@ import os
 
 import pygame as pg
 
-from entropy.control import Control
 from entropy.locations import ASSETS_DIR
 from entropy.misc.assets import AssetsLibrary
+from entropy.misc.control import Control
 from entropy.misc.window import Window
 from entropy.states import States
 
@@ -40,13 +40,13 @@ def init(title: str, fps: float, images_path: str) -> None:
 
     control = Control(
         window=window,
-        fps=60.0,
+        fps=fps,
         states=States.load(),
         state="SPLASH",
     )
 
 
 def start() -> None:
-    global control, assets
+    global control
 
     control.start()

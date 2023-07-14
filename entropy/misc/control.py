@@ -4,6 +4,8 @@ from typing import TYPE_CHECKING
 
 import pygame as pg
 
+from entropy.misc.mouse import Mouse
+
 
 if TYPE_CHECKING:
     from entropy.misc.window import Window
@@ -25,6 +27,7 @@ class Control:
         self.state = self.states[state]
         self.running = False
         self.clock = pg.time.Clock()
+        self.mouse = Mouse(window=window)
 
     def transition_to(self, state: str) -> None:
         self.state.cleanup()
@@ -32,6 +35,7 @@ class Control:
         self.state.startup(control=self)
 
     def process_events(self) -> None:
+        self.mouse.update_pos()
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.running = False
@@ -40,7 +44,7 @@ class Control:
             elif event.type == pg.KEYUP:
                 if event.key == pg.K_f:
                     self.window.toggle_fullscreen()
-            self.state.handle_event(event=event, mouse_pos=(0, 0))
+            self.state.handle_event(event=event)
 
     def update(self) -> None:
         self.state.update()
