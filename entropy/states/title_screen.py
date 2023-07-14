@@ -22,6 +22,7 @@ class TitleScreen(State):
             image=entropy.assets.images.get("main-menu-btn"),
             image_hover=entropy.assets.images.get("main-menu-btn-hover"),
             pos=Pos(0, 200),
+            sound_hover=entropy.assets.sound.get("hover"),
         )
 
     def handle_event(self, event: pg.event.Event) -> None:

@@ -37,6 +37,7 @@ def init(title: str, fps: float, images_path: str) -> None:
     assets.fonts.add_font(path=ASSETS_DIR.joinpath("fonts/LanaPixel.ttf"), small=20, big=40)
     assets.images.add_dir(path=ASSETS_DIR.joinpath("gui"))
     assets.images.add_dir(path=images_path)
+    assets.sound.add_dir(path=ASSETS_DIR.joinpath("sound"))
     assets.load()
 
     control = Control(

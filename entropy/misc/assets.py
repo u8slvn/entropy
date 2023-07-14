@@ -51,6 +51,13 @@ class ImagesCollection(DirAssetsCollection):
             return pg.image.load(file).convert()
 
 
+class SoundCollection(DirAssetsCollection):
+    extensions = [".wav"]
+
+    def _load_file(self, file: Path) -> pg.mixer.Sound:
+        return pg.mixer.Sound(file)
+
+
 class FontsCollection(AssetsCollection):
     def __init__(self) -> None:
         self.assets: dict[str, dict[str, pg.font.Font]] = {}
@@ -74,7 +81,9 @@ class AssetsLibrary:
     def __init__(self) -> None:
         self.fonts = FontsCollection()
         self.images = ImagesCollection()
+        self.sound = SoundCollection()
 
     def load(self) -> None:
         self.fonts.load()
         self.images.load()
+        self.sound.load()
