@@ -37,7 +37,7 @@ class Control:
         self.state.startup(control=self)
 
     def process_events(self) -> None:
-        self.mouse.update_pos()
+        self.mouse.update()
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.running = False

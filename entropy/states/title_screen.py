@@ -26,7 +26,12 @@ class TitleScreen(State):
         self.quit_btn = TitleScreenButton("QUIT", Pos(735, 790), self.on_click_quit)
 
     def handle_event(self, event: pg.event.Event) -> None:
-        pass
+        if event.type == pg.KEYDOWN:
+            self.control.mouse.hide()
+            if event.key == pg.K_UP:
+                pg.mouse.set_pos(self.continue_btn.rect.center)
+            elif event.key == pg.K_DOWN:
+                pg.mouse.set_pos(self.new_game_btn.rect.center)
 
     def update(self) -> None:
         self.continue_btn.update(mouse=self.control.mouse)  # type: ignore
@@ -36,13 +41,13 @@ class TitleScreen(State):
 
     def draw(self, surface: pg.Surface) -> None:
         surface.blit(self.background, (0, 0))
-        surface.blit(self.logo, (660, 230))
+        surface.blit(self.logo, (660, 220))
         self.continue_btn.draw(surface=surface)
         self.new_game_btn.draw(surface=surface)
         self.settings_btn.draw(surface=surface)
         self.quit_btn.draw(surface=surface)
 
-    def on_click_quit(self):
+    def on_click_quit(self) -> None:
         self.control.stop(delay=0.3)
 
 
