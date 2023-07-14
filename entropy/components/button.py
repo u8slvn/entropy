@@ -2,11 +2,13 @@ from __future__ import annotations
 
 import pygame as pg
 
+import entropy
+from entropy.components.text import Text
 from entropy.misc.mouse import Mouse
 from entropy.utils import Pos
 
 
-class Button(pg.sprite.Sprite):
+class Button:
     def __init__(
         self,
         image: pg.Surface,
@@ -24,10 +26,48 @@ class Button(pg.sprite.Sprite):
 
     def update(self, mouse: Mouse) -> None:
         hover = self.rect.collidepoint(mouse.pos)
-        if hover is True and self.hover is False:
+        if hover and not self.hover:
             self.sound_hover.play()
         self.hover = hover
         self.image = self.images[self.hover]
 
     def draw(self, surface: pg.Surface) -> None:
         surface.blit(self.image, self.rect)
+
+
+class TextButton(Button):
+    def __init__(
+        self,
+        text: Text,
+        text_hover: Text,
+        image: pg.Surface,
+        image_hover: pg.Surface,
+        sound_hover: pg.mixer.Sound,
+        pos: Pos,
+    ) -> None:
+        super().__init__(image=image, image_hover=image_hover, sound_hover=sound_hover, pos=pos)
+        text.rect.center = self.rect.center
+        text_hover.rect.center = self.rect.center
+        self.texts = [text, text_hover]
+        self.text = self.texts[self.hover]
+
+    def update(self, mouse: Mouse) -> None:
+        super().update(mouse=mouse)
+        self.text = self.texts[self.hover]
+
+    def draw(self, surface: pg.Surface) -> None:
+        super().draw(surface=surface)
+        surface.blit(self.text.surface, self.text.rect)
+
+
+class TitleScreenButton(TextButton):
+    def __init__(self, text: str, pos: Pos) -> None:
+        font = entropy.assets.fonts.get("LanaPixel", "small")
+        super().__init__(
+            text=Text(text=text, font=font, color="black"),
+            text_hover=Text(text=text, font=font, color="white"),
+            image=entropy.assets.images.get("main-menu-btn"),
+            image_hover=entropy.assets.images.get("main-menu-btn-hover"),
+            pos=pos,
+            sound_hover=entropy.assets.sound.get("hover"),
+        )

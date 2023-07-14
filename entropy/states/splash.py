@@ -3,7 +3,6 @@ from __future__ import annotations
 import pygame as pg
 
 import entropy
-from entropy.colors import BLACK, WHITE
 from entropy.states import State
 
 
@@ -15,7 +14,7 @@ class Splash(State):
         self.alpha = 0
         self.alpha_rate = 1
         self.font = entropy.assets.fonts.get("LanaPixel", "big")
-        self.text = self.font.render("ENTROPY", True, WHITE, BLACK)
+        self.text = self.font.render("ENTROPY", True, "white", "black")
         self.text.set_alpha(self.alpha)
         pg.time.set_timer(self.countdown_event, 1000)
 
@@ -33,7 +32,7 @@ class Splash(State):
         self.text.set_alpha(self.alpha)
 
     def draw(self, surface) -> None:
-        surface.fill(BLACK)
+        surface.fill("black")
         x = (surface.get_width() - self.text.get_width()) // 2
         y = (surface.get_height() - self.text.get_height()) // 2
         surface.blit(self.text, (x, y))
