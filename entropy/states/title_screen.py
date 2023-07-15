@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from functools import partial
 from typing import Callable
 
 import pygame as pg
@@ -16,28 +15,23 @@ def action():
     print("clicked")
 
 
-def test_lang(self):
-    # TODO: add event listener
+def test_lang():
     entropy.translator.set_translation("fr")
-    for text in self.continue_btn.texts:
-        text.reload()
 
 
 class TitleScreen(State):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.background = entropy.assets.images.get("title-screen-bg")
         self.logo = entropy.assets.images.get("title-screen-logo-a")
-        self.continue_btn = TitleScreenButton(
-            "CONTINUE", Pos(735, 550), partial(test_lang, self=self)
-        )
+        self.continue_btn = TitleScreenButton("CONTINUE", Pos(735, 550), test_lang)
         self.new_game_btn = TitleScreenButton("NEW GAME", Pos(735, 630), action)
         self.settings_btn = TitleScreenButton("SETTINGS", Pos(735, 710), action)
         self.quit_btn = TitleScreenButton("QUIT", Pos(735, 790), self.on_click_quit)
 
     def handle_event(self, event: pg.event.Event) -> None:
         if event.type == pg.KEYDOWN:
-            self.control.mouse.hide()
+            self.control.mouse.hide()  # type: ignore
             if event.key == pg.K_UP:
                 pg.mouse.set_pos(self.continue_btn.rect.center)
             elif event.key == pg.K_DOWN:
@@ -58,7 +52,7 @@ class TitleScreen(State):
         self.quit_btn.draw(surface=surface)
 
     def on_click_quit(self) -> None:
-        self.control.stop(delay=0.3)
+        self.control.stop(delay=0.3)  # type: ignore
 
 
 class TitleScreenButton(TextButton):

@@ -6,7 +6,7 @@ import entropy
 from entropy.utils import Pos
 
 
-_ = entropy.translator()
+_ = entropy.translator
 
 
 class Text:
@@ -24,6 +24,7 @@ class Text:
         self.background = background
         self.surface, self.rect = self._render()
         self.center_pos = Pos(0, 0)
+        entropy.translator.register_text(text=self)
 
     def set_center_pos(self, pos: Pos | None = None):
         if pos is not None:
@@ -31,15 +32,12 @@ class Text:
         self.rect.center = self.center_pos
 
     def _render(self) -> tuple[pg.Surface, pg.Rect]:
-        surface = self.font.render(_(self.text), True, self.color, self.background)
+        surface = self.font.render(self.text, True, self.color, self.background)
         rect = surface.get_rect()
 
         return surface, rect
 
-    def reload(self) -> None:
-        global _
-
-        _ = entropy.translator()
+    def update(self) -> None:
         self.text = _(self._text)
         self.surface, self.rect = self._render()
         self.set_center_pos()
