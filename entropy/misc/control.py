@@ -8,6 +8,9 @@ import pygame as pg
 import entropy
 
 from entropy.components.fps import FPSViewer
+from entropy.misc.action import Actions
+from entropy.misc.mouse import Mouse
+from entropy.states import load_states
 from entropy.utils import Resolution
 
 
@@ -19,50 +22,59 @@ class Control:
     def __init__(
         self,
         fps: float,
-        states: dict[str, State],
         state: str,
     ) -> None:
         self.fps = fps
         self.render_surface = pg.Surface(entropy.window.render_res).convert()
-        self.states = states
-        self.state = self.states[state]
+        self.states = load_states()
+        self.state_stack: list[State] = []
+        self.prev_state: State | None = None
+        self.transition_to(state=state)
         self.running = False
         self.clock = pg.time.Clock()
         self.fps_viewer = FPSViewer(clock=self.clock)
+        self.mouse = Mouse()
+        self.actions = Actions()
+
+    @property
+    def current_state(self) -> State:
+        return self.state_stack[-1]
 
     def transition_to(self, state: str) -> None:
-        self.state.cleanup()
-        self.state = self.states[state]
-        self.state.startup(control=self)
+        if len(self.state_stack) > 1:
+            self.prev_state = self.current_state
+        self.state_stack.append(self.states[state](control=self))
 
-    def handle_events(self) -> None:
-        entropy.mouse.update()
+    def get_events(self) -> None:
+        self.mouse.update()
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.running = False
             elif event.type == pg.VIDEORESIZE and not entropy.window.fullscreen:
                 entropy.window.resize_screen(resolution=Resolution(event.w, event.h))
-            elif event.type == pg.KEYUP:
-                if event.key == pg.K_f:
-                    entropy.window.toggle_fullscreen()
-            self.state.handle_event(event=event)
-            self.fps_viewer.handle_event(event=event)
+
+            self.current_state.handle_event(event=event)
+            self.actions.parse_event(event=event)
 
     def update(self) -> None:
-        self.state.update()
-        self.fps_viewer.update()
+        if self.actions.F6:
+            entropy.window.toggle_fullscreen()
+
+        self.current_state.update(actions=self.actions, mouse=self.mouse)
+        self.fps_viewer.update(actions=self.actions)
+
+        self.actions.reset()
 
     def render(self) -> None:
-        self.state.draw(surface=self.render_surface)
+        self.current_state.draw(surface=self.render_surface)
         self.fps_viewer.draw(surface=self.render_surface)
         entropy.window.render(surface=self.render_surface)
 
     def start(self) -> None:
         self.running = True
-        self.state.startup(control=self)
 
         while self.running:
-            self.handle_events()
+            self.get_events()
             self.update()
             self.render()
             self.clock.tick(self.fps)

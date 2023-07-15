@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pygame as pg
 
 import entropy
@@ -7,9 +9,15 @@ import entropy
 from entropy.states import State
 
 
+if TYPE_CHECKING:
+    from entropy.misc.action import Actions
+    from entropy.misc.control import Control
+    from entropy.misc.mouse import Mouse
+
+
 class Splash(State):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, control: Control) -> None:
+        super().__init__(control=control)
         self.countdown = 10
         self.countdown_event = pg.USEREVENT + 1
         self.alpha = 0
@@ -20,12 +28,13 @@ class Splash(State):
         pg.time.set_timer(self.countdown_event, 1000)
 
     def handle_event(self, event: pg.event.Event) -> None:
-        if event.type == pg.KEYUP or self.countdown == 0:
-            self.control.transition_to("TITLESCREEN")  # type: ignore
-        elif event.type == self.countdown_event:
+        if event.type == self.countdown_event:
             self.countdown -= 1
 
-    def update(self) -> None:
+    def update(self, actions: Actions, mouse: Mouse) -> None:
+        if any([actions.SPACE, actions.ENTER]) or self.countdown == 0:
+            self.control.transition_to("TITLESCREEN")  # type: ignore
+
         if self.countdown < 5:
             self.alpha = max(self.alpha - self.alpha_rate, 0)
         else:
@@ -37,8 +46,3 @@ class Splash(State):
         x = (surface.get_width() - self.text.get_width()) // 2
         y = (surface.get_height() - self.text.get_height()) // 2
         surface.blit(self.text, (x, y))
-
-    def cleanup(self) -> None:
-        super().cleanup()
-        self.alpha = 0
-        self.countdown = 10

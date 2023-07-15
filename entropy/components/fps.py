@@ -1,8 +1,14 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pygame as pg
 
 from entropy.utils import Pos
+
+
+if TYPE_CHECKING:
+    from entropy.misc.action import Actions
 
 
 class FPSViewer:
@@ -17,15 +23,14 @@ class FPSViewer:
         self.format = "{fps} FPS"
         self.text = self.font.render("0", True, self.font_color, self.background_color)
 
-    def handle_event(self, event: pg.event.Event) -> None:
-        if event.type == pg.KEYUP and event.key == pg.K_F5:
-            self.visible = not self.visible
-
     def _render_text(self) -> pg.Surface:
         text = self.format.format(fps=round(self.fps))
         return self.font.render(text, True, self.font_color, self.background_color)
 
-    def update(self) -> None:
+    def update(self, actions: Actions) -> None:
+        if actions.F5:
+            self.visible = not self.visible
+
         if self.visible:
             self.fps = self.clock.get_fps()
             self.text = self._render_text()

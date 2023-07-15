@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
 from typing import Callable
 
 import pygame as pg
@@ -13,6 +14,12 @@ from entropy.states import State
 from entropy.utils import Pos
 
 
+if TYPE_CHECKING:
+    from entropy.misc.action import Actions
+    from entropy.misc.control import Control
+    from entropy.misc.mouse import Mouse
+
+
 def action():
     print("clicked")
 
@@ -22,8 +29,8 @@ def test_lang():
 
 
 class TitleScreen(State):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, control: Control) -> None:
+        super().__init__(control=control)
         self.background = entropy.assets.images.get("title-screen-bg")
         self.logo = entropy.assets.images.get("title-screen-logo-a")
         self.continue_btn = TitleScreenButton("CONTINUE", Pos(735, 550), test_lang)
@@ -35,10 +42,10 @@ class TitleScreen(State):
         )
 
     def handle_event(self, event: pg.event.Event) -> None:
-        self.buttons.handle_event(event=event)
+        pass
 
-    def update(self) -> None:
-        self.buttons.update()  # type: ignore
+    def update(self, actions: Actions, mouse: Mouse) -> None:
+        self.buttons.update(actions=actions, mouse=mouse)  # type: ignore
 
     def draw(self, surface: pg.Surface) -> None:
         surface.blit(self.background, (0, 0))
