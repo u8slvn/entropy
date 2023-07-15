@@ -69,8 +69,8 @@ class TextButton(Button):
             onclick=onclick,
             pos=pos,
         )
-        text.rect.center = self.rect.center
-        text_hover.rect.center = self.rect.center
+        text.set_center_pos(self.rect.center)
+        text_hover.set_center_pos(self.rect.center)
         self.texts = [text, text_hover]
         self.text = self.texts[self.hover]
 
