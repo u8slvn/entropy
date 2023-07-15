@@ -7,6 +7,7 @@ import pygame as pg
 import entropy
 
 from entropy.states import State
+from entropy.states.title_screen import TitleScreen
 
 
 if TYPE_CHECKING:
@@ -33,7 +34,8 @@ class Splash(State):
 
     def update(self, actions: Actions, mouse: Mouse) -> None:
         if any([actions.SPACE, actions.ENTER]) or self.countdown == 0:
-            self.control.transition_to("TITLESCREEN")  # type: ignore
+            self.control.transition_to(state=TitleScreen)
+            self.cleanup()
 
         if self.countdown < 5:
             self.alpha = max(self.alpha - self.alpha_rate, 0)
@@ -46,3 +48,7 @@ class Splash(State):
         x = (surface.get_width() - self.text.get_width()) // 2
         y = (surface.get_height() - self.text.get_height()) // 2
         surface.blit(self.text, (x, y))
+
+    def cleanup(self) -> None:
+        self.countdown = 10
+        self.alpha = 0

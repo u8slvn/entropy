@@ -3,7 +3,6 @@ from __future__ import annotations
 from abc import ABC
 from abc import abstractmethod
 from typing import TYPE_CHECKING
-from typing import Type
 
 
 if TYPE_CHECKING:
@@ -13,25 +12,15 @@ if TYPE_CHECKING:
     from entropy.misc.control import Control
     from entropy.misc.mouse import Mouse
 
-__all__ = ["State", "load_states"]
-
-
-def load_states() -> dict[str, Type[State]]:
-    # TODO: add auto load
-    from entropy.states.splash import Splash  # noqa
-    from entropy.states.title_screen import TitleScreen  # noqa
-
-    return State.states
+__all__ = ["State"]
 
 
 class State(ABC):
-    states: dict[str, Type[State]] = {}
-
     def __init__(self, control: Control) -> None:
         self.control = control
 
-    def __init_subclass__(cls, **kwargs) -> None:
-        State.states[cls.__name__.upper()] = cls
+    def exit(self):
+        self.control.state_stack.pop()
 
     @abstractmethod
     def handle_event(self, event: pg.event.Event) -> None:

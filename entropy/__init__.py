@@ -9,12 +9,10 @@ from entropy.misc.assets import AssetsLibrary
 from entropy.misc.control import Control
 from entropy.misc.translator import Translator
 from entropy.misc.window import Window
-
-
-__all__ = ["assets", "control"]
-
 from entropy.utils import Resolution
 
+
+__all__ = ["assets", "window", "translator"]
 
 window: Window
 assets: AssetsLibrary
@@ -44,7 +42,7 @@ def init(title: str, fps: float, images_path: str) -> None:
     assets.sound.add_dir(path=ASSETS_DIR.joinpath("sound"))
     assets.load()
 
-    control = Control(fps=fps, state="SPLASH")
+    control = Control(fps=fps)
 
 
 def start() -> None:

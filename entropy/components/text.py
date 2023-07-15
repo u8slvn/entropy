@@ -27,7 +27,7 @@ class Text:
         self.center_pos = Pos(0, 0)
         entropy.translator.register_text(text=self)
 
-    def set_center_pos(self, pos: Pos | None = None):
+    def set_center_pos(self, pos: Pos | None = None) -> None:
         if pos is not None:
             self.center_pos = pos
         self.rect.center = self.center_pos
