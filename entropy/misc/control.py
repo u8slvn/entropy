@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 import pygame as pg
 
 import entropy
+
 from entropy.components.fps import FPSViewer
 from entropy.utils import Resolution
 
@@ -69,7 +70,7 @@ class Control:
         self.stop()
 
     @staticmethod
-    def stop(delay: float = 0.0):
+    def stop(delay: float = 0.0) -> None:
         sleep(delay)
         pg.quit()
         exit()

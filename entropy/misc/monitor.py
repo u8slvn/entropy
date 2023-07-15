@@ -8,11 +8,11 @@ class Monitor:
         self.info = pygame.display.Info()
 
     @property
-    def w(self):
+    def w(self) -> int:
         return self.info.current_w
 
     @property
-    def h(self):
+    def h(self) -> int:
         return self.info.current_h
 
     @property

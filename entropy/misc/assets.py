@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from abc import ABC
+from abc import abstractmethod
 from pathlib import Path
 from typing import Any
 
@@ -63,7 +64,7 @@ class FontsCollection(AssetsCollection):
         self.assets: dict[str, dict[str, pg.font.Font]] = {}
         self._font_configs: list[tuple[Path, dict[str, int]]] = []
 
-    def add_font(self, path: str | Path, **sizes: int):
+    def add_font(self, path: str | Path, **sizes: int) -> None:
         path = Path(path) if isinstance(path, str) else path
         self._font_configs.append((path, sizes))
 

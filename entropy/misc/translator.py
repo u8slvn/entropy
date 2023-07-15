@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import gettext
-from typing import TYPE_CHECKING, Callable
+
+from typing import TYPE_CHECKING
+from typing import Callable
 
 from entropy.locations import LOCALES_DIR
 

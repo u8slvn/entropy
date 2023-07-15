@@ -1,12 +1,17 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
 from typing import Callable
 
 import pygame as pg
 
 import entropy
-from entropy.components.text import Text
+
 from entropy.utils import Pos
+
+
+if TYPE_CHECKING:
+    from entropy.components.text import Text
 
 
 class Button:
@@ -44,7 +49,7 @@ class Button:
         self.hover = hover
         self.image = self.images[self.hover]
 
-    def onclick(self):
+    def onclick(self) -> None:
         self.sound_clicked.play()
         self._onclick()
 

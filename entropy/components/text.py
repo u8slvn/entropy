@@ -3,6 +3,7 @@ from __future__ import annotations
 import pygame as pg
 
 import entropy
+
 from entropy.utils import Pos
 
 
@@ -16,7 +17,7 @@ class Text:
         font: pg.font.Font,
         color: pg.Color | str,
         background: pg.Color | str | None = None,
-    ):
+    ) -> None:
         self._text = text
         self.text = _(self._text)
         self.font = font

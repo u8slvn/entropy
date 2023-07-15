@@ -3,11 +3,12 @@ from __future__ import annotations
 import pygame as pg
 
 import entropy
+
 from entropy.states import State
 
 
 class Splash(State):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.countdown = 10
         self.countdown_event = pg.USEREVENT + 1

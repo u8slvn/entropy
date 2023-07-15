@@ -3,7 +3,8 @@ from __future__ import annotations
 import pygame as pg
 
 from entropy.misc.monitor import Monitor
-from entropy.utils import Resolution, Scale
+from entropy.utils import Resolution
+from entropy.utils import Scale
 
 
 class Window:

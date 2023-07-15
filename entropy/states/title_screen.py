@@ -5,6 +5,7 @@ from typing import Callable
 import pygame as pg
 
 import entropy
+
 from entropy.components.button import TextButton
 from entropy.components.group import MenuButtonGroup
 from entropy.components.text import Text
