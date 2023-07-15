@@ -14,7 +14,7 @@ class Splash(State):
         self.alpha = 0
         self.alpha_rate = 1
         self.font = entropy.assets.fonts.get("LanaPixel", "big")
-        self.text = self.font.render("ENTROPY", True, "white", "black")
+        self.text = self.font.render("ENTROPY", False, "white", "black")
         self.text.set_alpha(self.alpha)
         pg.time.set_timer(self.countdown_event, 1000)
 

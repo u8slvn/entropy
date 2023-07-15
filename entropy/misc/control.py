@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 import pygame as pg
 
 import entropy
+from entropy.components.fps import FPSViewer
 from entropy.utils import Resolution
 
 
@@ -21,18 +22,19 @@ class Control:
         state: str,
     ) -> None:
         self.fps = fps
-        self.render_surface = pg.Surface(entropy.window.render_resolution).convert()
+        self.render_surface = pg.Surface(entropy.window.render_res).convert()
         self.states = states
         self.state = self.states[state]
         self.running = False
         self.clock = pg.time.Clock()
+        self.fps_viewer = FPSViewer(clock=self.clock)
 
     def transition_to(self, state: str) -> None:
         self.state.cleanup()
         self.state = self.states[state]
         self.state.startup(control=self)
 
-    def process_events(self) -> None:
+    def handle_events(self) -> None:
         entropy.mouse.update()
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -43,12 +45,15 @@ class Control:
                 if event.key == pg.K_f:
                     entropy.window.toggle_fullscreen()
             self.state.handle_event(event=event)
+            self.fps_viewer.handle_event(event=event)
 
     def update(self) -> None:
         self.state.update()
+        self.fps_viewer.update()
 
     def render(self) -> None:
         self.state.draw(surface=self.render_surface)
+        self.fps_viewer.draw(surface=self.render_surface)
         entropy.window.render(surface=self.render_surface)
 
     def start(self) -> None:
@@ -56,7 +61,7 @@ class Control:
         self.state.startup(control=self)
 
         while self.running:
-            self.process_events()
+            self.handle_events()
             self.update()
             self.render()
             self.clock.tick(self.fps)

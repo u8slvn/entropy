@@ -34,7 +34,7 @@ def init(title: str, fps: float, images_path: str) -> None:
 
     window = Window(
         title=title,
-        render_resolution=Resolution(w=1920, h=1080),
+        render_res=Resolution(w=1920, h=1080),
         fullscreen=False,
     )
 
