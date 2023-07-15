@@ -40,5 +40,4 @@ class Translator:
         self.update_texts()
 
     def __call__(self, text: str) -> str:
-        print(self._translator, text)
         return self._translator(text)

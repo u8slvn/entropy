@@ -4,8 +4,8 @@ from typing import Callable
 
 import pygame as pg
 
+import entropy
 from entropy.components.text import Text
-from entropy.misc.mouse import Mouse
 from entropy.utils import Pos
 
 
@@ -28,22 +28,25 @@ class Button:
         self.rect.topleft = pos
         self.sound_hover = sound_hover
         self.sound_clicked = sound_clicked
-        self.onclick = onclick
+        self._onclick = onclick
 
-    def update(self, mouse: Mouse) -> None:
-        if hover := self.rect.collidepoint(mouse.pos):
+    def update(self) -> None:
+        if hover := self.rect.collidepoint(entropy.mouse.pos):
             if not self.hover:
                 self.sound_hover.play()
 
             if pg.mouse.get_pressed()[0]:
                 self.pressed = True
             elif self.pressed is True:
-                self.sound_clicked.play()
                 self.pressed = False
                 self.onclick()
 
         self.hover = hover
         self.image = self.images[self.hover]
+
+    def onclick(self):
+        self.sound_clicked.play()
+        self._onclick()
 
     def draw(self, surface: pg.Surface) -> None:
         surface.blit(self.image, self.rect)
@@ -74,8 +77,8 @@ class TextButton(Button):
         self.texts = [text, text_hover]
         self.text = self.texts[self.hover]
 
-    def update(self, mouse: Mouse) -> None:
-        super().update(mouse=mouse)
+    def update(self) -> None:
+        super().update()
         self.text = self.texts[self.hover]
 
     def draw(self, surface: pg.Surface) -> None:

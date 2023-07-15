@@ -7,6 +7,7 @@ import pygame as pg
 from entropy.locations import ASSETS_DIR
 from entropy.misc.assets import AssetsLibrary
 from entropy.misc.control import Control
+from entropy.misc.mouse import Mouse
 from entropy.misc.translator import Translator
 from entropy.misc.window import Window
 from entropy.states import States
@@ -17,13 +18,15 @@ __all__ = ["assets", "control"]
 from entropy.utils import Resolution
 
 
+window: Window
+mouse: Mouse
 assets: AssetsLibrary
 control: Control
 translator: Translator
 
 
 def init(title: str, fps: float, images_path: str) -> None:
-    global control, assets, translator
+    global window, mouse, control, assets, translator
 
     os.environ["SDL_VIDEO_CENTERED"] = "1"
 
@@ -35,6 +38,8 @@ def init(title: str, fps: float, images_path: str) -> None:
         fullscreen=False,
     )
 
+    mouse = Mouse()
+
     translator = Translator(langs=["en", "fr"], default="en")
 
     assets = AssetsLibrary()
@@ -45,7 +50,6 @@ def init(title: str, fps: float, images_path: str) -> None:
     assets.load()
 
     control = Control(
-        window=window,
         fps=fps,
         states=States.load(),
         state="SPLASH",

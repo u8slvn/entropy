@@ -6,6 +6,7 @@ import pygame as pg
 
 import entropy
 from entropy.components.button import TextButton
+from entropy.components.group import MenuButtonGroup
 from entropy.components.text import Text
 from entropy.states import State
 from entropy.utils import Pos
@@ -28,28 +29,20 @@ class TitleScreen(State):
         self.new_game_btn = TitleScreenButton("NEW GAME", Pos(735, 630), action)
         self.settings_btn = TitleScreenButton("SETTINGS", Pos(735, 710), action)
         self.quit_btn = TitleScreenButton("QUIT", Pos(735, 790), self.on_click_quit)
+        self.buttons = MenuButtonGroup(
+            buttons=[self.continue_btn, self.new_game_btn, self.settings_btn, self.quit_btn]
+        )
 
     def handle_event(self, event: pg.event.Event) -> None:
-        if event.type == pg.KEYDOWN:
-            self.control.mouse.hide()  # type: ignore
-            if event.key == pg.K_UP:
-                pg.mouse.set_pos(self.continue_btn.rect.center)
-            elif event.key == pg.K_DOWN:
-                pg.mouse.set_pos(self.new_game_btn.rect.center)
+        self.buttons.handle_event(event=event)
 
     def update(self) -> None:
-        self.continue_btn.update(mouse=self.control.mouse)  # type: ignore
-        self.new_game_btn.update(mouse=self.control.mouse)  # type: ignore
-        self.settings_btn.update(mouse=self.control.mouse)  # type: ignore
-        self.quit_btn.update(mouse=self.control.mouse)  # type: ignore
+        self.buttons.update()  # type: ignore
 
     def draw(self, surface: pg.Surface) -> None:
         surface.blit(self.background, (0, 0))
         surface.blit(self.logo, (660, 220))
-        self.continue_btn.draw(surface=surface)
-        self.new_game_btn.draw(surface=surface)
-        self.settings_btn.draw(surface=surface)
-        self.quit_btn.draw(surface=surface)
+        self.buttons.draw(surface=surface)
 
     def on_click_quit(self) -> None:
         self.control.stop(delay=0.3)  # type: ignore
