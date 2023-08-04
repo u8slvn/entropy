@@ -9,7 +9,7 @@ from entropy.locations import LOCALES_DIR
 
 
 if TYPE_CHECKING:
-    from entropy.components.text import Text
+    from entropy.gui.components.text import Text
 
 
 class Translator:

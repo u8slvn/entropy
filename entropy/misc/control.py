@@ -8,7 +8,7 @@ import pygame as pg
 import entropy
 
 from entropy import states
-from entropy.components.fps import FPSViewer
+from entropy.gui.components.fps import FPSViewer
 from entropy.misc.action import Actions
 from entropy.misc.mouse import Mouse
 from entropy.utils import Resolution

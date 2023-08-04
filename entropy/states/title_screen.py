@@ -7,9 +7,9 @@ import pygame as pg
 
 import entropy
 
-from entropy.components.button import TextButton
-from entropy.components.menu import MenuButtonGroup
-from entropy.components.text import Text
+from entropy.gui.components.button import TextButton
+from entropy.gui.components.menu import MenuButtonGroup
+from entropy.gui.components.text import Text
 from entropy.states.base import State
 from entropy.utils import Pos
 

@@ -6,7 +6,7 @@ import pygame as pg
 
 
 if TYPE_CHECKING:
-    from entropy.components.button import Button
+    from entropy.gui.components.button import Button
     from entropy.misc.action import Actions
     from entropy.misc.mouse import Mouse
 

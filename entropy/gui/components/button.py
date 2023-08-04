@@ -9,7 +9,7 @@ from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
-    from entropy.components.text import Text
+    from entropy.gui.components.text import Text
     from entropy.misc.mouse import Mouse
 
 
