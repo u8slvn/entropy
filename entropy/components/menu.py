@@ -12,8 +12,10 @@ if TYPE_CHECKING:
 
 
 class MenuButtonGroup:
+    _init_focus = -1
+
     def __init__(self, buttons: list[Button]) -> None:
-        self._focus_index = 0
+        self._focus_index = self._init_focus
         self._buttons = buttons
 
     def _get_next_button(self) -> Button:
@@ -21,6 +23,8 @@ class MenuButtonGroup:
         return self._buttons[self._focus_index]
 
     def _get_prev_button(self) -> Button:
+        if self._focus_index == self._init_focus:
+            self._focus_index = 0
         self._focus_index = (self._focus_index - 1) % len(self._buttons)
         return self._buttons[self._focus_index]
 

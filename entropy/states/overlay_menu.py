@@ -8,7 +8,7 @@ import entropy
 
 from entropy.misc.action import Actions
 from entropy.misc.mouse import Mouse
-from entropy.states import State
+from entropy.states.base import State
 
 
 if TYPE_CHECKING:

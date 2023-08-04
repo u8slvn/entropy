@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-import pygame as pg
+import pygame
 
-from entropy.misc.monitor import Monitor
+from entropy.gui.monitor import Monitor
 from entropy.utils import Resolution
 from entropy.utils import Scale
 
@@ -14,17 +14,17 @@ class Window:
         fullscreen: bool,
         render_res: Resolution,
     ) -> None:
-        pg.display.set_caption(title=title)
+        pygame.display.set_caption(title)
         self.fullscreen = fullscreen
-        self.screen = pg.display.set_mode(render_res, self.screen_flags)
-        self.screen_rect = self.screen.get_rect()
         self.render_res = render_res
+        self.screen = pygame.display.set_mode(self.render_res, self.screen_flags)
+        self.screen_rect = self.screen.get_rect()
         self.render_scale = Scale(1.0, 1.0)
         self.monitor = Monitor()
 
     @property
     def screen_flags(self) -> int:
-        return pg.FULLSCREEN if self.fullscreen else pg.RESIZABLE
+        return pygame.FULLSCREEN if self.fullscreen else pygame.RESIZABLE
 
     def adapt_to_ratio(self, resolution: Resolution) -> Resolution:
         if resolution.aspect_ratio == self.render_res.aspect_ratio:
@@ -48,7 +48,7 @@ class Window:
 
     def resize_screen(self, resolution: Resolution) -> None:
         dimension = self.adapt_to_ratio(resolution=resolution)
-        self.screen = pg.display.set_mode(dimension, self.screen_flags)
+        self.screen = pygame.display.set_mode(dimension, self.screen_flags)
         self.screen_rect = self.screen.get_rect()
         self.update_render_scale()
 
@@ -56,9 +56,9 @@ class Window:
         self.fullscreen = not self.fullscreen
         self.resize_screen(resolution=self.render_res)
 
-    def render(self, surface: pg.Surface) -> None:
+    def render(self, surface: pygame.Surface) -> None:
         if self.render_res != self.screen_rect.size:
-            pg.transform.smoothscale(surface, self.screen_rect.size, self.screen)
+            pygame.transform.smoothscale(surface, self.screen_rect.size, self.screen)
         else:
             self.screen.blit(surface, (0, 0))
-        pg.display.update()
+        pygame.display.update()

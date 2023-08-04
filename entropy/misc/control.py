@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from time import sleep
 from typing import TYPE_CHECKING
-from typing import Type
 
 import pygame as pg
 
 import entropy
 
+from entropy import states
 from entropy.components.fps import FPSViewer
 from entropy.misc.action import Actions
 from entropy.misc.mouse import Mouse
@@ -27,23 +27,21 @@ class Control:
         self.render_surface = pg.Surface(entropy.window.render_res).convert()
         self.state_stack: list[State] = []
         self.prev_state: State | None = None
-        from entropy.states.splash import Splash  # Fix this shit late
-
-        self.transition_to(state=Splash)
         self.running = False
-        self.clock = pg.time.Clock()
-        self.fps_viewer = FPSViewer(clock=self.clock)
         self.mouse = Mouse()
         self.actions = Actions()
+        self.clock = pg.time.Clock()
+        self.fps_viewer = FPSViewer(clock=self.clock)
 
     @property
     def current_state(self) -> State:
         return self.state_stack[-1]
 
-    def transition_to(self, state: Type[State]) -> None:
+    def transition_to(self, state: str) -> None:
         if len(self.state_stack) > 1:
             self.prev_state = self.current_state
-        self.state_stack.append(state(control=self))
+        state_cls = states.get(state)
+        self.state_stack.append(state_cls(control=self))
 
     def get_events(self) -> None:
         self.mouse.update()
@@ -70,7 +68,9 @@ class Control:
         self.fps_viewer.draw(surface=self.render_surface)
         entropy.window.render(surface=self.render_surface)
 
-    def start(self) -> None:
+    def start(self, state: str = "Splash") -> None:
+        states.load()
+        self.transition_to(state=state)
         self.running = True
 
         while self.running:

@@ -6,8 +6,7 @@ import pygame as pg
 
 import entropy
 
-from entropy.states import State
-from entropy.states.title_screen import TitleScreen
+from entropy.states.base import State
 
 
 if TYPE_CHECKING:
@@ -34,7 +33,7 @@ class Splash(State):
 
     def update(self, actions: Actions, mouse: Mouse) -> None:
         if any([actions.SPACE, actions.ENTER]) or self.countdown == 0:
-            self.control.transition_to(state=TitleScreen)
+            self.control.transition_to(state="TitleScreen")
             self.cleanup()
 
         if self.countdown < 5:

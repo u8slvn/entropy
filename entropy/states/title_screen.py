@@ -10,8 +10,7 @@ import entropy
 from entropy.components.button import TextButton
 from entropy.components.menu import MenuButtonGroup
 from entropy.components.text import Text
-from entropy.states import State
-from entropy.states.overlay_menu import OverlayMenu
+from entropy.states.base import State
 from entropy.utils import Pos
 
 
@@ -32,10 +31,17 @@ class TitleScreen(State):
         self.logo = entropy.assets.images.get("title-screen-logo-a")
         self.continue_btn = TitleScreenButton("CONTINUE", Pos(735, 550), test_lang)
         self.new_game_btn = TitleScreenButton("NEW GAME", Pos(735, 630), self.exit)
-        self.settings_btn = TitleScreenButton("SETTINGS", Pos(735, 710), self.on_click_settings)
+        self.settings_btn = TitleScreenButton(
+            "SETTINGS", Pos(735, 710), self.on_click_settings
+        )
         self.quit_btn = TitleScreenButton("QUIT", Pos(735, 790), self.on_click_quit)
         self.buttons = MenuButtonGroup(
-            buttons=[self.continue_btn, self.new_game_btn, self.settings_btn, self.quit_btn]
+            buttons=[
+                self.continue_btn,
+                self.new_game_btn,
+                self.settings_btn,
+                self.quit_btn,
+            ]
         )
 
     def handle_event(self, event: pg.event.Event) -> None:
@@ -50,7 +56,7 @@ class TitleScreen(State):
         self.buttons.draw(surface=surface)
 
     def on_click_settings(self) -> None:
-        self.control.transition_to(OverlayMenu)
+        self.control.transition_to("OverlayMenu")
 
     def on_click_quit(self) -> None:
         self.control.stop(delay=0.3)

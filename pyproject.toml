@@ -8,7 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-pygame = "^2.5.0"
+pygame-ce = "^2.3.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -20,14 +20,22 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
-line_length = 99
+line_length = 88
 
-[tool.isort]
-force_single_line = true
-profile = "black"
-lines_between_types = 1
-lines_after_imports = 2
-src_paths = ["entropy", "demo"]
+[tool.ruff]
+fix = true
+line-length = 99
+extend-select = [
+    "I",   # isort
+]
+
+[tool.ruff.isort]
+force-single-line = true
+lines-between-types = 1
+lines-after-imports = 2
+required-imports = [
+    "from __future__ import annotations",
+]
 
 [tool.mypy]
 files = "entropy"

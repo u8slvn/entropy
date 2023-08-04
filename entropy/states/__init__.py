@@ -1,35 +1,31 @@
 from __future__ import annotations
 
-from abc import ABC
-from abc import abstractmethod
-from typing import TYPE_CHECKING
+import glob
+import importlib
+import os
+
+from typing import Type
+
+from entropy.states.base import State
 
 
-if TYPE_CHECKING:
-    import pygame as pg
-
-    from entropy.misc.action import Actions
-    from entropy.misc.control import Control
-    from entropy.misc.mouse import Mouse
-
-__all__ = ["State"]
+_states: dict[str : Type[State]] = {}
 
 
-class State(ABC):
-    def __init__(self, control: Control) -> None:
-        self.control = control
+def load():
+    global _states
 
-    def exit(self):
-        self.control.state_stack.pop()
+    pwd = os.path.dirname(__file__)
+    files = glob.glob(os.path.join(pwd, "*.py"))
+    module_names = [os.path.basename(f)[:-3] for f in files if "__" not in f]
+    for module_name in module_names:
+        importlib.import_module(f"{__name__}.{module_name}")
 
-    @abstractmethod
-    def handle_event(self, event: pg.event.Event) -> None:
-        ...
+    _states = State.get_states()
 
-    @abstractmethod
-    def update(self, actions: Actions, mouse: Mouse) -> None:
-        ...
 
-    @abstractmethod
-    def draw(self, surface: pg.Surface) -> None:
-        ...
+def get(state: str) -> Type[State]:
+    try:
+        return _states[state]
+    except KeyError:
+        raise Exception(f"State {state} does not exist.")
