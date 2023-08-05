@@ -27,8 +27,12 @@ class State(ABC):
     def get_states(cls) -> dict[str, Type[State]]:
         return cls._states
 
-    def exit(self):
+    def exit(self) -> None:
         self.control.state_stack.pop()
+        self.control.current_state.setup()
+
+    def setup(self) -> None:
+        pass
 
     @abstractmethod
     def update(self, keyboard_e: KeyboardEvents, mouse_e: MouseEvents) -> None:
@@ -37,3 +41,6 @@ class State(ABC):
     @abstractmethod
     def draw(self, surface: pygame.Surface) -> None:
         ...
+
+    def teardown(self) -> None:
+        pass

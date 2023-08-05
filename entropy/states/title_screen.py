@@ -30,6 +30,9 @@ class TitleScreen(State):
         self._logo = entropy.assets.images.get("title-screen-logo-a")
         self._main_menu = self._build_main_menu()
 
+    def setup(self) -> None:
+        self._overlay = False
+
     def update(self, keyboard_e: KeyboardEvents, mouse_e: MouseEvents) -> None:
         self._main_menu.update(keyboard_e=keyboard_e, mouse_e=mouse_e)
 
@@ -39,8 +42,10 @@ class TitleScreen(State):
             surface.blit(self._logo, (660, 220))
             self._main_menu.draw(surface=surface)
 
-    def onclick_settings(self) -> None:
+    def teardown(self) -> None:
         self._overlay = True
+
+    def onclick_settings(self) -> None:
         self.control.transition_to("OverlayMenu")
 
     def onclick_quit(self) -> None:

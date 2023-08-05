@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
 from typing import Callable
 
 import pygame
@@ -9,10 +8,6 @@ from entropy.gui.components.background import ColorBackground
 from entropy.gui.transistions.base import Ease
 from entropy.gui.transistions.base import Transition
 from entropy.utils import Color
-
-
-if TYPE_CHECKING:
-    pass
 
 
 class _FaderTransition(Transition):

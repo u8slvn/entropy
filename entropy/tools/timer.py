@@ -55,17 +55,14 @@ class Timer:
         ticks = pygame.time.get_ticks() - self._start_ticks
         self._countdown = self._duration - ticks
         if self._countdown <= 0:
-            self._trigger_callback()
             self.stop()
+            self._trigger_callback()
 
     def reset(self) -> None:
         self._countdown = self._duration
         self._start_ticks = 0
         self._started = False
         self._done = False
-
-        if self._autostart is True:
-            self.start()
 
 
 class TimerSecond(Timer):

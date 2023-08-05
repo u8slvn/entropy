@@ -31,6 +31,9 @@ class Splash(State):
         )
         self.fade_in = FadeIn(duration=3000, callback=self.timer.start)
 
+    def setup(self) -> None:
+        self.fade_in.start()
+
     def update(self, keyboard_e: KeyboardEvents, mouse_e: MouseEvents) -> None:
         self.fade_in.update()
         self.fade_out.update()
@@ -47,8 +50,10 @@ class Splash(State):
         self.fade_out.draw(surface=surface)
         self.fade_in.draw(surface=surface)
 
-    def next_state(self) -> None:
+    def teardown(self) -> None:
         self.fade_out.reset()
         self.fade_in.reset()
         self.timer.reset()
+
+    def next_state(self) -> None:
         self.control.transition_to(state="TitleScreen")

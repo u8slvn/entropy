@@ -38,10 +38,14 @@ class Control:
         return self.state_stack[-1]
 
     def transition_to(self, state: str) -> None:
-        if len(self.state_stack) > 1:
+        if len(self.state_stack) >= 1:
+            self.current_state.teardown()
             self.prev_state = self.current_state
+
         state_cls = states.get(state)
-        self.state_stack.append(state_cls(control=self))
+        state = state_cls(control=self)
+        state.setup()
+        self.state_stack.append(state)
 
     def get_events(self) -> None:
         for event in pygame.event.get():
