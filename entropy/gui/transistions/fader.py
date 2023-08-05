@@ -1,30 +1,53 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+from typing import Callable
+
 import pygame
 
-from entropy.utils import Timer
+from entropy.gui.components.background import ColorBackground
+from entropy.gui.transistions.base import Ease
+from entropy.gui.transistions.base import Transition
+from entropy.utils import Color
 
 
-class FadeIn:
-    def __init__(self, dimension: tuple[int, int], duration: int) -> None:
-        background = pygame.Surface(dimension, pygame.SRCALPHA, 32)
-        background.fill((0, 0, 0, 255))
-        self._background = background.convert_alpha()
-        self._timer = Timer(countdown=duration)
-        self._timer.start()
+if TYPE_CHECKING:
+    from entropy.utils import Size
+
+
+class _FaderTransition(Transition):
+    def __init__(
+        self,
+        size: Size,
+        duration: int,
+        callback: Callable[[], None] | None = None,
+    ) -> None:
+        super().__init__(size=size, duration=duration, callback=callback)
+        self._background = ColorBackground(size=self._size, color=Color(0, 0, 0, 255))
+        self._background.set_alpha(self._default_alpha_value())
         self._alpha_rate = 255 / duration
 
-    def update(self) -> None:
-        if self._timer.is_finished():
-            return
+    def _default_alpha_value(self) -> int:
+        return 255 if self._ease is Ease.IN else 0
 
-        self._timer.update()
-        alpha = max(int(self._timer.countdown * self._alpha_rate), 0)
-        print(alpha)
+    def _update(self) -> None:
+        if self._ease is Ease.IN:
+            alpha = max(int(self.countdown * self._alpha_rate), 0)
+        else:
+            alpha = min(255 - int(self.countdown * self._alpha_rate), 255)
         self._background.set_alpha(alpha)
 
-    def draw(self, surface: pygame.Surface) -> None:
-        if self._timer.is_finished():
-            return
+    def _draw(self, surface: pygame.Surface) -> None:
+        surface.blit(self._background, self._pos)
 
-        surface.blit(self._background, (0, 0))
+    def reset(self) -> None:
+        super().reset()
+        self._background.set_alpha(self._default_alpha_value())
+
+
+class FadeIn(_FaderTransition):
+    _ease = Ease.IN
+
+
+class FadeOut(_FaderTransition):
+    _ease = Ease.OUT

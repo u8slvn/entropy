@@ -3,7 +3,7 @@ from __future__ import annotations
 from time import sleep
 from typing import TYPE_CHECKING
 
-import pygame as pg
+import pygame
 
 import entropy
 
@@ -11,7 +11,7 @@ from entropy import states
 from entropy.gui.components.fps import FPSViewer
 from entropy.misc.action import Actions
 from entropy.misc.mouse import Mouse
-from entropy.utils import Resolution
+from entropy.utils import Res
 
 
 if TYPE_CHECKING:
@@ -24,13 +24,13 @@ class Control:
         fps: float,
     ) -> None:
         self.fps = fps
-        self.render_surface = pg.Surface(entropy.window.render_res).convert()
+        self.render_surface = pygame.Surface(entropy.window.render_res)
         self.state_stack: list[State] = []
         self.prev_state: State | None = None
         self.running = False
         self.mouse = Mouse()
         self.actions = Actions()
-        self.clock = pg.time.Clock()
+        self.clock = pygame.time.Clock()
         self.fps_viewer = FPSViewer(clock=self.clock)
 
     @property
@@ -45,11 +45,11 @@ class Control:
 
     def get_events(self) -> None:
         self.mouse.update()
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 self.running = False
-            elif event.type == pg.VIDEORESIZE and not entropy.window.fullscreen:
-                entropy.window.resize_screen(resolution=Resolution(event.w, event.h))
+            elif event.type == pygame.VIDEORESIZE and not entropy.window.fullscreen:
+                entropy.window.resize_screen(resolution=Res(event.w, event.h))
 
             self.current_state.handle_event(event=event)
             self.actions.parse_event(event=event)
@@ -84,5 +84,5 @@ class Control:
     @staticmethod
     def stop(delay: float = 0.0) -> None:
         sleep(delay)
-        pg.quit()
+        pygame.quit()
         exit()

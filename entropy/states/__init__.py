@@ -9,7 +9,7 @@ from typing import Type
 from entropy.states.base import State
 
 
-_states: dict[str : Type[State]] = {}
+_states: dict[str, Type[State]] = {}
 
 
 def load():

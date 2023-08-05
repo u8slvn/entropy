@@ -3,7 +3,7 @@ from __future__ import annotations
 import pygame
 
 from entropy.gui.monitor import Monitor
-from entropy.utils import Resolution
+from entropy.utils import Res
 from entropy.utils import Scale
 
 
@@ -12,7 +12,7 @@ class Window:
         self,
         title: str,
         fullscreen: bool,
-        render_res: Resolution,
+        render_res: Res,
     ) -> None:
         pygame.display.set_caption(title)
         self.fullscreen = fullscreen
@@ -26,16 +26,16 @@ class Window:
     def screen_flags(self) -> int:
         return pygame.FULLSCREEN if self.fullscreen else pygame.RESIZABLE
 
-    def adapt_to_ratio(self, resolution: Resolution) -> Resolution:
+    def adapt_to_ratio(self, resolution: Res) -> Res:
         if resolution.aspect_ratio == self.render_res.aspect_ratio:
             return resolution
         elif resolution.h > resolution.w / self.render_res.aspect_ratio:
-            return Resolution(
+            return Res(
                 w=resolution.w,
                 h=int(resolution.w / self.render_res.aspect_ratio),
             )
         else:
-            return Resolution(
+            return Res(
                 w=int(resolution.h * self.render_res.aspect_ratio),
                 h=resolution.h,
             )
@@ -46,7 +46,7 @@ class Window:
             self.render_res.h / self.screen_rect.h,
         )
 
-    def resize_screen(self, resolution: Resolution) -> None:
+    def resize_screen(self, resolution: Res) -> None:
         dimension = self.adapt_to_ratio(resolution=resolution)
         self.screen = pygame.display.set_mode(dimension, self.screen_flags)
         self.screen_rect = self.screen.get_rect()

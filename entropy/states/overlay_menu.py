@@ -30,5 +30,6 @@ class OverlayMenu(State):
             self.exit()
 
     def draw(self, surface: pg.Surface) -> None:
-        self.control.prev_state.draw(surface=surface)
+        if self.control.prev_state is not None:
+            self.control.prev_state.draw(surface=surface)
         surface.blit(self.background, (0, 0))

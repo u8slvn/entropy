@@ -10,7 +10,7 @@ from entropy.gui.window import Window
 from entropy.locations import ASSETS_DIR
 from entropy.misc.control import Control
 from entropy.misc.translator import Translator
-from entropy.utils import Resolution
+from entropy.utils import Res
 
 
 __all__ = ["assets", "window", "translator"]
@@ -19,7 +19,7 @@ config = Config()
 
 window = Window(
     title="Entropy",
-    render_res=Resolution(w=1920, h=1080),
+    render_res=Res(w=1920, h=1080),
     fullscreen=config.fullscreen,
 )
 

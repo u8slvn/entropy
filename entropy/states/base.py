@@ -3,7 +3,6 @@ from __future__ import annotations
 from abc import ABC
 from abc import abstractmethod
 from typing import TYPE_CHECKING
-from typing import Self
 from typing import Type
 
 
@@ -16,7 +15,7 @@ if TYPE_CHECKING:
 
 
 class State(ABC):
-    _states: dict[str : Type[Self]] = {}
+    _states: dict[str, Type[State]] = {}
 
     def __init__(self, control: Control) -> None:
         self.control = control
@@ -25,7 +24,7 @@ class State(ABC):
         State._states[cls.__name__] = cls
 
     @classmethod
-    def get_states(cls) -> dict[str : Type[Self]]:
+    def get_states(cls) -> dict[str, Type[State]]:
         return cls._states
 
     def exit(self):
