@@ -5,8 +5,8 @@ from typing import TYPE_CHECKING
 
 import pygame as pg
 
-import entropy
-
+from entropy import assets
+from entropy import translator
 from entropy.gui.components.factory.menu import build_main_menu
 from entropy.gui.components.menu import MenuButtonGroup
 from entropy.states.base import State
@@ -19,15 +19,15 @@ if TYPE_CHECKING:
 
 
 def test_lang():
-    entropy.translator.set_translation("fr")
+    translator.set_translation("fr")
 
 
 class TitleScreen(State):
     def __init__(self, control: Control) -> None:
         super().__init__(control=control)
         self._overlay = False
-        self._background = entropy.assets.images.get("title-screen-bg")
-        self._logo = entropy.assets.images.get("title-screen-logo-a")
+        self._background = assets.images.get("title-screen-bg")
+        self._logo = assets.images.get("title-screen-logo-a")
         self._main_menu = self._build_main_menu()
 
     def setup(self) -> None:
@@ -46,7 +46,7 @@ class TitleScreen(State):
         self._overlay = True
 
     def onclick_settings(self) -> None:
-        self.control.transition_to("OverlayMenu")
+        self.control.transition_to("SettingsMenu")
 
     def onclick_quit(self) -> None:
         self.control.stop(delay=0.3)
