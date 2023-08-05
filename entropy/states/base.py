@@ -9,9 +9,9 @@ from typing import Type
 if TYPE_CHECKING:
     import pygame
 
-    from entropy.misc.action import Actions
+    from entropy.gui.input.keyboard_events import KeyboardEvents
+    from entropy.gui.input.mouse_events import MouseEvents
     from entropy.misc.control import Control
-    from entropy.misc.mouse import Mouse
 
 
 class State(ABC):
@@ -31,11 +31,7 @@ class State(ABC):
         self.control.state_stack.pop()
 
     @abstractmethod
-    def handle_event(self, event: pygame.event.Event) -> None:
-        ...
-
-    @abstractmethod
-    def update(self, actions: Actions, mouse: Mouse) -> None:
+    def update(self, keyboard_e: KeyboardEvents, mouse_e: MouseEvents) -> None:
         ...
 
     @abstractmethod

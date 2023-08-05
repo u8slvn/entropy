@@ -12,18 +12,17 @@ from entropy.utils import Color
 
 
 if TYPE_CHECKING:
-    from entropy.utils import Size
+    pass
 
 
 class _FaderTransition(Transition):
     def __init__(
         self,
-        size: Size,
         duration: int,
         callback: Callable[[], None] | None = None,
     ) -> None:
-        super().__init__(size=size, duration=duration, callback=callback)
-        self._background = ColorBackground(size=self._size, color=Color(0, 0, 0, 255))
+        super().__init__(duration=duration, callback=callback)
+        self._background = ColorBackground(color=Color(0, 0, 0, 255))
         self._background.set_alpha(self._default_alpha_value())
         self._alpha_rate = 255 / duration
 
@@ -38,7 +37,7 @@ class _FaderTransition(Transition):
         self._background.set_alpha(alpha)
 
     def _draw(self, surface: pygame.Surface) -> None:
-        surface.blit(self._background, self._pos)
+        surface.blit(self._background, self._background.pos)
 
     def reset(self) -> None:
         super().reset()

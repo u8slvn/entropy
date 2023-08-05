@@ -8,13 +8,10 @@ from typing import Callable
 from typing import final
 
 from entropy.tools.timer import Timer
-from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
     import pygame
-
-    from entropy.utils import Size
 
 
 @final
@@ -28,7 +25,6 @@ class Transition(Timer, ABC):
 
     def __init__(
         self,
-        size: Size,
         duration: int,
         callback: Callable[[], None] | None = None,
     ) -> None:
@@ -38,9 +34,6 @@ class Transition(Timer, ABC):
             callback=callback,
             autostart=autostart,
         )
-        self._size = size
-
-        self._pos = Pos(0, 0)
 
     @abstractmethod
     def _update(self) -> None:

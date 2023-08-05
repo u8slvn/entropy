@@ -4,11 +4,13 @@ from typing import TYPE_CHECKING
 
 import pygame as pg
 
+from entropy import mouse
+
 
 if TYPE_CHECKING:
     from entropy.gui.components.button import Button
-    from entropy.misc.action import Actions
-    from entropy.misc.mouse import Mouse
+    from entropy.gui.input.keyboard_events import KeyboardEvents
+    from entropy.gui.input.mouse_events import MouseEvents
 
 
 class MenuButtonGroup:
@@ -18,35 +20,49 @@ class MenuButtonGroup:
         self._focus_index = self._init_focus
         self._buttons = buttons
 
-    def _get_next_button(self) -> Button:
+    def _select_next_button(self) -> None:
+        self._buttons[self._focus_index].unset_focus()
         self._focus_index = (self._focus_index + 1) % len(self._buttons)
-        return self._buttons[self._focus_index]
+        self._buttons[self._focus_index].set_focus()
 
-    def _get_prev_button(self) -> Button:
+    def _select_prev_button(self) -> None:
+        self._buttons[self._focus_index].unset_focus()
         if self._focus_index == self._init_focus:
             self._focus_index = 0
         self._focus_index = (self._focus_index - 1) % len(self._buttons)
+        self._buttons[self._focus_index].set_focus()
+
+    def _get_selected_button(self) -> Button:
         return self._buttons[self._focus_index]
 
     def add(self, button: Button) -> None:
         self._buttons.append(button)
 
-    def update(self, actions: Actions, mouse: Mouse) -> None:
-        if actions.UP:
+    def update(self, keyboard_e: KeyboardEvents, mouse_e: MouseEvents) -> None:
+        if keyboard_e.UP:
             mouse.hide()
-            button = self._get_prev_button()
-            pg.mouse.set_pos(button.rect.center)
-        elif actions.DOWN:
+            self._select_prev_button()
+        elif keyboard_e.DOWN:
             mouse.hide()
-            button = self._get_next_button()
-            pg.mouse.set_pos(button.rect.center)
-        elif actions.ENTER:
+            self._select_next_button()
+        elif keyboard_e.ENTER:
             for button in self._buttons:
-                if button.hover is True:
-                    button.onclick()
+                if button.has_focus():
+                    button.click()
 
-        for button in self._buttons:
-            button.update(mouse=mouse)
+        if mouse.is_visible():
+            for index, button in enumerate(self._buttons):
+                if button.collide_mouse():
+                    if not button.has_focus():
+                        button.set_focus()
+                        self._focus_index = index
+
+                    if mouse_e.BUTTON1:
+                        button.press()
+                    elif button.is_pressed():
+                        button.release()
+                else:
+                    button.unset_focus()
 
     def draw(self, surface: pg.Surface) -> None:
         for button in self._buttons:

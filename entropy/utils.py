@@ -26,8 +26,11 @@ class Size(NamedTuple):
     h: int
 
 
-class Res(Size):
+class Res(NamedTuple):
     """Screen resolution."""
+
+    w: int
+    h: int
 
     @property
     def aspect_ratio(self) -> float:

@@ -6,6 +6,7 @@ import pygame
 
 from entropy.assets_library import AssetsLibrary
 from entropy.config import Config
+from entropy.gui.mouse import Mouse
 from entropy.gui.window import Window
 from entropy.locations import ASSETS_DIR
 from entropy.misc.control import Control
@@ -13,7 +14,7 @@ from entropy.misc.translator import Translator
 from entropy.utils import Res
 
 
-__all__ = ["assets", "window", "translator"]
+__all__ = ["assets", "window", "translator", "mouse"]
 
 config = Config()
 
@@ -23,6 +24,8 @@ window = Window(
     fullscreen=config.fullscreen,
 )
 
+mouse = Mouse()
+
 translator = Translator(langs=["en", "fr"], default="en")
 
 assets = AssetsLibrary()
@@ -31,7 +34,7 @@ control: Control
 
 
 def init() -> None:
-    global window, control, assets, translator
+    global assets, control
 
     os.environ["SDL_VIDEO_CENTERED"] = "1"
 

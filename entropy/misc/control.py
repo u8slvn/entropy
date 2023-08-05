@@ -9,8 +9,8 @@ import entropy
 
 from entropy import states
 from entropy.gui.components.fps import FPSViewer
-from entropy.misc.action import Actions
-from entropy.misc.mouse import Mouse
+from entropy.gui.input.keyboard_events import KeyboardEvents
+from entropy.gui.input.mouse_events import MouseEvents
 from entropy.utils import Res
 
 
@@ -28,8 +28,8 @@ class Control:
         self.state_stack: list[State] = []
         self.prev_state: State | None = None
         self.running = False
-        self.mouse = Mouse()
-        self.actions = Actions()
+        self.mouse_e = MouseEvents()
+        self.keyboard_e = KeyboardEvents()
         self.clock = pygame.time.Clock()
         self.fps_viewer = FPSViewer(clock=self.clock)
 
@@ -44,24 +44,25 @@ class Control:
         self.state_stack.append(state_cls(control=self))
 
     def get_events(self) -> None:
-        self.mouse.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
             elif event.type == pygame.VIDEORESIZE and not entropy.window.fullscreen:
                 entropy.window.resize_screen(resolution=Res(event.w, event.h))
 
-            self.current_state.handle_event(event=event)
-            self.actions.parse_event(event=event)
+            self.keyboard_e.parse_event(event=event)
+            self.mouse_e.parse_event(event=event)
 
     def update(self) -> None:
-        if self.actions.F6:
+        entropy.mouse.update()
+        if self.keyboard_e.F6:
             entropy.window.toggle_fullscreen()
 
-        self.current_state.update(actions=self.actions, mouse=self.mouse)
-        self.fps_viewer.update(actions=self.actions)
+        self.current_state.update(keyboard_e=self.keyboard_e, mouse_e=self.mouse_e)
+        self.fps_viewer.update(keyboard_e=self.keyboard_e)
 
-        self.actions.reset()
+        self.keyboard_e.reset()
+        self.mouse_e.reset()
 
     def render(self) -> None:
         self.current_state.draw(surface=self.render_surface)

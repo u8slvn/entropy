@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import pygame as pg
 
-import entropy
-
+from entropy import translator
 from entropy.utils import Pos
 
 
-_ = entropy.translator
+T = translator
 
 
 class Text:
@@ -19,13 +18,13 @@ class Text:
         background: pg.Color | str | None = None,
     ) -> None:
         self._text = text
-        self.text = _(self._text)
+        self.text = T(self._text)
         self.font = font
         self.color = color
         self.background = background
         self.surface, self.rect = self._render()
         self.center_pos = Pos(0, 0)
-        entropy.translator.register_text(text=self)
+        translator.register_text(text=self)
 
     def set_center_pos(self, pos: Pos | None = None) -> None:
         if pos is not None:
@@ -39,6 +38,6 @@ class Text:
         return surface, rect
 
     def update(self) -> None:
-        self.text = _(self._text)
+        self.text = T(self._text)
         self.surface, self.rect = self._render()
         self.set_center_pos()

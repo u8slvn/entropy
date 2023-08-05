@@ -8,7 +8,7 @@ from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
-    from entropy.misc.action import Actions
+    from entropy.gui.input.keyboard_events import KeyboardEvents
 
 
 class FPSViewer:
@@ -27,8 +27,8 @@ class FPSViewer:
         text = self.format.format(fps=round(self.fps))
         return self.font.render(text, True, self.font_color, self.background_color)
 
-    def update(self, actions: Actions) -> None:
-        if actions.F5:
+    def update(self, keyboard_e: KeyboardEvents) -> None:
+        if keyboard_e.F5:
             self.visible = not self.visible
 
         if self.visible:

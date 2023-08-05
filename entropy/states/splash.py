@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import pygame as pg
-
 import entropy
 
 from entropy.gui.transistions.fader import FadeIn
@@ -13,9 +11,9 @@ from entropy.tools.timer import TimerSecond
 
 
 if TYPE_CHECKING:
-    from entropy.misc.action import Actions
+    from entropy.gui.input.keyboard_events import KeyboardEvents
+    from entropy.gui.input.mouse_events import MouseEvents
     from entropy.misc.control import Control
-    from entropy.misc.mouse import Mouse
 
 
 class Splash(State):
@@ -25,31 +23,20 @@ class Splash(State):
         self.font = entropy.assets.fonts.get("LanaPixel", "big")
         self.text = self.font.render("ENTROPY", False, "white", "black")
 
-        self.transition_out = FadeOut(
-            size=entropy.window.render_res,
-            duration=3000,
-            callback=self.next_state,
-        )
+        self.fade_out = FadeOut(duration=3000, callback=self.next_state)
         self.timer = TimerSecond(
             duration=4,
             autostart=False,
-            callback=self.transition_out.start,
+            callback=self.fade_out.start,
         )
-        self.transition_in = FadeIn(
-            size=entropy.window.render_res,
-            duration=3000,
-            callback=self.timer.start,
-        )
+        self.fade_in = FadeIn(duration=3000, callback=self.timer.start)
 
-    def handle_event(self, event: pg.event.Event) -> None:
-        ...
-
-    def update(self, actions: Actions, mouse: Mouse) -> None:
-        self.transition_in.update()
-        self.transition_out.update()
+    def update(self, keyboard_e: KeyboardEvents, mouse_e: MouseEvents) -> None:
+        self.fade_in.update()
+        self.fade_out.update()
         self.timer.update()
 
-        if any([actions.SPACE, actions.ENTER]):
+        if any([keyboard_e.SPACE, keyboard_e.ENTER]):
             self.next_state()
 
     def draw(self, surface) -> None:
@@ -57,11 +44,11 @@ class Splash(State):
         x = (surface.get_width() - self.text.get_width()) // 2
         y = (surface.get_height() - self.text.get_height()) // 2
         surface.blit(self.text, (x, y))
-        self.transition_out.draw(surface=surface)
-        self.transition_in.draw(surface=surface)
+        self.fade_out.draw(surface=surface)
+        self.fade_in.draw(surface=surface)
 
     def next_state(self) -> None:
-        self.transition_out.reset()
-        self.transition_in.reset()
+        self.fade_out.reset()
+        self.fade_in.reset()
         self.timer.reset()
         self.control.transition_to(state="TitleScreen")
