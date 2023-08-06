@@ -119,7 +119,7 @@ class Button:
 
     def draw(self, surface: pg.Surface) -> None:
         surface.blit(self._image, self._rect)
-        surface.blit(self._text.surface, self._text.rect)
+        surface.blit(self._text._surface, self._text._rect)
 
 
 class ObservableButton(Button):

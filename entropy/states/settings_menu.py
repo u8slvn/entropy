@@ -16,6 +16,7 @@ from entropy.gui.components.factory.menu import build_settings_menu
 from entropy.gui.components.text import Text
 from entropy.states.base import State
 from entropy.utils import Color
+from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
@@ -49,10 +50,11 @@ class SettingsMenu(State):
         if self.control.prev_state is not None:
             self.control.prev_state.draw(surface=surface)
 
-        surface.blit(self._background, self._background.pos)
-        x = (surface.get_width() - self._title.surface.get_width()) // 2
+        self._background.draw(surface=surface)
+        x = (surface.get_width() - self._title.width) // 2
         y = 200
-        surface.blit(self._title.surface, (x, y))
+        self._title.set_pos(Pos(x, y))
+        self._title.draw(surface=surface)
         self._menu.draw(surface=surface)
 
     def transition_to(self, state: MenuState):

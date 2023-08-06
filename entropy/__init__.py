@@ -43,7 +43,7 @@ def init() -> None:
     assets.fonts.add_font(
         path=ASSETS_DIR / "fonts/LanaPixel.ttf", small=20, big=40, settings=60
     )
-    assets.images.add_dir(path=ASSETS_DIR / "ui")
+    assets.images.add_dir(path=ASSETS_DIR / "gui")
     assets.images.add_dir(path=ASSETS_DIR / "images")
     assets.sound.add_dir(path=ASSETS_DIR / "sound")
     assets.load()

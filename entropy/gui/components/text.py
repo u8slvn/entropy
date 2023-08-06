@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import pygame
 import pygame as pg
 
 from entropy import translator
@@ -17,27 +18,45 @@ class Text:
         color: pg.Color | str,
         background: pg.Color | str | None = None,
     ) -> None:
-        self._text = text
-        self.text = T(self._text)
-        self.font = font
-        self.color = color
-        self.background = background
-        self.surface, self.rect = self._render()
-        self.center_pos = Pos(0, 0)
+        self.__text = text
+        self._text = T(self.__text)
+        self._font = font
+        self._color = color
+        self._background = background
+        self._surface, self._rect = self._render()
+        self._pos: Pos | None = None
+        self._center_pos: Pos | None = None
         translator.register(subject=self)
 
-    def set_center_pos(self, pos: Pos | None = None) -> None:
-        if pos is not None:
-            self.center_pos = pos
-        self.rect.center = self.center_pos
+    @property
+    def width(self) -> int:
+        return self._rect.width
+
+    @property
+    def height(self) -> int:
+        return self._rect.height
+
+    def set_center_pos(self, pos: Pos) -> None:
+        self._rect.center = pos
+        self._center_pos = pos
+
+    def set_pos(self, pos: Pos) -> None:
+        self._rect.topleft = pos
+        self._pos = pos
 
     def _render(self) -> tuple[pg.Surface, pg.Rect]:
-        surface = self.font.render(self.text, True, self.color, self.background)
+        surface = self._font.render(self._text, True, self._color, self._background)
         rect = surface.get_rect()
 
         return surface, rect
 
     def update(self) -> None:
-        self.text = T(self._text)
-        self.surface, self.rect = self._render()
-        self.set_center_pos()
+        self._text = T(self.__text)
+        self._surface, self._rect = self._render()
+        if self._center_pos is not None:
+            self.set_center_pos(pos=self._center_pos)
+        elif self._pos is not None:
+            self.set_pos(pos=self._pos)
+
+    def draw(self, surface: pygame.Surface) -> None:
+        surface.blit(self._surface, self._rect)

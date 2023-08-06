@@ -17,3 +17,6 @@ class ColorBackground(pygame.Surface):
         super().__init__(window.render_res, pygame.SRCALPHA, 32)
         self.fill(color)
         self.pos = Pos(0, 0)
+
+    def draw(self, surface: pygame.Surface) -> None:
+        surface.blit(self, self.pos)
