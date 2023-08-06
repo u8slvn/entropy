@@ -17,10 +17,17 @@ class Window:
         pygame.display.set_caption(title)
         self.fullscreen = fullscreen
         self.render_res = render_res
-        self.screen = pygame.display.set_mode(self.render_res, self.screen_flags)
+        self.screen = self._build_screen(self.render_res)
         self.screen_rect = self.screen.get_rect()
         self.render_scale = Scale(1.0, 1.0)
         self.monitor = Monitor()
+        self.update_render_scale()
+
+    def _build_screen(self, resolution: Res) -> pygame.Surface:
+        if resolution == self.render_res:
+            resolution = resolution - Res(80, 75)
+
+        return pygame.display.set_mode(resolution, self.screen_flags)
 
     @property
     def screen_flags(self) -> int:
@@ -47,8 +54,8 @@ class Window:
         )
 
     def resize_screen(self, resolution: Res) -> None:
-        dimension = self.adapt_to_ratio(resolution=resolution)
-        self.screen = pygame.display.set_mode(dimension, self.screen_flags)
+        resolution = self.adapt_to_ratio(resolution=resolution)
+        self.screen = self._build_screen(resolution)
         self.screen_rect = self.screen.get_rect()
         self.update_render_scale()
 
