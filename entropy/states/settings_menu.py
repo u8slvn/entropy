@@ -10,8 +10,9 @@ import pygame as pg
 
 from entropy import assets
 from entropy import translator
+from entropy import window
 from entropy.gui.components.background import ColorBackground
-from entropy.gui.components.factory.menu import build_main_menu
+from entropy.gui.components.factory.menu import build_settings_menu
 from entropy.gui.components.text import Text
 from entropy.states.base import State
 from entropy.utils import Color
@@ -34,7 +35,7 @@ class MenuState(Enum):
 class SettingsMenu(State):
     def __init__(self, control: Control) -> None:
         super().__init__(control=control)
-        self._background = ColorBackground(color=Color(0, 0, 0, 200))
+        self._background = ColorBackground(color=Color(0, 0, 0, 150))
         self._font = assets.fonts.get("LanaPixel", "big")
         self.transition_to(state=MenuState.SETTINGS)
 
@@ -56,21 +57,23 @@ class SettingsMenu(State):
 
     def transition_to(self, state: MenuState):
         if state == MenuState.DISPLAY:
-            title = "DISPLAY"
+            self._title = Text(text="DISPLAY", font=self._font, color="white")
             config = OrderedDict(
                 {
+                    "FULLSCREEN": window.toggle_fullscreen,
+                    "FRAMED": window.toggle_fullscreen,
                     "BACK": partial(self.transition_to, MenuState.SETTINGS),
                 }
             )
         elif state == MenuState.SOUND:
-            title = "SOUND"
+            self._title = Text(text="SOUND", font=self._font, color="white")
             config = OrderedDict(
                 {
                     "BACK": partial(self.transition_to, MenuState.SETTINGS),
                 }
             )
         elif state == MenuState.LANGUAGE:
-            title = "LANGUAGE"
+            self._title = Text(text="LANGUAGE", font=self._font, color="white")
             config = OrderedDict(
                 {
                     "ENGLISH": partial(translator.set_translation, "en"),
@@ -79,7 +82,7 @@ class SettingsMenu(State):
                 }
             )
         elif state == MenuState.TEXT:
-            title = "TEXT"
+            self._title = Text(text="TEXT", font=self._font, color="white")
             config = OrderedDict(
                 {
                     "BACK": partial(self.transition_to, MenuState.SETTINGS),
@@ -87,16 +90,15 @@ class SettingsMenu(State):
             )
 
         else:
-            title = "SETTINGS"
+            self._title = Text(text="SETTINGS", font=self._font, color="white")
             config = OrderedDict(
                 {
                     "DISPLAY": partial(self.transition_to, MenuState.DISPLAY),
                     "SOUND": partial(self.transition_to, MenuState.SOUND),
                     "LANGUAGE": partial(self.transition_to, MenuState.LANGUAGE),
-                    "TEXT": partial(self.transition_to, MenuState.TEXT),
+                    "DIALOGUE FONT": partial(self.transition_to, MenuState.TEXT),
                     "BACK": self.exit,
                 }
             )
 
-        self._title = Text(text=title, font=self._font, color="white")
-        self._menu = build_main_menu(config=config)
+        self._menu = build_settings_menu(config=config)
