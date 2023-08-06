@@ -5,16 +5,16 @@ import os
 import pygame
 
 from entropy.assets_library import AssetsLibrary
-from entropy.config import Config
 from entropy.gui.mouse import Mouse
 from entropy.gui.window import Window
 from entropy.locations import ASSETS_DIR
+from entropy.misc.config import Config
 from entropy.misc.control import Control
 from entropy.misc.translator import Translator
 from entropy.utils import Res
 
 
-__all__ = ["assets", "window", "translator", "mouse"]
+__all__ = ["assets", "config", "window", "translator", "mouse"]
 
 config = Config()
 
@@ -26,7 +26,7 @@ window = Window(
 
 mouse = Mouse()
 
-translator = Translator(langs=["en", "fr"], default="en")
+translator = Translator(langs=["en", "fr"], lang="en")
 
 assets = AssetsLibrary()
 
@@ -40,7 +40,9 @@ def init() -> None:
 
     pygame.init()
 
-    assets.fonts.add_font(path=ASSETS_DIR / "fonts/LanaPixel.ttf", small=20, big=40)
+    assets.fonts.add_font(
+        path=ASSETS_DIR / "fonts/LanaPixel.ttf", small=20, big=40, settings=60
+    )
     assets.images.add_dir(path=ASSETS_DIR / "ui")
     assets.images.add_dir(path=ASSETS_DIR / "images")
     assets.sound.add_dir(path=ASSETS_DIR / "sound")

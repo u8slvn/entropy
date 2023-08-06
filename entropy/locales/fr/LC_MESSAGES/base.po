@@ -12,18 +12,44 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.3.2\n"
 
-#: entropy/states/title_screen.py:25
 msgid "CONTINUE"
 msgstr "CONTINUER"
 
-#: entropy/states/title_screen.py:26
 msgid "NEW GAME"
 msgstr "NOUVELLE PARTIE"
 
-#: entropy/states/title_screen.py:27
 msgid "SETTINGS"
 msgstr "PARAMÈTRES"
 
-#: entropy/states/title_screen.py:28
 msgid "QUIT"
 msgstr "QUITTER"
+
+msgid "DISPLAY"
+msgstr "AFFICHAGE"
+
+msgid "SOUND"
+msgstr "AUDIO"
+
+msgid "LANGUAGE"
+msgstr "LANGUE"
+
+msgid "DIALOGUE FONT"
+msgstr "POLICE DES DIALOGUES"
+
+msgid "BACK"
+msgstr "RETOUR"
+
+msgid "TEXT"
+msgstr "TEXTE"
+
+msgid "FULLSCREEN"
+msgstr "PLEIN ÉCRAN"
+
+msgid "FRAMED"
+msgstr "FENÊTRÉ"
+
+msgid "ENGLISH"
+msgstr "ENGLISH"
+
+msgid "FRANÇAIS"
+msgstr "FRANÇAIS"

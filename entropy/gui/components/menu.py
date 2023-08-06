@@ -22,15 +22,19 @@ class MenuButtonGroup:
 
     def _select_next_button(self) -> None:
         self._buttons[self._focus_index].unset_focus()
+        self._buttons[self._focus_index].update()
         self._focus_index = (self._focus_index + 1) % len(self._buttons)
         self._buttons[self._focus_index].set_focus()
+        self._buttons[self._focus_index].update()
 
     def _select_prev_button(self) -> None:
         self._buttons[self._focus_index].unset_focus()
+        self._buttons[self._focus_index].update()
         if self._focus_index == self._init_focus:
             self._focus_index = 0
         self._focus_index = (self._focus_index - 1) % len(self._buttons)
         self._buttons[self._focus_index].set_focus()
+        self._buttons[self._focus_index].update()
 
     def _get_selected_button(self) -> Button:
         return self._buttons[self._focus_index]
@@ -49,6 +53,7 @@ class MenuButtonGroup:
             for button in self._buttons:
                 if button.has_focus():
                     button.click()
+                button.update()
 
         if mouse.is_visible():
             for index, button in enumerate(self._buttons):
@@ -63,6 +68,7 @@ class MenuButtonGroup:
                         button.release()
                 else:
                     button.unset_focus()
+                button.update()
 
     def draw(self, surface: pg.Surface) -> None:
         for button in self._buttons:

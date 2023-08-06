@@ -2,24 +2,21 @@ from __future__ import annotations
 
 import gettext
 
-from typing import TYPE_CHECKING
 from typing import Callable
 
 from entropy.locations import LOCALES_DIR
+from entropy.tools.observer import Observer
 
 
-if TYPE_CHECKING:
-    from entropy.gui.components.text import Text
-
-
-class Translator:
-    def __init__(self, langs: list[str], default: str) -> None:
+class Translator(Observer):
+    def __init__(self, langs: list[str], lang: str) -> None:
+        super().__init__()
         self.langs = langs
-        self._registered_texts: list[Text] = []
         self._translations: dict[str, gettext.GNUTranslations] = {}
         self._translator: Callable[[str], str] = lambda x: x
         self._build_translations()
-        self.set_translation(lang=default)
+        self.lang = lang
+        self.set_translation(lang=self.lang)
 
     def _build_translations(self) -> None:
         for lang in self.langs:
@@ -29,17 +26,15 @@ class Translator:
                 languages=[lang],
             )
 
-    def register_text(self, text: Text) -> None:
-        self._registered_texts.append(text)
-
-    def update_texts(self) -> None:
-        for text in self._registered_texts:
+    def notify(self) -> None:
+        for text in self._registered_subjects:
             text.update()
 
     def set_translation(self, lang: str) -> None:
         self._translations[lang].install()
         self._translator = self._translations[lang].gettext
-        self.update_texts()
+        self.lang = lang
+        self.notify()
 
     def __call__(self, text: str) -> str:
         return self._translator(text)

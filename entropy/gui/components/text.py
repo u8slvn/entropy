@@ -24,7 +24,7 @@ class Text:
         self.background = background
         self.surface, self.rect = self._render()
         self.center_pos = Pos(0, 0)
-        translator.register_text(text=self)
+        translator.register(subject=self)
 
     def set_center_pos(self, pos: Pos | None = None) -> None:
         if pos is not None:

@@ -2,17 +2,20 @@ from __future__ import annotations
 
 from enum import IntEnum
 from typing import TYPE_CHECKING
+from typing import Any
 from typing import Callable
 
 import pygame
 import pygame as pg
 
+from entropy import config
 from entropy import mouse
 from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
     from entropy.gui.components.text import Text
+    from entropy.tools.observer import Observer
 
 
 class ButtonState(IntEnum):
@@ -31,7 +34,6 @@ class Button:
         sound_clicked: pg.mixer.Sound,
         callback: Callable[[], None],
         pos: Pos,
-        checked: bool = False,
         padding: Pos = Pos(0, 0),
     ) -> None:
         super().__init__()
@@ -40,13 +42,13 @@ class Button:
         self._image = self._images[ButtonState.NORMAL]
         self._rect = self._image.get_rect()
         self._rect.topleft = pos
-        self._state = ButtonState.CHECKED if checked else ButtonState.NORMAL
+        self._state = ButtonState.NORMAL
 
         x, y = self._rect.center
         text.set_center_pos(Pos(x + padding.x, y + padding.y))
         self._text = text
 
-        self._sound_selected = sound_focus
+        self._sound_focus = sound_focus
         self._sound_clicked = sound_clicked
 
         self._callback = callback
@@ -82,14 +84,12 @@ class Button:
             self._state = ButtonState.FOCUS_CHECKED
         else:
             self._state = ButtonState.CHECKED
-        self.update()
 
     def uncheck(self) -> None:
         if self.has_focus():
-            self._state = ButtonState.NORMAL
-        else:
             self._state = ButtonState.FOCUS
-        self.update()
+        else:
+            self._state = ButtonState.NORMAL
 
     def is_checked(self) -> bool:
         return self._state in [ButtonState.CHECKED, ButtonState.FOCUS_CHECKED]
@@ -99,15 +99,13 @@ class Button:
             self._state = ButtonState.FOCUS_CHECKED
         else:
             self._state = ButtonState.FOCUS
-        self.update()
-        self._sound_selected.play()
+        self._sound_focus.play()
 
     def unset_focus(self):
         if self.is_checked():
             self._state = ButtonState.CHECKED
         else:
             self._state = ButtonState.NORMAL
-        self.update()
 
     def has_focus(self) -> bool:
         return self._state in [ButtonState.FOCUS, ButtonState.FOCUS_CHECKED]
@@ -122,3 +120,24 @@ class Button:
     def draw(self, surface: pg.Surface) -> None:
         surface.blit(self._image, self._rect)
         surface.blit(self._text.surface, self._text.rect)
+
+
+class ObservableButton(Button):
+    _observer: Observer
+
+    def __init__(self, *args, watch: str, match: Any, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._watch = watch
+        self._match = match
+        self._observer.register(subject=self)
+
+    def update(self):
+        if getattr(self._observer, self._watch) == self._match:
+            self.check()
+        else:
+            self.uncheck()
+        super().update()
+
+
+class ConfigObservableButton(ObservableButton):
+    _observer = config

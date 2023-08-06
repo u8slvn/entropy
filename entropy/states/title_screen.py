@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from collections import OrderedDict
 from typing import TYPE_CHECKING
 
 import pygame as pg
@@ -39,7 +38,7 @@ class TitleScreen(State):
     def draw(self, surface: pg.Surface) -> None:
         surface.blit(self._background, (0, 0))
         if self._overlay is False:
-            surface.blit(self._logo, (660, 220))
+            surface.blit(self._logo, (660, 0))
             self._main_menu.draw(surface=surface)
 
     def teardown(self) -> None:
@@ -52,12 +51,22 @@ class TitleScreen(State):
         self.control.stop(delay=0.3)
 
     def _build_main_menu(self) -> MenuButtonGroup:
-        config = OrderedDict(
+        config = [
             {
-                "CONTINUE": test_lang,
-                "NEW GAME": self.exit,
-                "SETTINGS": self.onclick_settings,
-                "QUIT": self.onclick_quit,
-            }
-        )
+                "text": "CONTINUE",
+                "callback": test_lang,
+            },
+            {
+                "text": "NEW GAME",
+                "callback": self.exit,
+            },
+            {
+                "text": "SETTINGS",
+                "callback": self.onclick_settings,
+            },
+            {
+                "text": "QUIT",
+                "callback": self.onclick_quit,
+            },
+        ]
         return build_main_menu(config=config)
