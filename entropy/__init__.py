@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pygame
 
+from entropy import logger
 from entropy.assets_library import AssetsLibrary
 from entropy.compat import configure_display
 from entropy.gui.mouse import Mouse
@@ -27,6 +28,7 @@ def init() -> None:
     global config, window, mouse, translator, assets, control
 
     configure_display()
+    logger.configure()
 
     pygame.init()
 
@@ -41,7 +43,7 @@ def init() -> None:
 
     assets = AssetsLibrary()
     assets.fonts.add_font(
-        path=ASSETS_DIR / "fonts/LanaPixel.ttf", small=20, big=40, settings=60
+        path=ASSETS_DIR / "fonts/LanaPixel.ttf", small=22, big=44, settings=55
     )
     assets.images.add_dir(path=ASSETS_DIR / "gui")
     assets.images.add_dir(path=ASSETS_DIR / "images")

@@ -41,8 +41,8 @@ msgid "LANGUAGE"
 msgstr "LANGUAGE"
 
 #: menu
-msgid "DIALOGUE FONT"
-msgstr "DIALOGUE FONT"
+msgid "DIALOGUE"
+msgstr "DIALOGUE"
 
 #: menu
 msgid "BACK"

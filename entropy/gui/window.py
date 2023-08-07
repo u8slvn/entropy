@@ -1,12 +1,17 @@
 from __future__ import annotations
 
+import logging
+
 import pygame
 
 import entropy
 
 from entropy.gui.monitor import Monitor
+from entropy.utils import PosScale
 from entropy.utils import Res
-from entropy.utils import Scale
+
+
+logger = logging.getLogger(__name__)
 
 
 class Window:
@@ -28,7 +33,7 @@ class Window:
         self.render_res = render_res
         self.screen = self._build_screen(resolution=entropy.config.res)
         self.screen_rect = self.screen.get_rect()
-        self.render_scale = Scale(1.0, 1.0)
+        self.render_scale = PosScale(1.0, 1.0)
         self.update_render_scale()
 
     def _build_screen(self, resolution: Res) -> pygame.Surface:
@@ -41,6 +46,10 @@ class Window:
         if resolution == self.monitor.res and self.screen_flags != pygame.FULLSCREEN:
             resolution = resolution - Res(80, 75)
 
+        logger.info(
+            f"Set display mode: "
+            f"resolution = {resolution}, fullscreen = {self.fullscreen}"
+        )
         return pygame.display.set_mode(resolution, self.screen_flags)
 
     @property
@@ -69,7 +78,7 @@ class Window:
 
         Used to scale the mouse position to match the display resolution.
         """
-        self.render_scale = Scale(
+        self.render_scale = PosScale(
             self.render_res.w / self.screen_rect.w,
             self.render_res.h / self.screen_rect.h,
         )

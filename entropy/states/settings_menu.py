@@ -30,7 +30,7 @@ class MenuState(Enum):
     DISPLAY = auto()
     SOUND = auto()
     LANGUAGE = auto()
-    TEXT = auto()
+    DIALOGUE = auto()
 
 
 class SettingsMenu(State):
@@ -115,8 +115,8 @@ class SettingsMenu(State):
                 ],
             )
 
-        elif state == MenuState.TEXT:
-            self._title = Text(text="TEXT", font=self._font, color="white")
+        elif state == MenuState.DIALOGUE:
+            self._title = Text(text="DIALOGUE", font=self._font, color="white")
             self._menu = build_settings_menu(
                 config=[
                     {
@@ -143,8 +143,8 @@ class SettingsMenu(State):
                         "callback": partial(self.transition_to, MenuState.LANGUAGE),
                     },
                     {
-                        "text": "DIALOGUE FONT",
-                        "callback": partial(self.transition_to, MenuState.TEXT),
+                        "text": "DIALOGUE",
+                        "callback": partial(self.transition_to, MenuState.DIALOGUE),
                     },
                     {
                         "text": "BACK",

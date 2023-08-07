@@ -18,7 +18,7 @@ class Pos(NamedTuple):
         return Pos(self.x - other.x, self.y - other.y)
 
 
-class Scale(NamedTuple):
+class PosScale(NamedTuple):
     """2D scale."""
 
     x: float
@@ -47,6 +47,9 @@ class Res(NamedTuple):
     @property
     def aspect_ratio(self) -> float:
         return self.w / self.h
+
+    def __str__(self) -> str:
+        return f"{self.w}x{self.h}"
 
 
 class Color(pygame.Color):

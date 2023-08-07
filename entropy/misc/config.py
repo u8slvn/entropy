@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import configparser
+import logging
 
 from collections import OrderedDict
 from pathlib import Path
@@ -8,6 +9,9 @@ from typing import Any
 
 from entropy.tools.observer import Observer
 from entropy.utils import Res
+
+
+logger = logging.getLogger(__name__)
 
 
 class Config(Observer):
@@ -21,9 +25,10 @@ class Config(Observer):
                     "fullscreen": False,
                 }
             ),
-            "locale": OrderedDict(
+            "game": OrderedDict(
                 {
-                    "lang": "en",
+                    "font": "",
+                    "locale": "en",
                 }
             ),
         }
@@ -36,11 +41,16 @@ class Config(Observer):
         if config_file is not None:
             config.read(config_file)
 
+        # Display
         self.fps = config.getfloat("display", "fps")
         self.resolution_x = config.getint("display", "resolution_x")
         self.resolution_y = config.getint("display", "resolution_y")
         self.fullscreen = config.getboolean("display", "fullscreen")
-        self.lang = config.get("locale", "lang")
+
+        # Game
+        self.locale = config.get("game", "locale")
+
+        logger.info("Config loaded.")
 
     @property
     def res(self) -> Res:

@@ -1,11 +1,15 @@
 from __future__ import annotations
 
 import gettext
+import logging
 
 from typing import Callable
 
 from entropy.locations import LOCALES_DIR
 from entropy.tools.observer import Observer
+
+
+logger = logging.getLogger(__name__)
 
 
 class Translator(Observer):
@@ -31,6 +35,7 @@ class Translator(Observer):
             text.update()
 
     def set_translation(self, lang: str) -> None:
+        logger.info(f'Locale set to "{lang}".')
         self._translations[lang].install()
         self._translator = self._translations[lang].gettext
         self.lang = lang
