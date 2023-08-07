@@ -16,8 +16,8 @@ class Config(Observer):
             "display": OrderedDict(
                 {
                     "fps": 60,
-                    "resolution_x": 1280,
-                    "resolution_y": 720,
+                    "resolution_x": 1600,
+                    "resolution_y": 900,
                     "fullscreen": False,
                 }
             ),

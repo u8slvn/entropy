@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-import os
-
 import pygame
 
 from entropy.assets_library import AssetsLibrary
+from entropy.compat import configure_display
 from entropy.gui.mouse import Mouse
 from entropy.gui.window import Window
 from entropy.locations import ASSETS_DIR
@@ -27,7 +26,7 @@ control: Control
 def init() -> None:
     global config, window, mouse, translator, assets, control
 
-    os.environ["SDL_VIDEO_CENTERED"] = "1"
+    configure_display()
 
     pygame.init()
 
