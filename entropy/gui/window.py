@@ -1,18 +1,17 @@
 from __future__ import annotations
 
-import logging
-
 import pygame
 
 import entropy
 
+from entropy import logger
 from entropy.gui.monitor import Monitor
 from entropy.utils import Pos
 from entropy.utils import PosScale
 from entropy.utils import Res
 
 
-logger = logging.getLogger(__name__)
+logger = logger()
 
 
 class Window:
@@ -37,6 +36,9 @@ class Window:
         self.render_margin = Pos(0, 0)
         self.screen = self._build_screen(resolution=self.render_res)
         self.screen_rect = self.screen.get_rect()
+
+        if self.fullscreen is True:
+            self.resize_screen()
         self.update_scale_params()
 
     def _build_screen(self, resolution: Res) -> pygame.Surface:

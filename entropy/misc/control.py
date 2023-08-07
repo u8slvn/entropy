@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import logging
-
 from time import sleep
 from typing import TYPE_CHECKING
 
@@ -9,6 +7,7 @@ import pygame
 
 import entropy
 
+from entropy import logger
 from entropy import states
 from entropy.gui.components.fps import FPSViewer
 from entropy.gui.input.keyboard_events import KeyboardEvents
@@ -19,7 +18,7 @@ from entropy.utils import Res
 if TYPE_CHECKING:
     from entropy.states import State
 
-logger = logging.getLogger(__name__)
+logger = logger()
 
 
 class Control:
