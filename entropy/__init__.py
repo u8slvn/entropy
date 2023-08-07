@@ -35,11 +35,11 @@ def init() -> None:
     config = Config()
     window = Window(
         title="Entropy",
-        render_res=Res(w=1920, h=1080),
+        default_res=Res(w=1920, h=1080),
         fullscreen=config.fullscreen,
     )
     mouse = Mouse()
-    translator = Translator(langs=["en", "fr"], lang="en")
+    translator = Translator(locales=["en", "fr"], locale="en")
 
     assets = AssetsLibrary()
     assets.fonts.add_font(

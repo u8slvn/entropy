@@ -13,32 +13,32 @@ logger = logging.getLogger(__name__)
 
 
 class Translator(Observer):
-    def __init__(self, langs: list[str], lang: str) -> None:
+    def __init__(self, locales: list[str], locale: str) -> None:
         super().__init__()
-        self.langs = langs
+        self.locales = locales
         self._translations: dict[str, gettext.GNUTranslations] = {}
         self._translator: Callable[[str], str] = lambda x: x
         self._build_translations()
-        self.lang = lang
-        self.set_translation(lang=self.lang)
+        self.locale = locale
+        self.set_translation(locale=self.locale)
 
     def _build_translations(self) -> None:
-        for lang in self.langs:
-            self._translations[lang] = gettext.translation(
+        for locale in self.locales:
+            self._translations[locale] = gettext.translation(
                 domain="base",
                 localedir=LOCALES_DIR,
-                languages=[lang],
+                languages=[locale],
             )
 
     def notify(self) -> None:
         for text in self._registered_subjects:
             text.update()
 
-    def set_translation(self, lang: str) -> None:
-        logger.info(f'Locale set to "{lang}".')
-        self._translations[lang].install()
-        self._translator = self._translations[lang].gettext
-        self.lang = lang
+    def set_translation(self, locale: str) -> None:
+        logger.info(f'Locale set to "{locale}".')
+        self._translations[locale].install()
+        self._translator = self._translations[locale].gettext
+        self.locale = locale
         self.notify()
 
     def __call__(self, text: str) -> str:

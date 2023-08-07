@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import logging
+
 from time import sleep
 from typing import TYPE_CHECKING
 
@@ -17,6 +19,8 @@ from entropy.utils import Res
 if TYPE_CHECKING:
     from entropy.states import State
 
+logger = logging.getLogger(__name__)
+
 
 class Control:
     def __init__(
@@ -24,7 +28,7 @@ class Control:
         fps: float,
     ) -> None:
         self.fps = fps
-        self.render_surface = pygame.Surface(entropy.window.render_res)
+        self.render_surface = pygame.Surface(entropy.window.default_res)
         self.state_stack: list[State] = []
         self.prev_state: State | None = None
         self.running = False
@@ -38,6 +42,7 @@ class Control:
         return self.state_stack[-1]
 
     def transition_to(self, state: str) -> None:
+        logger.info(f'Game state changed to "{state}".')
         if len(self.state_stack) >= 1:
             self.current_state.teardown()
             self.prev_state = self.current_state

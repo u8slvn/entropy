@@ -98,14 +98,14 @@ class SettingsMenu(State):
                 config=[
                     {
                         "text": "ENGLISH",
-                        "callback": SwitchLocaleTo(lang="en"),
-                        "watch": "lang",
+                        "callback": SwitchLocaleTo(locale="en"),
+                        "watch": "locale",
                         "match": "en",
                     },
                     {
                         "text": "FRANÇAIS",
-                        "callback": SwitchLocaleTo(lang="fr"),
-                        "watch": "lang",
+                        "callback": SwitchLocaleTo(locale="fr"),
+                        "watch": "locale",
                         "match": "fr",
                     },
                     {

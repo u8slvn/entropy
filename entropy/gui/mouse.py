@@ -15,12 +15,17 @@ class Mouse:
         self.__nb_moves_before_show = 2
         self.pos = Pos(*pg.mouse.get_pos())
 
-    def update(self) -> None:
-        mouse_pos = Pos(*pg.mouse.get_pos())
-        self.pos = Pos(
+    @staticmethod
+    def _get_scale_mouse_position() -> Pos:
+        """Get the mouse position scaled to the render screen."""
+        mouse_pos = Pos(*pg.mouse.get_pos()) - entropy.window.render_margin
+        return Pos(
             x=ceil(mouse_pos.x * entropy.window.render_scale.x),
             y=ceil(mouse_pos.y * entropy.window.render_scale.y),
         )
+
+    def update(self) -> None:
+        self.pos = self._get_scale_mouse_position()
 
         if pg.mouse.get_visible() is False:
             if pg.mouse.get_rel() != (0, 0):

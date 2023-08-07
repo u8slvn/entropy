@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 class ColorBackground(pygame.Surface):
     def __init__(self, color: Color) -> None:
-        super().__init__(window.render_res, pygame.SRCALPHA, 32)
+        super().__init__(window.default_res, pygame.SRCALPHA, 32)
         self.fill(color)
         self.pos = Pos(0, 0)
 

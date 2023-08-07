@@ -6,14 +6,12 @@ from entropy.commands.base import Command
 
 
 class SwitchLocaleTo(Command):
-    def __init__(self, lang: str):
-        self._lang = lang
+    def __init__(self, locale: str):
+        self._locale = locale
 
-    def __call__(
-        self,
-    ) -> None:
-        if translator.lang == self._lang:
+    def __call__(self) -> None:
+        if translator.locale == self._locale:
             return
 
-        translator.set_translation(lang=self._lang)
-        config.update_attr(name="lang", value=self._lang)
+        translator.set_translation(locale=self._locale)
+        config.update_attr(name="locale", value=self._locale)
