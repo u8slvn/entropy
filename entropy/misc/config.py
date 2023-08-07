@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from entropy.tools.observer import Observer
+from entropy.utils import Res
 
 
 class Config(Observer):
@@ -15,6 +16,8 @@ class Config(Observer):
             "display": OrderedDict(
                 {
                     "fps": 60,
+                    "resolution_x": 1280,
+                    "resolution_y": 720,
                     "fullscreen": False,
                 }
             ),
@@ -34,8 +37,18 @@ class Config(Observer):
             config.read(config_file)
 
         self.fps = config.getfloat("display", "fps")
+        self.resolution_x = config.getint("display", "resolution_x")
+        self.resolution_y = config.getint("display", "resolution_y")
         self.fullscreen = config.getboolean("display", "fullscreen")
         self.lang = config.get("locale", "lang")
+
+    @property
+    def res(self) -> Res:
+        return Res(self.resolution_x, self.resolution_y)
+
+    @res.setter
+    def res(self, res: Res) -> None:
+        self.resolution_x, self.resolution_y = res
 
     def notify(self) -> None:
         for subject in self._registered_subjects:

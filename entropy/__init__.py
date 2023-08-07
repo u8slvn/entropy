@@ -16,30 +16,31 @@ from entropy.utils import Res
 
 __all__ = ["assets", "config", "window", "translator", "mouse"]
 
-config = Config()
-
-window = Window(
-    title="Entropy",
-    render_res=Res(w=1920, h=1080),
-    fullscreen=config.fullscreen,
-)
-
-mouse = Mouse()
-
-translator = Translator(langs=["en", "fr"], lang="en")
-
-assets = AssetsLibrary()
-
+config: Config
+window: Window
+mouse: Mouse
+translator: Translator
+assets: AssetsLibrary
 control: Control
 
 
 def init() -> None:
-    global assets, control
+    global config, window, mouse, translator, assets, control
 
     os.environ["SDL_VIDEO_CENTERED"] = "1"
 
     pygame.init()
 
+    config = Config()
+    window = Window(
+        title="Entropy",
+        render_res=Res(w=1920, h=1080),
+        fullscreen=config.fullscreen,
+    )
+    mouse = Mouse()
+    translator = Translator(langs=["en", "fr"], lang="en")
+
+    assets = AssetsLibrary()
     assets.fonts.add_font(
         path=ASSETS_DIR / "fonts/LanaPixel.ttf", small=20, big=40, settings=60
     )

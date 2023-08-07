@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import pygame
 
+import entropy
+
 from entropy.gui.monitor import Monitor
 from entropy.utils import Res
 from entropy.utils import Scale
@@ -21,22 +23,22 @@ class Window:
         render_res: Res,
     ) -> None:
         pygame.display.set_caption(title)
+        self.monitor = Monitor()
         self.fullscreen = fullscreen
         self.render_res = render_res
-        self.screen = self._build_screen(self.render_res)
+        self.screen = self._build_screen(resolution=entropy.config.res)
         self.screen_rect = self.screen.get_rect()
         self.render_scale = Scale(1.0, 1.0)
-        self.monitor = Monitor()
         self.update_render_scale()
 
     def _build_screen(self, resolution: Res) -> pygame.Surface:
         """
         Build screen surface.
 
-        If the given resolution is the same as the render resolution the resolution is
+        If the given resolution is the same as the monitor resolution the resolution is
         scale down to fit inside the monitor.
         """
-        if resolution == self.render_res:
+        if resolution == self.monitor.res and self.screen_flags != pygame.FULLSCREEN:
             resolution = resolution - Res(80, 75)
 
         return pygame.display.set_mode(resolution, self.screen_flags)
@@ -72,9 +74,16 @@ class Window:
             self.render_res.h / self.screen_rect.h,
         )
 
-    def resize_screen(self, resolution: Res) -> None:
+    def resize_screen(self, resolution: Res | None = None) -> None:
         """Resize the screen to the given resolution size."""
-        resolution = self.adapt_to_ratio(resolution=resolution)
+        if self.fullscreen is True:
+            resolution = self.adapt_to_ratio(resolution=self.monitor.res)
+        elif resolution is None:
+            resolution = self.adapt_to_ratio(entropy.config.res)
+        else:
+            resolution = self.adapt_to_ratio(resolution=resolution)
+            entropy.config.res = resolution
+
         self.screen = self._build_screen(resolution)
         self.screen_rect = self.screen.get_rect()
         self.update_render_scale()
@@ -82,7 +91,7 @@ class Window:
     def toggle_fullscreen(self) -> None:
         """Toggle fullscreen on/off."""
         self.fullscreen = not self.fullscreen
-        self.resize_screen(resolution=self.render_res)
+        self.resize_screen()
 
     def render(self, surface: pygame.Surface) -> None:
         """
@@ -92,7 +101,7 @@ class Window:
         is scaled to the screen size.
         """
         if self.render_res != self.screen_rect.size:
-            pygame.transform.smoothscale(surface, self.screen_rect.size, self.screen)
+            pygame.transform.scale(surface, self.screen_rect.size, self.screen)
         else:
             self.screen.blit(surface, (0, 0))
         pygame.display.update()
