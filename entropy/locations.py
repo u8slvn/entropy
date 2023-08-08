@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from entropy import logger
 from entropy import platform
+from entropy.logging import logger
 
 
 logger = logger()

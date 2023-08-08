@@ -4,7 +4,6 @@ import os
 
 import pygame
 
-from entropy import platform
 from entropy.assets_library import AssetsLibrary
 from entropy.gui.mouse import Mouse
 from entropy.gui.window import Window
@@ -38,8 +37,6 @@ def init() -> None:
     os.environ["SDL_VIDEO_CENTERED"] = "1"
 
     USER_LOCAL_DIR.mkdir(exist_ok=True)
-
-    platform.configure()
 
     pygame.init()
 
