@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import time
+
 from time import sleep
 from typing import TYPE_CHECKING
 
@@ -10,8 +12,7 @@ import entropy
 from entropy import logger
 from entropy import states
 from entropy.gui.components.fps import FPSViewer
-from entropy.gui.input.keyboard_events import KeyboardEvents
-from entropy.gui.input.mouse_events import MouseEvents
+from entropy.gui.input import Inputs
 from entropy.utils import Res
 
 
@@ -31,9 +32,9 @@ class Control:
         self.state_stack: list[State] = []
         self.prev_state: State | None = None
         self.running = False
-        self.mouse_e = MouseEvents()
-        self.keyboard_e = KeyboardEvents()
+        self.inputs = Inputs()
         self.clock = pygame.time.Clock()
+        self.dt = self.prev_time = 0.0
         self.fps_viewer = FPSViewer(clock=self.clock)
 
     @property
@@ -51,6 +52,11 @@ class Control:
         state.setup()
         self.state_stack.append(state)
 
+    def get_dt(self) -> None:
+        now = time.time()
+        self.dt = now - self.prev_time
+        self.prev_time = now
+
     def get_events(self) -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -58,19 +64,22 @@ class Control:
             elif event.type == pygame.VIDEORESIZE and not entropy.window.fullscreen:
                 entropy.window.resize_screen(resolution=Res(event.w, event.h))
 
-            self.keyboard_e.parse_event(event=event)
-            self.mouse_e.parse_event(event=event)
+            self.inputs.parse_event(event=event)
+
+    def process_inputs(self) -> None:
+        if self.inputs.keyboard.F6:
+            entropy.window.toggle_fullscreen()
+
+        entropy.mouse.process_inputs(inputs=self.inputs, dt=self.dt)
+        self.fps_viewer.process_inputs(inputs=self.inputs, dt=self.dt)
+        self.current_state.process_inputs(inputs=self.inputs, dt=self.dt)
 
     def update(self) -> None:
         entropy.mouse.update()
-        if self.keyboard_e.F6:
-            entropy.window.toggle_fullscreen()
+        self.current_state.update()
+        self.fps_viewer.update()
 
-        self.current_state.update(keyboard_e=self.keyboard_e, mouse_e=self.mouse_e)
-        self.fps_viewer.update(keyboard_e=self.keyboard_e)
-
-        self.keyboard_e.reset()
-        self.mouse_e.reset()
+        self.inputs.reset()
 
     def render(self) -> None:
         self.current_state.draw(surface=self.render_surface)
@@ -83,7 +92,9 @@ class Control:
         self.running = True
 
         while self.running:
+            self.get_dt()
             self.get_events()
+            self.process_inputs()
             self.update()
             self.render()
             self.clock.tick(self.fps)
@@ -91,7 +102,7 @@ class Control:
         self.stop()
 
     @staticmethod
-    def stop(delay: float = 0.0) -> None:
+    def stop(delay=0.3) -> None:
         sleep(delay)
         pygame.quit()
         exit()

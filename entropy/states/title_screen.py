@@ -6,14 +6,16 @@ import pygame as pg
 
 from entropy import assets
 from entropy import translator
+from entropy.commands.game import QuitGame
+from entropy.commands.state import ExitState
+from entropy.commands.state import TransitionToNextState
 from entropy.gui.components.factory.menu import build_main_menu
 from entropy.gui.components.menu import MenuButtonGroup
 from entropy.states.base import State
 
 
 if TYPE_CHECKING:
-    from entropy.gui.input.keyboard_events import KeyboardEvents
-    from entropy.gui.input.mouse_events import MouseEvents
+    from entropy.gui.input import Inputs
     from entropy.misc.control import Control
 
 
@@ -24,49 +26,49 @@ def test_lang():
 class TitleScreen(State):
     def __init__(self, control: Control) -> None:
         super().__init__(control=control)
-        self._overlay = False
+        self._covered = False
         self._background = assets.images.get("title-screen-bg")
         self._logo = assets.images.get("title-screen-logo-a")
         self._main_menu = self._build_main_menu()
 
     def setup(self) -> None:
-        self._overlay = False
+        self._covered = False
 
-    def update(self, keyboard_e: KeyboardEvents, mouse_e: MouseEvents) -> None:
-        self._main_menu.update(keyboard_e=keyboard_e, mouse_e=mouse_e)
+    def process_inputs(self, inputs: Inputs, dt: float) -> None:
+        self._main_menu.process_inputs(inputs=inputs, dt=dt)
+
+    def update(self) -> None:
+        self._main_menu.update()
 
     def draw(self, surface: pg.Surface) -> None:
         surface.blit(self._background, (0, 0))
-        if self._overlay is False:
+        if self._covered is False:
             surface.blit(self._logo, (660, 0))
             self._main_menu.draw(surface=surface)
 
     def teardown(self) -> None:
-        self._overlay = True
-
-    def onclick_settings(self) -> None:
-        self.control.transition_to("SettingsMenu")
-
-    def onclick_quit(self) -> None:
-        self.control.stop(delay=0.3)
+        self._covered = True
 
     def _build_main_menu(self) -> MenuButtonGroup:
-        config = [
-            {
-                "text": "CONTINUE",
-                "callback": test_lang,
-            },
-            {
-                "text": "NEW GAME",
-                "callback": self.exit,
-            },
-            {
-                "text": "SETTINGS",
-                "callback": self.onclick_settings,
-            },
-            {
-                "text": "QUIT",
-                "callback": self.onclick_quit,
-            },
-        ]
-        return build_main_menu(config=config)
+        return build_main_menu(
+            config=[
+                {
+                    "text": "CONTINUE",
+                    "callback": test_lang,
+                },
+                {
+                    "text": "NEW GAME",
+                    "callback": ExitState(self),
+                },
+                {
+                    "text": "SETTINGS",
+                    "callback": TransitionToNextState(
+                        state=self, next_state="SettingsMenu"
+                    ),
+                },
+                {
+                    "text": "QUIT",
+                    "callback": QuitGame(),
+                },
+            ]
+        )

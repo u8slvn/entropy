@@ -2,44 +2,50 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import pygame as pg
+import pygame as pygame
+
+import entropy
 
 from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
-    from entropy.gui.input.keyboard_events import KeyboardEvents
+    from entropy.gui.input import Inputs
 
 
 class FPSViewer:
     font_color = "white"
     background_color = "black"
 
-    def __init__(self, clock: pg.time.Clock) -> None:
-        self.clock = clock
-        self.font = pg.font.SysFont("Arial", 16)
-        self.visible = False
-        self.fps = 0.0
-        self.format = "{fps} FPS"
-        self.text = self.font.render("0", True, self.font_color, self.background_color)
+    def __init__(self, clock: pygame.time.Clock) -> None:
+        self._clock = clock
+        self._fps = 60
+        self._visible = False
+        self._format = "{fps} FPS"
+        self._font = pygame.font.SysFont("Arial", 20)
+        self._text = self._get_text()
+        self._pos = self._get_pos()
 
-    def _render_text(self) -> pg.Surface:
-        text = self.format.format(fps=round(self.fps))
-        return self.font.render(text, True, self.font_color, self.background_color)
+    def _get_text(self) -> pygame.Surface:
+        text = self._format.format(fps=round(self._fps))
+        return self._font.render(text, True, self.font_color, self.background_color)
 
-    def update(self, keyboard_e: KeyboardEvents) -> None:
-        if keyboard_e.F5:
-            self.visible = not self.visible
+    def _get_pos(self):
+        return Pos(
+            entropy.window.default_res.w - self._text.get_width(),
+            entropy.window.default_res.h - self._text.get_height(),
+        )
 
-        if self.visible:
-            self.fps = self.clock.get_fps()
-            self.text = self._render_text()
-            self.text.set_alpha(200)
+    def process_inputs(self, inputs: Inputs, dt: float) -> None:
+        if inputs.keyboard.F5:
+            self._visible = not self._visible
 
-    def draw(self, surface: pg.Surface) -> None:
-        if self.visible:
-            pos = Pos(
-                surface.get_width() - self.text.get_width(),
-                surface.get_height() - self.text.get_height(),
-            )
-            surface.blit(self.text, pos)
+    def update(self) -> None:
+        if self._visible:
+            self._fps = self._clock.get_fps()
+            self._text = self._get_text()
+            self._pos = self._get_pos()
+
+    def draw(self, surface: pygame.Surface) -> None:
+        if self._visible:
+            surface.blit(self._text, self._pos)

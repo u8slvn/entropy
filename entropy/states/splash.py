@@ -2,8 +2,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import pygame
+
 import entropy
 
+from entropy.commands.state import TransitionToNextState
 from entropy.gui.transistions.fader import FadeIn
 from entropy.gui.transistions.fader import FadeOut
 from entropy.states.base import State
@@ -11,21 +14,26 @@ from entropy.tools.timer import TimerSecond
 
 
 if TYPE_CHECKING:
-    from entropy.gui.input.keyboard_events import KeyboardEvents
-    from entropy.gui.input.mouse_events import MouseEvents
+    from entropy.gui.input import Inputs
     from entropy.misc.control import Control
 
 
 class Splash(State):
     def __init__(self, control: Control) -> None:
         super().__init__(control=control)
+        self.next_state_cmd = TransitionToNextState(
+            state=self,
+            next_state="TitleScreen",
+        )
 
         self.font = entropy.assets.fonts.get("LanaPixel", "big")
         self.text = self.font.render("ENTROPY", False, "white", "black")
+        self.text_rect = self.text.get_rect()
+        self.text_rect.center = pygame.Rect(0, 0, *entropy.window.default_res).center
 
-        self.fade_out = FadeOut(duration=3000, callback=self.next_state)
+        self.fade_out = FadeOut(duration=3000, callback=self.next_state_cmd)
         self.timer = TimerSecond(
-            duration=4,
+            duration=2,
             autostart=False,
             callback=self.fade_out.start,
         )
@@ -34,19 +42,19 @@ class Splash(State):
     def setup(self) -> None:
         self.fade_in.start()
 
-    def update(self, keyboard_e: KeyboardEvents, mouse_e: MouseEvents) -> None:
+    def process_inputs(self, inputs: Inputs, dt: float) -> None:
+        if any([inputs.keyboard.SPACE, inputs.keyboard.ENTER]):
+            self._commands.append(self.next_state_cmd)
+
+    def update(self) -> None:
+        self._commands()
         self.fade_in.update()
         self.fade_out.update()
         self.timer.update()
 
-        if any([keyboard_e.SPACE, keyboard_e.ENTER]):
-            self.next_state()
-
-    def draw(self, surface) -> None:
+    def draw(self, surface: pygame.Surface) -> None:
         surface.fill("black")
-        x = (surface.get_width() - self.text.get_width()) // 2
-        y = (surface.get_height() - self.text.get_height()) // 2
-        surface.blit(self.text, (x, y))
+        surface.blit(self.text, self.text_rect)
         self.fade_out.draw(surface=surface)
         self.fade_in.draw(surface=surface)
 
@@ -54,6 +62,3 @@ class Splash(State):
         self.fade_out.reset()
         self.fade_in.reset()
         self.timer.reset()
-
-    def next_state(self) -> None:
-        self.control.transition_to(state="TitleScreen")

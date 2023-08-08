@@ -2,9 +2,13 @@ from __future__ import annotations
 
 import pygame
 
+from entropy.gui.input import InputsBase
 
-class KeyboardEvents:
+
+class KeyboardInputs(InputsBase):
     def __init__(self):
+        self.KEYDOWN = False
+        self.KEYUP = False
         self.UP = False
         self.DOWN = False
         self.ENTER = False
@@ -14,6 +18,7 @@ class KeyboardEvents:
 
     def parse_event(self, event: pygame.event.Event) -> None:
         if event.type == pygame.KEYDOWN:
+            self.KEYDOWN = True
             if event.key == pygame.K_UP:
                 self.UP = True
             elif event.key == pygame.K_DOWN:
@@ -27,7 +32,8 @@ class KeyboardEvents:
             elif event.key == pygame.K_F6:
                 self.F6 = True
 
-        elif event.type == pygame.KEYUP:
+        if event.type == pygame.KEYUP:
+            self.KEYUP = True
             if event.key == pygame.K_UP:
                 self.UP = False
             elif event.key == pygame.K_DOWN:

@@ -6,7 +6,6 @@ from typing import Any
 from typing import Callable
 
 import pygame
-import pygame as pg
 
 from entropy import config
 from entropy import mouse
@@ -15,6 +14,7 @@ from entropy.utils import Pos
 
 if TYPE_CHECKING:
     from entropy.gui.components.text import Text
+    from entropy.gui.input import Inputs
     from entropy.tools.observer import Observer
 
 
@@ -29,9 +29,9 @@ class Button:
     def __init__(
         self,
         text: Text,
-        image: pg.Surface,
-        sound_focus: pg.mixer.Sound,
-        sound_clicked: pg.mixer.Sound,
+        image: pygame.Surface,
+        sound_focus: pygame.mixer.Sound,
+        sound_clicked: pygame.mixer.Sound,
         callback: Callable[[], None],
         pos: Pos,
         padding: Pos = Pos(0, 0),
@@ -66,19 +66,6 @@ class Button:
 
         return images
 
-    def collide_mouse(self) -> bool:
-        return self._rect.collidepoint(mouse.pos)
-
-    def press(self) -> None:
-        self._pressed = True
-
-    def release(self) -> None:
-        self._pressed = False
-        self.click()
-
-    def is_pressed(self) -> bool:
-        return self._pressed
-
     def check(self) -> None:
         if self.has_focus():
             self._state = ButtonState.FOCUS_CHECKED
@@ -110,14 +97,33 @@ class Button:
     def has_focus(self) -> bool:
         return self._state in [ButtonState.FOCUS, ButtonState.FOCUS_CHECKED]
 
-    def click(self) -> None:
+    def press(self) -> None:
+        self._pressed = True
+
+    def release(self) -> None:
+        self._pressed = False
         self._sound_clicked.play()
         self._callback()
 
+    def is_pressed(self) -> bool:
+        return self._pressed
+
+    def process_inputs(self, inputs: Inputs, dt: float) -> None:
+        if mouse.is_visible():
+            if self._rect.collidepoint(inputs.mouse.pos):
+                if not self.has_focus():
+                    self.set_focus()
+                if inputs.mouse.BUTTON1:
+                    self.press()
+            else:
+                self.unset_focus()
+
     def update(self):
+        if self.is_pressed():
+            self.release()
         self._image = self._images[self._state]
 
-    def draw(self, surface: pg.Surface) -> None:
+    def draw(self, surface: pygame.Surface) -> None:
         surface.blit(self._image, self._rect)
         surface.blit(self._text._surface, self._text._rect)
 

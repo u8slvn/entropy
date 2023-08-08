@@ -5,12 +5,13 @@ from abc import abstractmethod
 from typing import TYPE_CHECKING
 from typing import Type
 
+from entropy.commands.base import Commands
+
 
 if TYPE_CHECKING:
     import pygame
 
-    from entropy.gui.input.keyboard_events import KeyboardEvents
-    from entropy.gui.input.mouse_events import MouseEvents
+    from entropy.gui.input import Inputs
     from entropy.misc.control import Control
 
 
@@ -19,6 +20,7 @@ class State(ABC):
 
     def __init__(self, control: Control) -> None:
         self.control = control
+        self._commands = Commands()
 
     def __init_subclass__(cls):
         State._states[cls.__name__] = cls
@@ -35,7 +37,11 @@ class State(ABC):
         pass
 
     @abstractmethod
-    def update(self, keyboard_e: KeyboardEvents, mouse_e: MouseEvents) -> None:
+    def process_inputs(self, inputs: Inputs, dt: float) -> None:
+        ...
+
+    @abstractmethod
+    def update(self) -> None:
         ...
 
     @abstractmethod
