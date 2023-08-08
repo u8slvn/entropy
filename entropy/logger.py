@@ -9,5 +9,5 @@ logging.basicConfig(
 )
 
 
-def logger():
+def get_logger():
     return logging.getLogger("entropy")

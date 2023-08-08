@@ -5,13 +5,13 @@ import pygame
 import entropy
 
 from entropy.gui.monitor import Monitor
-from entropy.logging import logger
+from entropy.logger import get_logger
 from entropy.utils import Pos
 from entropy.utils import PosScale
 from entropy.utils import Res
 
 
-logger = logger()
+logger = get_logger()
 
 
 class Window:

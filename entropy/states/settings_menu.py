@@ -20,8 +20,7 @@ from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
-    from entropy.gui.input.keyboard_inputs import KeyboardInputs
-    from entropy.gui.input.mouse_inputs import MouseInputs
+    from entropy.gui.input import Inputs
     from entropy.misc.control import Control
 
 
@@ -40,11 +39,14 @@ class SettingsMenu(State):
         self._font = assets.fonts.get("LanaPixel", "settings")
         self.transition_to(state=MenuState.SETTINGS)
 
-    def update(self, keyboard_e: KeyboardInputs, mouse_e: MouseInputs) -> None:
-        if keyboard_e.SPACE:
+    def process_inputs(self, inputs: Inputs) -> None:
+        if inputs.keyboard.SPACE:
             self.exit()
 
-        self._menu.update(keyboard_e=keyboard_e, mouse_e=mouse_e)
+        self._menu.process_inputs(inputs=inputs)
+
+    def update(self, dt: float) -> None:
+        self._menu.update()
 
     def draw(self, surface: pg.Surface) -> None:
         if self.control.prev_state is not None:

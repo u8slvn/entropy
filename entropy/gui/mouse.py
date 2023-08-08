@@ -14,7 +14,7 @@ class Mouse:
         self.__nb_moves = 0
         self.__nb_moves_before_show = 2
 
-    def process_inputs(self, inputs: Inputs, dt: float) -> None:
+    def process_inputs(self, inputs: Inputs) -> None:
         if inputs.keyboard.KEYUP or inputs.keyboard.KEYDOWN:
             self.hide()
 

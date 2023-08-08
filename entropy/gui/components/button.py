@@ -54,9 +54,9 @@ class Button:
         self._callback = callback
 
     @staticmethod
-    def _build_images(image: pygame.Surface) -> dict[int, pygame.Surface]:
+    def _build_images(image: pygame.Surface) -> dict[ButtonState, pygame.Surface]:
         width = image.get_width()
-        height = image.get_height() / 4
+        height = image.get_height() // 4
 
         x = y = 0
         images = {}
@@ -108,7 +108,7 @@ class Button:
     def is_pressed(self) -> bool:
         return self._pressed
 
-    def process_inputs(self, inputs: Inputs, dt: float) -> None:
+    def process_inputs(self, inputs: Inputs) -> None:
         if mouse.is_visible():
             if self._rect.collidepoint(inputs.mouse.pos):
                 if not self.has_focus():

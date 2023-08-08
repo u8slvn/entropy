@@ -6,11 +6,11 @@ import pygame
 
 import entropy
 
-from entropy.gui.input import InputsBase
+from entropy.gui.input import InputsController
 from entropy.utils import Pos
 
 
-class MouseInputs(InputsBase):
+class MouseInputs(InputsController):
     def __init__(self) -> None:
         self.BUTTON1 = False
         self.BUTTON2 = False
@@ -49,7 +49,7 @@ class MouseInputs(InputsBase):
             y=ceil(mouse_pos.y * entropy.window.render_scale.y),
         )
 
-    def reset(self) -> None:
+    def flush(self) -> None:
         self.BUTTON1 = False
         self.BUTTON2 = False
         self.BUTTON3 = False

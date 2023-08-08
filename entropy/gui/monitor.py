@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import pygame
 
-from entropy.logging import logger
+from entropy.logger import get_logger
 from entropy.utils import Res
 
 
-logger = logger()
+logger = get_logger()
 
 
 class Monitor:

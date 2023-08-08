@@ -34,16 +34,7 @@ def build_settings_button(
     match: Any | None = None,
 ) -> Button:
     font = assets.fonts.get("LanaPixel", "small")
-    if watch is None and match is None:
-        return Button(
-            text=Text(text=text, font=font, color=Color("white")),
-            image=assets.images.get("settings-button-sheet"),
-            sound_focus=assets.sound.get("hover"),
-            sound_clicked=assets.sound.get("click"),
-            callback=callback,
-            pos=pos,
-        )
-    else:
+    if watch is not None and match is not None:
         return ConfigObservableButton(
             text=Text(text=text, font=font, color=Color("white")),
             image=assets.images.get("settings-button-sheet"),
@@ -53,4 +44,13 @@ def build_settings_button(
             pos=pos,
             watch=watch,
             match=match,
+        )
+    else:
+        return Button(
+            text=Text(text=text, font=font, color=Color("white")),
+            image=assets.images.get("settings-button-sheet"),
+            sound_focus=assets.sound.get("hover"),
+            sound_clicked=assets.sound.get("click"),
+            callback=callback,
+            pos=pos,
         )

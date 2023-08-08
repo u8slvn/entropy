@@ -37,11 +37,11 @@ class State(ABC):
         pass
 
     @abstractmethod
-    def process_inputs(self, inputs: Inputs, dt: float) -> None:
+    def process_inputs(self, inputs: Inputs) -> None:
         ...
 
     @abstractmethod
-    def update(self) -> None:
+    def update(self, dt: float) -> None:
         ...
 
     @abstractmethod

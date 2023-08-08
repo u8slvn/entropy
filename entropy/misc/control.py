@@ -9,7 +9,7 @@ import pygame
 
 import entropy
 
-from entropy import logger
+from entropy import get_logger
 from entropy import states
 from entropy.gui.components.fps import FPSViewer
 from entropy.gui.input import Inputs
@@ -19,7 +19,7 @@ from entropy.utils import Res
 if TYPE_CHECKING:
     from entropy.states import State
 
-logger = logger()
+logger = get_logger()
 
 
 class Control:
@@ -41,13 +41,13 @@ class Control:
     def current_state(self) -> State:
         return self.state_stack[-1]
 
-    def transition_to(self, state: str) -> None:
-        logger.info(f'Game state changed to "{state}".')
+    def transition_to(self, state_name: str) -> None:
+        logger.info(f'Game state changed to "{state_name}".')
         if len(self.state_stack) >= 1:
             self.current_state.teardown()
             self.prev_state = self.current_state
 
-        state_cls = states.get(state)
+        state_cls = states.get(state_name)
         state = state_cls(control=self)
         state.setup()
         self.state_stack.append(state)
@@ -70,16 +70,16 @@ class Control:
         if self.inputs.keyboard.F6:
             entropy.window.toggle_fullscreen()
 
-        entropy.mouse.process_inputs(inputs=self.inputs, dt=self.dt)
-        self.fps_viewer.process_inputs(inputs=self.inputs, dt=self.dt)
-        self.current_state.process_inputs(inputs=self.inputs, dt=self.dt)
+        entropy.mouse.process_inputs(inputs=self.inputs)
+        self.fps_viewer.process_inputs(inputs=self.inputs)
+        self.current_state.process_inputs(inputs=self.inputs)
 
     def update(self) -> None:
         entropy.mouse.update()
-        self.current_state.update()
+        self.current_state.update(dt=self.dt)
         self.fps_viewer.update()
 
-        self.inputs.reset()
+        self.inputs.flush()
 
     def render(self) -> None:
         self.current_state.draw(surface=self.render_surface)
@@ -88,7 +88,7 @@ class Control:
 
     def start(self, state: str = "Splash") -> None:
         states.load()
-        self.transition_to(state=state)
+        self.transition_to(state_name=state)
         self.running = True
 
         while self.running:

@@ -34,10 +34,10 @@ class TitleScreen(State):
     def setup(self) -> None:
         self._covered = False
 
-    def process_inputs(self, inputs: Inputs, dt: float) -> None:
-        self._main_menu.process_inputs(inputs=inputs, dt=dt)
+    def process_inputs(self, inputs: Inputs) -> None:
+        self._main_menu.process_inputs(inputs=inputs)
 
-    def update(self) -> None:
+    def update(self, dt: float) -> None:
         self._main_menu.update()
 
     def draw(self, surface: pg.Surface) -> None:

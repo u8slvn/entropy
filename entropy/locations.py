@@ -3,10 +3,10 @@ from __future__ import annotations
 from pathlib import Path
 
 from entropy import platform
-from entropy.logging import logger
+from entropy.logger import get_logger
 
 
-logger = logger()
+logger = get_logger()
 
 ROOT = Path(__file__).parent
 logger.debug(f"Root dir: {ROOT}")

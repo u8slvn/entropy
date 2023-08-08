@@ -38,7 +38,7 @@ class MenuButtonGroup:
             return None
         return self._buttons[self._focus_index]
 
-    def process_inputs(self, inputs: Inputs, dt: float) -> None:
+    def process_inputs(self, inputs: Inputs) -> None:
         if inputs.keyboard.KEYUP or inputs.keyboard.KEYDOWN:
             if inputs.keyboard.UP:
                 self._select_adjacent_button(adjacent=Adjacent.PREV)
@@ -51,7 +51,7 @@ class MenuButtonGroup:
         for index, button in enumerate(self._buttons):
             if mouse.is_visible() and button.has_focus():
                 self._focus_index = index
-            button.process_inputs(inputs=inputs, dt=dt)
+            button.process_inputs(inputs=inputs)
 
     def update(self) -> None:
         for button in self._buttons:

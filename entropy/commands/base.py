@@ -11,15 +11,6 @@ class Command(ABC):
 
 
 class Commands(list, Command):
-    def __setitem__(self, index: int, command: Command) -> None:
-        super().__setitem__(index, command)
-
-    def insert(self, index: int, command: Command) -> None:
-        super().insert(index, command)
-
-    def append(self, command: Command) -> None:
-        super().append(command)
-
     def __call__(self):
         while self:
             command = self.pop()

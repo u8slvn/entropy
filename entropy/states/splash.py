@@ -42,11 +42,11 @@ class Splash(State):
     def setup(self) -> None:
         self.fade_in.start()
 
-    def process_inputs(self, inputs: Inputs, dt: float) -> None:
+    def process_inputs(self, inputs: Inputs) -> None:
         if any([inputs.keyboard.SPACE, inputs.keyboard.ENTER]):
             self._commands.append(self.next_state_cmd)
 
-    def update(self) -> None:
+    def update(self, dt: float) -> None:
         self._commands()
         self.fade_in.update()
         self.fade_out.update()

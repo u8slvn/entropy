@@ -10,16 +10,16 @@ from entropy.gui.window import Window
 from entropy.locations import ASSETS_DIR
 from entropy.locations import CONFIG_FILE_PATH
 from entropy.locations import USER_LOCAL_DIR
-from entropy.logging import logger
+from entropy.logger import get_logger
 from entropy.misc.config import Config
 from entropy.misc.control import Control
 from entropy.misc.translator import Translator
 from entropy.utils import Res
 
 
-__all__ = ["assets", "config", "window", "translator", "mouse", "logger"]
+__all__ = ["assets", "config", "window", "translator", "mouse"]
 
-logger = logger()
+logger = get_logger()
 
 config: Config
 window: Window

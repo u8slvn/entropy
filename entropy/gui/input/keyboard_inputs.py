@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import pygame
 
-from entropy.gui.input import InputsBase
+from entropy.gui.input import InputsController
 
 
-class KeyboardInputs(InputsBase):
+class KeyboardInputs(InputsController):
     def __init__(self):
         self.KEYDOWN = False
         self.KEYUP = False
@@ -47,6 +47,6 @@ class KeyboardInputs(InputsBase):
             elif event.key == pygame.K_F6:
                 self.F6 = False
 
-    def reset(self) -> None:
+    def flush(self) -> None:
         for event in self.__dict__.keys():
             setattr(self, event, False)

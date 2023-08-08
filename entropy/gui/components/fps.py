@@ -19,7 +19,7 @@ class FPSViewer:
 
     def __init__(self, clock: pygame.time.Clock) -> None:
         self._clock = clock
-        self._fps = 60
+        self._fps = 60.0
         self._visible = False
         self._format = "{fps} FPS"
         self._font = pygame.font.SysFont("Arial", 20)
@@ -36,7 +36,7 @@ class FPSViewer:
             entropy.window.default_res.h - self._text.get_height(),
         )
 
-    def process_inputs(self, inputs: Inputs, dt: float) -> None:
+    def process_inputs(self, inputs: Inputs) -> None:
         if inputs.keyboard.F5:
             self._visible = not self._visible
 

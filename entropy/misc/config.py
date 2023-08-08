@@ -6,12 +6,12 @@ from collections import OrderedDict
 from pathlib import Path
 from typing import Any
 
-from entropy import logger
+from entropy import get_logger
 from entropy.tools.observer import Observer
 from entropy.utils import Res
 
 
-logger = logger()
+logger = get_logger()
 
 
 class Config(Observer):

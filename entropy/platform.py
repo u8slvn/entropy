@@ -8,6 +8,8 @@ from pathlib import Path
 
 WIN = sys.platform.startswith("win")
 
+APPDATA = os.getenv("APPDATA")
+
 
 def configure():
     """Configure platform related needs."""
@@ -21,8 +23,8 @@ def configure():
 
 
 def get_user_local_storage() -> Path:
-    if WIN:
-        appdata = Path(os.getenv("APPDATA"))
+    if WIN and APPDATA is not None:
+        appdata = Path(APPDATA)
         return appdata.parent.joinpath("LocalLow/entropy")
 
     return Path.home().joinpath("entropy")
