@@ -7,5 +7,5 @@ from entropy.commands.base import Command
 
 class QuitGame(Command):
     def __call__(self) -> None:
-        event = pygame.Event(type=pygame.QUIT)
-        pygame.event.post(event=event)
+        event = pygame.Event(pygame.QUIT)
+        pygame.event.post(event)

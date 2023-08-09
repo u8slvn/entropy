@@ -125,7 +125,7 @@ class Button:
 
     def draw(self, surface: pygame.Surface) -> None:
         surface.blit(self._image, self._rect)
-        surface.blit(self._text._surface, self._text._rect)
+        self._text.draw(surface=surface)
 
 
 class ObservableButton(Button):
