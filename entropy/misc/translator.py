@@ -6,13 +6,13 @@ import logging
 from typing import Callable
 
 from entropy.locations import LOCALES_DIR
-from entropy.tools.observer import Observer
+from entropy.tools.observer import Subject
 
 
 logger = logging.getLogger(__name__)
 
 
-class Translator(Observer):
+class Translator(Subject):
     def __init__(self, locales: list[str], locale: str) -> None:
         super().__init__()
         self.locales = locales
@@ -29,10 +29,6 @@ class Translator(Observer):
                 localedir=LOCALES_DIR,
                 languages=[locale],
             )
-
-    def notify(self) -> None:
-        for text in self._registered_subjects:
-            text.update()
 
     def set_translation(self, locale: str) -> None:
         logger.info(f'Locale set to "{locale}".')

@@ -1,11 +1,18 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
 from typing import Callable
 
 import pygame
 
+from entropy.game.object import GameEntity
 
-class Timer:
+
+if TYPE_CHECKING:
+    from entropy.gui.input import Inputs
+
+
+class Timer(GameEntity):
     def __init__(
         self,
         duration: int,
@@ -19,9 +26,6 @@ class Timer:
         self._start_ticks = 0
         self._started = False
         self._done = False
-
-        if self._autostart is True:
-            self.start()
 
     def _trigger_callback(self) -> None:
         if self._callback is not None:
@@ -48,6 +52,13 @@ class Timer:
     def is_done(self) -> bool:
         return self._done
 
+    def setup(self) -> None:
+        if self._autostart is True:
+            self.start()
+
+    def process_inputs(self, inputs: Inputs) -> None:
+        pass
+
     def update(self) -> None:
         if self.is_done() or not self.is_started():
             return
@@ -58,7 +69,10 @@ class Timer:
             self.stop()
             self._trigger_callback()
 
-    def reset(self) -> None:
+    def draw(self, surface: pygame.Surface) -> None:
+        pass
+
+    def teardown(self) -> None:
         self._countdown = self._duration
         self._start_ticks = 0
         self._started = False

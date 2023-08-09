@@ -6,7 +6,7 @@ import os
 
 from typing import Type
 
-from entropy.states.base import State
+from entropy.game.states.base import State
 
 
 _states: dict[str, Type[State]] = {}

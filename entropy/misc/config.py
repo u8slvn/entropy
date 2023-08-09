@@ -6,15 +6,15 @@ from collections import OrderedDict
 from pathlib import Path
 from typing import Any
 
-from entropy import get_logger
-from entropy.tools.observer import Observer
+from entropy.logger import get_logger
+from entropy.tools.observer import Subject
 from entropy.utils import Res
 
 
 logger = get_logger()
 
 
-class Config(Observer):
+class Config(Subject):
     _default_config = OrderedDict(
         {
             "display": OrderedDict(
@@ -62,13 +62,8 @@ class Config(Observer):
         self.resolution_x, self.resolution_y = res
         self.save()
 
-    def notify(self) -> None:
-        for subject in self._registered_subjects:
-            subject.update()
-
     def update_attr(self, name: str, value: Any):
         setattr(self, name, value)
-        self.notify()
         self.save()
 
     def save(self):
@@ -89,6 +84,8 @@ class Config(Observer):
                 self._config.write(file)
         except OSError as error:
             logger.error(f"Cannot save config file: {error}")
+
+        self.notify()
 
     @classmethod
     def get_default_config(cls) -> configparser.ConfigParser:

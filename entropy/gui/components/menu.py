@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 import pygame as pg
 
 from entropy import mouse
+from entropy.game.object import GameEntity
 
 
 if TYPE_CHECKING:
@@ -18,7 +19,7 @@ class Adjacent(IntEnum):
     PREV = -1
 
 
-class MenuButtonGroup:
+class MenuButtonGroup(GameEntity):
     def __init__(self, buttons: list[Button]) -> None:
         self._focus_index: int | None = None
         self._buttons = buttons
@@ -37,6 +38,10 @@ class MenuButtonGroup:
         if self._focus_index is None:
             return None
         return self._buttons[self._focus_index]
+
+    def setup(self) -> None:
+        for button in self._buttons:
+            button.setup()
 
     def process_inputs(self, inputs: Inputs) -> None:
         if inputs.keyboard.KEYUP or inputs.keyboard.KEYDOWN:
@@ -60,3 +65,7 @@ class MenuButtonGroup:
     def draw(self, surface: pg.Surface) -> None:
         for button in self._buttons:
             button.draw(surface=surface)
+
+    def teardown(self):
+        for button in self._buttons:
+            button.teardown()

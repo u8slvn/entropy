@@ -9,13 +9,14 @@ import pygame
 
 from entropy import config
 from entropy import mouse
+from entropy.game.object import GameEntity
+from entropy.tools.observer import Observer
 from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
     from entropy.gui.components.text import Text
     from entropy.gui.input import Inputs
-    from entropy.tools.observer import Observer
 
 
 class ButtonState(IntEnum):
@@ -25,7 +26,7 @@ class ButtonState(IntEnum):
     FOCUS_CHECKED = 3
 
 
-class Button:
+class Button(GameEntity):
     def __init__(
         self,
         text: Text,
@@ -65,6 +66,32 @@ class Button:
             y += height
 
         return images
+
+    def setup(self) -> None:
+        self._text.setup()
+
+    def process_inputs(self, inputs: Inputs) -> None:
+        if mouse.is_visible():
+            if self._rect.collidepoint(inputs.mouse.pos):
+                if not self.has_focus():
+                    self.set_focus()
+                if inputs.mouse.BUTTON1:
+                    self.press()
+            else:
+                self.unset_focus()
+
+    def update(self):
+        if self.is_pressed():
+            self.release()
+        self._text.update()
+        self._image = self._images[self._state]
+
+    def draw(self, surface: pygame.Surface) -> None:
+        surface.blit(self._image, self._rect)
+        self._text.draw(surface=surface)
+
+    def teardown(self) -> None:
+        self._text.teardown()
 
     def check(self) -> None:
         if self.has_focus():
@@ -108,42 +135,23 @@ class Button:
     def is_pressed(self) -> bool:
         return self._pressed
 
-    def process_inputs(self, inputs: Inputs) -> None:
-        if mouse.is_visible():
-            if self._rect.collidepoint(inputs.mouse.pos):
-                if not self.has_focus():
-                    self.set_focus()
-                if inputs.mouse.BUTTON1:
-                    self.press()
-            else:
-                self.unset_focus()
 
-    def update(self):
-        if self.is_pressed():
-            self.release()
-        self._image = self._images[self._state]
-
-    def draw(self, surface: pygame.Surface) -> None:
-        surface.blit(self._image, self._rect)
-        self._text.draw(surface=surface)
-
-
-class ObservableButton(Button):
-    _observer: Observer
-
+class ConfigObserverButton(Button, Observer):
     def __init__(self, *args, watch: str, match: Any, **kwargs):
         super().__init__(*args, **kwargs)
         self._watch = watch
         self._match = match
-        self._observer.register(subject=self)
 
-    def update(self):
-        if getattr(self._observer, self._watch) == self._match:
+    def setup(self) -> None:
+        super().setup()
+        config.add_observer(observer=self)
+
+    def on_notify(self) -> None:
+        if getattr(config, self._watch) == self._match:
             self.check()
         else:
             self.uncheck()
-        super().update()
 
-
-class ConfigObservableButton(ObservableButton):
-    _observer = config
+    def teardown(self) -> None:
+        super().teardown()
+        config.remove_observer(observer=self)

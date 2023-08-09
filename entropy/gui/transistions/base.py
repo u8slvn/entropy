@@ -1,17 +1,17 @@
 from __future__ import annotations
 
 from abc import ABC
-from abc import abstractmethod
 from enum import IntEnum
 from typing import TYPE_CHECKING
 from typing import Callable
 from typing import final
 
+from entropy.game.object import GameEntity
 from entropy.tools.timer import Timer
 
 
 if TYPE_CHECKING:
-    import pygame
+    from entropy.gui.input import Inputs
 
 
 @final
@@ -20,7 +20,7 @@ class Ease(IntEnum):
     OUT = 1
 
 
-class Transition(Timer, ABC):
+class Transition(GameEntity, ABC):
     _ease: Ease
 
     def __init__(
@@ -29,29 +29,30 @@ class Transition(Timer, ABC):
         callback: Callable[[], None] | None = None,
     ) -> None:
         autostart = True if self._ease is Ease.IN else False
-        super().__init__(
+        self._timer = Timer(
             duration=duration,
             callback=callback,
             autostart=autostart,
         )
+        self._active = False
 
-    @abstractmethod
-    def _update(self) -> None:
+    def activate(self) -> None:
+        self._active = True
+        self._timer.start()
+
+    def is_active(self) -> bool:
+        return self._active
+
+    def setup(self) -> None:
+        self._timer.setup()
+        if self._timer.is_started():
+            self._active = True
+
+    def process_inputs(self, inputs: Inputs) -> None:
         pass
 
     def update(self) -> None:
-        super().update()
-        if self.is_done() or not self.is_started():
-            return
+        self._timer.update()
 
-        self._update()
-
-    @abstractmethod
-    def _draw(self, surface: pygame.Surface) -> None:
-        pass
-
-    def draw(self, surface: pygame.Surface) -> None:
-        if self.is_done() or not self.is_started():
-            return
-
-        self._draw(surface=surface)
+        if self._timer.is_done() or not self._timer.is_started():
+            self._active = False

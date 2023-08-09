@@ -10,14 +10,14 @@ import pygame
 import entropy
 
 from entropy import get_logger
-from entropy import states
+from entropy.game import states
 from entropy.gui.components.fps import FPSViewer
 from entropy.gui.input import Inputs
 from entropy.utils import Res
 
 
 if TYPE_CHECKING:
-    from entropy.states import State
+    from entropy.game.states import State
 
 logger = get_logger()
 
@@ -76,7 +76,7 @@ class Control:
 
     def update(self) -> None:
         entropy.mouse.update()
-        self.current_state.update(dt=self.dt)
+        self.current_state.update()
         self.fps_viewer.update()
 
         self.inputs.flush()

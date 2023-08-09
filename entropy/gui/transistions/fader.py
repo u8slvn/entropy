@@ -24,18 +24,24 @@ class _FaderTransition(Transition):
     def _default_alpha_value(self) -> int:
         return 255 if self._ease is Ease.IN else 0
 
-    def _update(self) -> None:
+    def update(self) -> None:
+        super().update()
+
+        if not self.is_active():
+            return
+
         if self._ease is Ease.IN:
-            alpha = max(int(self.countdown * self._alpha_rate), 0)
+            alpha = max(int(self._timer.countdown * self._alpha_rate), 0)
         else:
-            alpha = min(255 - int(self.countdown * self._alpha_rate), 255)
+            alpha = min(255 - int(self._timer.countdown * self._alpha_rate), 255)
         self._background.set_alpha(alpha)
 
-    def _draw(self, surface: pygame.Surface) -> None:
-        surface.blit(self._background, self._background.pos)
+    def draw(self, surface: pygame.Surface) -> None:
+        if self.is_active():
+            surface.blit(self._background, self._background.pos)
 
-    def reset(self) -> None:
-        super().reset()
+    def teardown(self) -> None:
+        self._timer.teardown()
         self._background.set_alpha(self._default_alpha_value())
 
 

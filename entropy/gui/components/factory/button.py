@@ -5,7 +5,7 @@ from typing import Callable
 
 from entropy import assets
 from entropy.gui.components.button import Button
-from entropy.gui.components.button import ConfigObservableButton
+from entropy.gui.components.button import ConfigObserverButton
 from entropy.gui.components.text import Text
 from entropy.utils import Color
 from entropy.utils import Pos
@@ -35,7 +35,7 @@ def build_settings_button(
 ) -> Button:
     font = assets.fonts.get("LanaPixel", "small")
     if watch is not None and match is not None:
-        return ConfigObservableButton(
+        return ConfigObserverButton(
             text=Text(text=text, font=font, color=Color("white")),
             image=assets.images.get("settings-button-sheet"),
             sound_focus=assets.sound.get("hover"),

@@ -9,14 +9,14 @@ from entropy import translator
 from entropy.commands.game import QuitGame
 from entropy.commands.state import ExitState
 from entropy.commands.state import TransitionToNextState
+from entropy.game.states.base import State
 from entropy.gui.components.factory.menu import build_main_menu
 from entropy.gui.components.menu import MenuButtonGroup
-from entropy.states.base import State
 
 
 if TYPE_CHECKING:
+    from entropy.game.control import Control
     from entropy.gui.input import Inputs
-    from entropy.misc.control import Control
 
 
 def test_lang():
@@ -37,7 +37,7 @@ class TitleScreen(State):
     def process_inputs(self, inputs: Inputs) -> None:
         self._main_menu.process_inputs(inputs=inputs)
 
-    def update(self, dt: float) -> None:
+    def update(self) -> None:
         self._main_menu.update()
 
     def draw(self, surface: pg.Surface) -> None:
