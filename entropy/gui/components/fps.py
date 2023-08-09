@@ -6,7 +6,7 @@ import pygame as pygame
 
 import entropy
 
-from entropy.game.object import GameEntity
+from entropy.game.entity import GameEntity
 from entropy.utils import Pos
 
 

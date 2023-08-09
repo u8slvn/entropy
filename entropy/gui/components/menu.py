@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 import pygame as pg
 
 from entropy import mouse
-from entropy.game.object import GameEntity
+from entropy.game.entity import GameEntity
 
 
 if TYPE_CHECKING:

@@ -13,13 +13,15 @@ from entropy import assets
 from entropy.commands.display import DisableFullscreen
 from entropy.commands.display import EnableFullscreen
 from entropy.commands.locale import SwitchLocaleTo
-from entropy.game.object import GameEntity
+from entropy.game.entity import GameEntity
 from entropy.game.states.base import State
 from entropy.gui.components.background import ColorBackground
 from entropy.gui.components.factory.menu import build_settings_menu
+from entropy.gui.components.slider import Slider
 from entropy.gui.components.text import Text
 from entropy.utils import Color
 from entropy.utils import Pos
+from entropy.utils import Size
 
 
 if TYPE_CHECKING:
@@ -41,18 +43,24 @@ class SettingsMenu(State):
         self._background = ColorBackground(color=Color(0, 0, 0, 150))
         self._font = assets.fonts.get("LanaPixel", "settings")
         self._submenu = self._build_submenu(Submenu.SETTINGS)
+        self._slider = Slider(
+            pos=Pos(300, 300), size=Size(200, 80), initial_value=0.5, min=0, max=40
+        )
 
     def setup(self) -> None:
         self._submenu.setup()
+        self._slider.setup()
 
     def process_inputs(self, inputs: Inputs) -> None:
         if inputs.keyboard.SPACE:
             self.exit()
 
         self._submenu.process_inputs(inputs=inputs)
+        self._slider.process_inputs(inputs=inputs)
 
     def update(self) -> None:
         self._submenu.update()
+        self._slider.update()
 
     def draw(self, surface: pg.Surface) -> None:
         if self.control.prev_state is not None:
@@ -60,6 +68,7 @@ class SettingsMenu(State):
 
         self._background.draw(surface=surface)
         self._submenu.draw(surface=surface)
+        self._slider.draw(surface=surface)
 
     def teardown(self) -> None:
         self._submenu.teardown()

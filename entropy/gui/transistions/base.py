@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 from typing import Callable
 from typing import final
 
-from entropy.game.object import GameEntity
+from entropy.game.entity import GameEntity
 from entropy.tools.timer import Timer
 
 

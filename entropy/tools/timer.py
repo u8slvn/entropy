@@ -5,7 +5,7 @@ from typing import Callable
 
 import pygame
 
-from entropy.game.object import GameEntity
+from entropy.game.entity import GameEntity
 
 
 if TYPE_CHECKING:

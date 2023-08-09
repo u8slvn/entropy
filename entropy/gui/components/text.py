@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 import pygame
 
 from entropy import translator
-from entropy.game.object import GameEntity
+from entropy.game.entity import GameEntity
 from entropy.tools.observer import Observer
 from entropy.utils import Color
 from entropy.utils import Pos

@@ -9,7 +9,7 @@ import pygame
 
 from entropy import config
 from entropy import mouse
-from entropy.game.object import GameEntity
+from entropy.game.entity import GameEntity
 from entropy.tools.observer import Observer
 from entropy.utils import Pos
 

@@ -4,7 +4,7 @@ from abc import ABC
 from typing import TYPE_CHECKING
 from typing import Type
 
-from entropy.game.object import GameEntity
+from entropy.game.entity import GameEntity
 from entropy.logger import get_logger
 
 
