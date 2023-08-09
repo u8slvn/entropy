@@ -18,11 +18,14 @@ class _FaderTransition(Transition):
     ) -> None:
         super().__init__(duration=duration, callback=callback)
         self._background = ColorBackground(color=Color(0, 0, 0, 255))
-        self._background.set_alpha(self._default_alpha_value())
         self._alpha_rate = 255 / duration
 
     def _default_alpha_value(self) -> int:
         return 255 if self._ease is Ease.IN else 0
+
+    def setup(self) -> None:
+        super().setup()
+        self._background.set_alpha(self._default_alpha_value())
 
     def update(self) -> None:
         super().update()
@@ -42,7 +45,6 @@ class _FaderTransition(Transition):
 
     def teardown(self) -> None:
         self._timer.teardown()
-        self._background.set_alpha(self._default_alpha_value())
 
 
 class FadeIn(_FaderTransition):

@@ -27,8 +27,8 @@ class Config(Subject):
             ),
             "game": OrderedDict(
                 {
-                    "font": "",
                     "locale": "en",
+                    "font": "",
                 }
             ),
         }
@@ -50,6 +50,7 @@ class Config(Subject):
 
         # Game
         self.locale = self._config.get("game", "locale")
+        self.font = self._config.get("game", "font")
 
         logger.info("Config loaded.")
 
@@ -67,14 +68,9 @@ class Config(Subject):
         self.save()
 
     def save(self):
-        # Display
-        self._config["display"]["fps"] = str(self.fps)
-        self._config["display"]["resolution_x"] = str(self.resolution_x)
-        self._config["display"]["resolution_y"] = str(self.resolution_y)
-        self._config["display"]["fullscreen"] = str(self.fullscreen)
-
-        # Game
-        self._config["game"]["locale"] = str(self.locale)
+        for section, params in self._default_config.items():
+            for param in params.keys():
+                self._config[section][param] = str(getattr(self, param))
 
         try:
             if not self._config_file.exists():
@@ -85,10 +81,11 @@ class Config(Subject):
         except OSError as error:
             logger.error(f"Cannot save config file: {error}")
 
+        logger.info("Config saved.")
         self.notify()
 
     @classmethod
     def get_default_config(cls) -> configparser.ConfigParser:
-        config = configparser.ConfigParser()
+        config = configparser.ConfigParser(dict_type=OrderedDict)
         config.read_dict(cls._default_config)
         return config

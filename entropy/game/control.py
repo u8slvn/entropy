@@ -9,10 +9,10 @@ import pygame
 
 import entropy
 
-from entropy import get_logger
 from entropy.game import states
 from entropy.gui.components.fps import FPSViewer
 from entropy.gui.input import Inputs
+from entropy.logger import get_logger
 from entropy.utils import Res
 
 
@@ -44,8 +44,8 @@ class Control:
     def transition_to(self, state_name: str) -> None:
         logger.info(f'Game state changed to "{state_name}".')
         if len(self.state_stack) >= 1:
-            self.current_state.teardown()
             self.prev_state = self.current_state
+            self.prev_state.teardown()
 
         state_cls = states.get(state_name)
         state = state_cls(control=self)
@@ -102,7 +102,7 @@ class Control:
         self.stop()
 
     @staticmethod
-    def stop(delay=0.3) -> None:
+    def stop(delay=0.2) -> None:
         sleep(delay)
         pygame.quit()
         exit()

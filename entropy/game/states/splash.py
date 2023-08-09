@@ -54,6 +54,9 @@ class Splash(State):
         self._timer.update()
 
     def draw(self, surface: pygame.Surface) -> None:
+        if self._done:
+            return
+
         surface.fill("black")
         surface.blit(self._text, self._text_rect)
         self._fade_out.draw(surface=surface)
