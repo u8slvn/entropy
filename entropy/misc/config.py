@@ -65,7 +65,6 @@ class Config(Subject):
 
     def update_attr(self, name: str, value: Any):
         setattr(self, name, value)
-        self.save()
 
     def save(self):
         for section, params in self._default_config.items():

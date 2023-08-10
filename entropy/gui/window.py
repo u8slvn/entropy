@@ -21,6 +21,9 @@ class Window:
     Manage the whole game window related actions.
     """
 
+    _fullscreen_flags = pygame.FULLSCREEN | pygame.SCALED
+    _framed_flags = pygame.RESIZABLE
+
     def __init__(
         self,
         title: str,
@@ -48,7 +51,10 @@ class Window:
         If the given resolution is the same as the monitor resolution the resolution is
         scale down to fit inside the monitor.
         """
-        if resolution == self.monitor.res and self.screen_flags != pygame.FULLSCREEN:
+        if (
+            resolution == self.monitor.res
+            and self.screen_flags != self._fullscreen_flags
+        ):
             resolution = resolution - Res(80, 75)
 
         fullscreen = '"fullscreen", ' if self.fullscreen else ""
@@ -58,9 +64,7 @@ class Window:
     @property
     def screen_flags(self) -> int:
         """Return rhe screen mode flags."""
-        return (
-            pygame.FULLSCREEN | pygame.SCALED if self.fullscreen else pygame.RESIZABLE
-        )
+        return self._fullscreen_flags if self.fullscreen else self._framed_flags
 
     def adapt_to_ratio(self, resolution: Res) -> Res:
         """Adapt the given resolution to the render resolution ratio."""
