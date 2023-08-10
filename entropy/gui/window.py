@@ -58,7 +58,9 @@ class Window:
     @property
     def screen_flags(self) -> int:
         """Return rhe screen mode flags."""
-        return pygame.FULLSCREEN if self.fullscreen else pygame.RESIZABLE
+        return (
+            pygame.FULLSCREEN | pygame.SCALED if self.fullscreen else pygame.RESIZABLE
+        )
 
     def adapt_to_ratio(self, resolution: Res) -> Res:
         """Adapt the given resolution to the render resolution ratio."""
