@@ -5,6 +5,10 @@ from typing import NamedTuple
 import pygame
 
 
+def _is_2d_vector(value: tuple) -> bool:
+    return len(value) == 2 and all(isinstance(e, int) for e in value)
+
+
 class Pos(NamedTuple):
     """2D coordinate position."""
 
@@ -12,11 +16,11 @@ class Pos(NamedTuple):
     y: int
 
     def __add__(self, other: tuple) -> Pos:
-        assert len(other) == 2
+        assert _is_2d_vector(other)
         return Pos(self.x + other[0], self.y + other[1])
 
     def __sub__(self, other: tuple) -> Pos:
-        assert len(other) == 2
+        assert _is_2d_vector(other)
         return Pos(self.x - other[0], self.y - other[1])
 
 
@@ -45,9 +49,11 @@ class Res(NamedTuple):
         return self.w / self.h
 
     def __add__(self, other: tuple) -> Res:
+        assert _is_2d_vector(other)
         return Res(self.w + other[0], self.h + other[1])
 
     def __sub__(self, other: tuple) -> Res:
+        assert _is_2d_vector(other)
         return Res(self.w - other[0], self.h - other[1])
 
     def __str__(self) -> str:
