@@ -52,16 +52,16 @@ class Slider(GameEntity):
         self.move_slider(x=self._cursor_x)
 
     def process_inputs(self, inputs: Inputs) -> None:
-        if self._container.collidepoint(inputs.mouse.pos):
+        if mouse.collide_with(self._container):
             if mouse.is_button_pressed(mouse.BUTTON1):
                 self._grabbed = True
         if not mouse.is_button_pressed(mouse.BUTTON1):
             self._grabbed = False
-        if self._cursor.collidepoint(inputs.mouse.pos):
+        if mouse.collide_with(self._cursor):
             self._focus = True
 
         if self._grabbed:
-            self._cursor_x = inputs.mouse.pos.x
+            self._cursor_x = mouse.pos.x
         else:
             self._focus = False
 

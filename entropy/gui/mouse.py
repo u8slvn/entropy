@@ -1,8 +1,13 @@
 from __future__ import annotations
 
+from math import ceil
 from typing import TYPE_CHECKING
 
 import pygame
+
+import entropy
+
+from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
@@ -17,10 +22,26 @@ class Mouse:
     def __init__(self) -> None:
         self.__nb_moves = 0
         self.__nb_moves_before_show = 2
+        self._pos: Pos = Pos(0, 0)
+
+    @property
+    def pos(self) -> Pos:
+        return self._pos
+
+    @pos.setter
+    def pos(self, pos: tuple[int, int]) -> None:
+        mouse_pos = Pos(*pos) - entropy.window.render_margin
+        self._pos = Pos(
+            x=ceil(mouse_pos.x * entropy.window.render_scale.x),
+            y=ceil(mouse_pos.y * entropy.window.render_scale.y),
+        )
 
     def process_inputs(self, inputs: Inputs) -> None:
         if inputs.keyboard.KEYUP or inputs.keyboard.KEYDOWN:
             self.hide()
+
+        if inputs.mouse.POS is not None:
+            self.pos = inputs.mouse.POS
 
     def update(self) -> None:
         if self.is_visible() is False:
@@ -44,6 +65,9 @@ class Mouse:
     def hide(self) -> None:
         if self.is_visible():
             pygame.mouse.set_visible(False)
+
+    def collide_with(self, __rect: pygame.Rect) -> bool:
+        return __rect.collidepoint(self.pos)
 
     @staticmethod
     def is_visible() -> bool:

@@ -72,7 +72,7 @@ class Button(GameEntity):
 
     def process_inputs(self, inputs: Inputs) -> None:
         if mouse.is_visible():
-            if self._rect.collidepoint(inputs.mouse.pos):
+            if mouse.collide_with(self._rect):
                 if not self.has_focus():
                     self.set_focus()
                 if inputs.mouse.BUTTON1:
