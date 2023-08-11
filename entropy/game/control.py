@@ -87,6 +87,7 @@ class Control:
         entropy.window.render(surface=self.render_surface)
 
     def start(self, state: str = "Splash") -> None:
+        logger.info("Start entropy.")
         states.load()
         self.transition_to(state_name=state)
         self.running = True
@@ -103,6 +104,7 @@ class Control:
 
     @staticmethod
     def stop(delay=0.2) -> None:
+        logger.info("Stop entropy.")
         sleep(delay)
         pygame.quit()
         exit()

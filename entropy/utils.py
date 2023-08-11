@@ -11,11 +11,13 @@ class Pos(NamedTuple):
     x: int
     y: int
 
-    def __add__(self, other: Pos) -> Pos:
-        return Pos(self.x + other.x, self.y + other.y)
+    def __add__(self, other: tuple) -> Pos:
+        assert len(other) == 2
+        return Pos(self.x + other[0], self.y + other[1])
 
-    def __sub__(self, other: Pos) -> Pos:
-        return Pos(self.x - other.x, self.y - other.y)
+    def __sub__(self, other: tuple) -> Pos:
+        assert len(other) == 2
+        return Pos(self.x - other[0], self.y - other[1])
 
 
 class PosScale(NamedTuple):
@@ -38,19 +40,15 @@ class Res(NamedTuple):
     w: int
     h: int
 
-    def __add__(self, other: Res) -> Res:
-        return Res(self.w + other.w, self.h + other.h)
-
-    def __sub__(self, other: Res) -> Res:
-        return Res(self.w - other.w, self.h - other.h)
-
-    @property
-    def size(self) -> tuple[int, int]:
-        return self.w, self.h
-
     @property
     def aspect_ratio(self) -> float:
         return self.w / self.h
+
+    def __add__(self, other: tuple) -> Res:
+        return Res(self.w + other[0], self.h + other[1])
+
+    def __sub__(self, other: tuple) -> Res:
+        return Res(self.w - other[0], self.h - other[1])
 
     def __str__(self) -> str:
         return f"{self.w}x{self.h}"

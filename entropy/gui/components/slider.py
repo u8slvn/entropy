@@ -35,18 +35,29 @@ class Slider(GameEntity):
         self._top_pos = self._pos.y - (self._size.h // 2)
         self._container = pygame.Rect(self._min_pos, self._top_pos, *self._size)
         self._cursor = pygame.Rect(self._min_pos, self._top_pos, 10, self._size.h)
-        self._cursor_x = self._min_pos + self.range_value * initial_value
+        self._cursor_x = 0
+        self.value = initial_value
 
     @property
     def range_value(self) -> int:
         return self._max_pos - self._min_pos
 
-    def move_slider(self, x: float) -> None:
+    def move_slider(self, x: int) -> None:
         if x < self._min_pos:
             x = self._min_pos
         if x > self._max_pos:
             x = self._max_pos
         self._cursor.centerx = x
+
+    @property
+    def value(self) -> float:
+        button_value = self._cursor.centerx - self._min_pos
+        value = (button_value / self.range_value) * (self._max - self._min) + self._min
+        return round(value, 1)
+
+    @value.setter
+    def value(self, value: float) -> None:
+        self._cursor_x = int(self._min_pos + self.range_value * value)
 
     def setup(self) -> None:
         self.move_slider(x=self._cursor_x)
@@ -79,8 +90,3 @@ class Slider(GameEntity):
 
     def teardown(self) -> None:
         pass
-
-    def get_value(self):
-        button_value = self._cursor.centerx - self._min_pos
-        value = (button_value / self.range_value) * (self._max - self._min) + self._min
-        return round(value, 1)

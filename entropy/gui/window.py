@@ -59,11 +59,11 @@ class Window:
 
         fullscreen = '"fullscreen", ' if self.fullscreen else ""
         logger.info(f'Display mode set to {fullscreen}"{resolution}"')
-        return pygame.display.set_mode(resolution, self.screen_flags)
+        return pygame.display.set_mode(resolution, flags=self.screen_flags)
 
     @property
-    def screen_size(self) -> tuple[int, int]:
-        return self.screen_rect.size
+    def screen_res(self) -> Res:
+        return Res(*self.screen_rect.size)
 
     @property
     def screen_flags(self) -> int:
@@ -101,7 +101,7 @@ class Window:
 
     def resize_screen(self, resolution: Res | None = None) -> None:
         """Resize the screen to the given resolution size."""
-        if resolution is not None and self.screen_size == resolution.size:
+        if resolution is not None and self.screen_res == resolution:
             logger.debug(
                 "Screen not resized because it already fit the given resolution."
             )

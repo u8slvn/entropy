@@ -24,20 +24,20 @@ class MenuButtonGroup(GameEntity):
         self._focus_index: int | None = None
         self._buttons = buttons
 
-    def _select_adjacent_button(self, adjacent: Adjacent) -> None:
-        if self._focus_index is None:
-            self._focus_index = -1 if adjacent == Adjacent.NEXT else 0
-
-        self._focus_index = 0 if self._focus_index is None else self._focus_index
-        self._focused_button.unset_focus()
-        self._focus_index = (self._focus_index + adjacent) % len(self._buttons)
-        self._focused_button.set_focus()
-
     @property
     def _focused_button(self) -> Button | None:
         if self._focus_index is None:
             return None
         return self._buttons[self._focus_index]
+
+    def _select_adjacent_button(self, adjacent: Adjacent) -> None:
+        if self._focus_index is None:
+            self._focus_index = -1 if adjacent == Adjacent.NEXT else 0
+
+        self._focus_index = 0 if self._focus_index is None else self._focus_index
+        self._focused_button.unset_focus()  # type: ignore
+        self._focus_index = (self._focus_index + adjacent) % len(self._buttons)
+        self._focused_button.set_focus()  # type: ignore
 
     def setup(self) -> None:
         for button in self._buttons:
