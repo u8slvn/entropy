@@ -10,6 +10,7 @@ import pygame
 import pygame as pg
 
 from entropy import assets
+from entropy import config
 from entropy.commands.display import DisableFullscreen
 from entropy.commands.display import EnableFullscreen
 from entropy.commands.locale import SwitchLocaleTo
@@ -71,6 +72,7 @@ class SettingsMenu(State):
         self._slider.draw(surface=surface)
 
     def teardown(self) -> None:
+        config.save()
         self._submenu.teardown()
 
     def transition_to(self, submenu: Submenu):

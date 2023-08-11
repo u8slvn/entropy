@@ -61,10 +61,11 @@ class Config(Subject):
     @res.setter
     def res(self, res: Res) -> None:
         self.resolution_x, self.resolution_y = res
-        self.save()
+        self.notify()
 
     def update_attr(self, name: str, value: Any):
         setattr(self, name, value)
+        self.notify()
 
     def save(self):
         for section, params in self._default_config.items():
@@ -81,7 +82,6 @@ class Config(Subject):
             logger.error(f"Cannot save config file: {error}")
 
         logger.info("Config saved.")
-        self.notify()
 
     @classmethod
     def get_default_config(cls) -> configparser.ConfigParser:

@@ -62,7 +62,7 @@ class Control:
             if event.type == pygame.QUIT:
                 self.running = False
             elif event.type == pygame.VIDEORESIZE and not entropy.window.fullscreen:
-                entropy.window.resize_screen(resolution=Res(event.w, event.h))
+                entropy.window.resize_screen(resolution=Res(*event.size))
 
             self.inputs.parse_event(event=event)
 

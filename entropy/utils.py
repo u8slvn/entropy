@@ -45,6 +45,10 @@ class Res(NamedTuple):
         return Res(self.w - other.w, self.h - other.h)
 
     @property
+    def size(self) -> tuple[int, int]:
+        return self.w, self.h
+
+    @property
     def aspect_ratio(self) -> float:
         return self.w / self.h
 

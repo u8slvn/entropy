@@ -12,7 +12,7 @@ logger = get_logger()
 class Monitor:
     def __init__(self) -> None:
         self.info = pygame.display.Info()
-        logger.info(f"Monitor native resolution is {self.res}.")
+        logger.info(f'Monitor native resolution is "{self.res}".')
 
     @property
     def res(self) -> Res:
