@@ -6,6 +6,7 @@ import pygame
 
 from entropy import platform
 from entropy.assets_library import AssetsLibrary
+from entropy.constants import GAME_NAME
 from entropy.game.control import Control
 from entropy.gui.mouse import Mouse
 from entropy.gui.window import Window
@@ -15,10 +16,11 @@ from entropy.locations import USER_LOCAL_DIR
 from entropy.logger import get_logger
 from entropy.misc.config import Config
 from entropy.misc.translator import Translator
+from entropy.mixer import Mixer
 from entropy.utils import Res
 
 
-__all__ = ["assets", "config", "window", "translator", "mouse"]
+__all__ = ["assets", "config", "window", "translator", "mouse", "mixer"]
 
 logger = get_logger()
 
@@ -28,12 +30,13 @@ mouse: Mouse
 translator: Translator
 assets: AssetsLibrary
 control: Control
+mixer = Mixer()
 
 
 def init() -> None:
     global config, window, mouse, translator, assets, control
 
-    logger.info("Initialize entropy.")
+    logger.info(f"Initialize {GAME_NAME}.")
 
     os.environ["SDL_VIDEO_CENTERED"] = "1"
 
@@ -45,7 +48,7 @@ def init() -> None:
 
     config = Config(config_file=CONFIG_FILE_PATH)
     window = Window(
-        title="Entropy",
+        title=GAME_NAME.title(),
         default_res=Res(w=1920, h=1080),
         fullscreen=config.fullscreen,
     )
@@ -54,11 +57,16 @@ def init() -> None:
 
     assets = AssetsLibrary()
     assets.fonts.add_font(
-        path=ASSETS_DIR / "fonts/LanaPixel.ttf", small=22, big=44, settings=55
+        path=ASSETS_DIR / "fonts/LanaPixel.ttf",
+        small=22,
+        medium=33,
+        big=44,
+        settings=55,
     )
     assets.images.add_dir(path=ASSETS_DIR / "gui")
     assets.images.add_dir(path=ASSETS_DIR / "images")
     assets.sound.add_dir(path=ASSETS_DIR / "sound")
+    assets.sound.add_dir(path=ASSETS_DIR / "music")
     assets.load()
 
     control = Control(fps=config.fps)

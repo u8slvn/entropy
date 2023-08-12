@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import logging
 
+from entropy import GAME_NAME
+
 
 _logger: logging.Logger | None = None
 
@@ -39,7 +41,7 @@ def get_logger() -> logging.Logger:
     global _logger
 
     if _logger is None:
-        logger = logging.getLogger("entropy")
+        logger = logging.getLogger(GAME_NAME)
         logger.setLevel(logging.DEBUG)
 
         ch = logging.StreamHandler()

@@ -18,8 +18,9 @@ from entropy.game.entity import GameEntity
 from entropy.game.states.base import State
 from entropy.gui.components.background import ColorBackground
 from entropy.gui.components.factory.menu import build_settings_menu
-from entropy.gui.components.slider import Slider
+from entropy.gui.components.slider import TitledSlider
 from entropy.gui.components.text import Text
+from entropy.mixer import Channel
 from entropy.utils import Color
 from entropy.utils import Pos
 from entropy.utils import Size
@@ -44,8 +45,15 @@ class SettingsMenu(State):
         self._background = ColorBackground(color=Color(0, 0, 0, 150))
         self._font = assets.fonts.get("LanaPixel", "settings")
         self._submenu = self._build_submenu(Submenu.SETTINGS)
-        self._slider = Slider(
-            pos=Pos(300, 300), size=Size(200, 80), initial_value=0.5, min=0, max=40
+        self._slider = TitledSlider(
+            text="MAIN VOLUME",
+            pos=Pos(300, 300),
+            size=Size(550, 30),
+            initial_value=0.5,
+            min=0,
+            max=1,
+            button=assets.images.get("slider-button-sheet"),
+            channel=Channel.GENERAL,
         )
 
     def setup(self) -> None:

@@ -24,19 +24,20 @@ class Splash(State):
         self._text = font.render("ENTROPY", False, "white", "black")
         self._text_rect = self._text.get_rect()
         self._text_rect.center = pygame.Rect(0, 0, *entropy.window.default_res).center
-        self._fade_out = FadeOut(duration=3000, callback=self.mark_as_done)
+        self._fade_out = FadeOut(duration=4000, callback=self.mark_as_done)
         self._timer = TimerSecond(
-            duration=2,
+            duration=1,
             autostart=False,
             callback=self._fade_out.activate,
         )
-        self._fade_in = FadeIn(duration=3000, callback=self._timer.start)
+        self._fade_in = FadeIn(duration=4000, callback=self._timer.start)
         self._done = False
 
     def mark_as_done(self):
         self._done = True
 
     def setup(self) -> None:
+        entropy.mixer.play_music("main-theme")
         self._fade_in.setup()
         self._fade_out.setup()
         self._timer.setup()

@@ -9,6 +9,7 @@ import pygame
 
 import entropy
 
+from entropy import GAME_NAME
 from entropy.game import states
 from entropy.gui.components.fps import FPSViewer
 from entropy.gui.input import Inputs
@@ -34,7 +35,8 @@ class Control:
         self.running = False
         self.inputs = Inputs()
         self.clock = pygame.time.Clock()
-        self.dt = self.prev_time = 0.0
+        self.dt: float = 0.0
+        self.prev_time: float = 0.0
         self.fps_viewer = FPSViewer(clock=self.clock)
 
     @property
@@ -87,7 +89,7 @@ class Control:
         entropy.window.render(surface=self.render_surface)
 
     def start(self, state: str = "Splash") -> None:
-        logger.info("Start entropy.")
+        logger.info(f"Start {GAME_NAME}.")
         states.load()
         self.transition_to(state_name=state)
         self.running = True
@@ -104,7 +106,7 @@ class Control:
 
     @staticmethod
     def stop(delay=0.2) -> None:
-        logger.info("Stop entropy.")
+        logger.info(f"Stop {GAME_NAME}.")
         sleep(delay)
         pygame.quit()
         exit()

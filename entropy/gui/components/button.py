@@ -8,8 +8,9 @@ from typing import Callable
 import pygame
 
 from entropy import config
+from entropy import mixer
 from entropy import mouse
-from entropy.game.entity import GameEntity
+from entropy.gui.components.widget import WidgetComponent
 from entropy.tools.observer import Observer
 from entropy.utils import Pos
 
@@ -26,13 +27,13 @@ class ButtonState(IntEnum):
     FOCUS_CHECKED = 3
 
 
-class Button(GameEntity):
+class Button(WidgetComponent):
     def __init__(
         self,
         text: Text,
         image: pygame.Surface,
-        sound_focus: pygame.mixer.Sound,
-        sound_clicked: pygame.mixer.Sound,
+        sound_focus: str,
+        sound_clicked: str,
         callback: Callable[[], None],
         pos: Pos,
         padding: Pos = Pos(0, 0),
@@ -67,6 +68,14 @@ class Button(GameEntity):
 
         return images
 
+    @property
+    def width(self) -> int:
+        return self._image.get_width()
+
+    @property
+    def height(self) -> int:
+        return self._image.get_height()
+
     def setup(self) -> None:
         self._text.setup()
 
@@ -79,6 +88,8 @@ class Button(GameEntity):
                     self.press()
             else:
                 self.unset_focus()
+        if inputs.keyboard.ENTER and self.has_focus():
+            self.press()
 
     def update(self):
         if self.is_pressed():
@@ -113,7 +124,7 @@ class Button(GameEntity):
             self._state = ButtonState.FOCUS_CHECKED
         else:
             self._state = ButtonState.FOCUS
-        self._sound_focus.play()
+        mixer.play_uisfx(self._sound_focus)
 
     def unset_focus(self):
         if self.is_checked():
@@ -129,7 +140,7 @@ class Button(GameEntity):
 
     def release(self) -> None:
         self._pressed = False
-        self._sound_clicked.play()
+        mixer.play_uisfx(self._sound_clicked)
         self._callback()
 
     def is_pressed(self) -> bool:

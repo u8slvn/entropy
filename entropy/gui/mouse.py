@@ -66,8 +66,8 @@ class Mouse:
         if self.is_visible():
             pygame.mouse.set_visible(False)
 
-    def collide_with(self, __rect: pygame.Rect) -> bool:
-        return __rect.collidepoint(self.pos)
+    def collide_with(self, rect: pygame.Rect) -> bool:
+        return rect.collidepoint(self.pos)
 
     @staticmethod
     def is_visible() -> bool:

@@ -18,8 +18,8 @@ def build_title_screen_button(
     return Button(
         text=Text(text=text, font=font, color=Color("white")),
         image=assets.images.get("main-menu-button-sheet-a"),
-        sound_focus=assets.sound.get("hover"),
-        sound_clicked=assets.sound.get("click"),
+        sound_focus="hover",
+        sound_clicked="click",
         callback=callback,
         pos=pos,
         padding=Pos(0, 4),
@@ -38,8 +38,8 @@ def build_settings_button(
         return ConfigObserverButton(
             text=Text(text=text, font=font, color=Color("white")),
             image=assets.images.get("settings-button-sheet"),
-            sound_focus=assets.sound.get("hover"),
-            sound_clicked=assets.sound.get("click"),
+            sound_focus="hover",
+            sound_clicked="click",
             callback=callback,
             pos=pos,
             watch=watch,
@@ -49,8 +49,8 @@ def build_settings_button(
         return Button(
             text=Text(text=text, font=font, color=Color("white")),
             image=assets.images.get("settings-button-sheet"),
-            sound_focus=assets.sound.get("hover"),
-            sound_clicked=assets.sound.get("click"),
+            sound_focus="hover",
+            sound_clicked="click",
             callback=callback,
             pos=pos,
         )

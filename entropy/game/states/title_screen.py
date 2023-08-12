@@ -11,7 +11,7 @@ from entropy.commands.state import ExitState
 from entropy.commands.state import TransitionToNextState
 from entropy.game.states.base import State
 from entropy.gui.components.factory.menu import build_main_menu
-from entropy.gui.components.menu import MenuButtonGroup
+from entropy.gui.components.menu import MenuWidgetGroup
 
 
 if TYPE_CHECKING:
@@ -49,7 +49,7 @@ class TitleScreen(State):
     def teardown(self) -> None:
         self._covered = True
 
-    def _build_main_menu(self) -> MenuButtonGroup:
+    def _build_main_menu(self) -> MenuWidgetGroup:
         return build_main_menu(
             config=[
                 {
