@@ -13,7 +13,7 @@ from entropy import GAME_NAME
 from entropy.game import states
 from entropy.gui.components.fps import FPSViewer
 from entropy.gui.input import Inputs
-from entropy.logger import get_logger
+from entropy.logging import get_logger
 from entropy.utils import Res
 
 

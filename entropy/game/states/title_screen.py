@@ -10,8 +10,10 @@ from entropy.commands.game import QuitGame
 from entropy.commands.state import ExitState
 from entropy.commands.state import TransitionToNextState
 from entropy.game.states.base import State
-from entropy.gui.components.factory.menu import build_main_menu
 from entropy.gui.components.menu import MenuWidgetGroup
+from entropy.gui.components.templates.button import TitleScreenButton
+from entropy.gui.components.templates.text import ButtonText
+from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
@@ -50,25 +52,13 @@ class TitleScreen(State):
         self._covered = True
 
     def _build_main_menu(self) -> MenuWidgetGroup:
-        return build_main_menu(
-            config=[
-                {
-                    "text": "CONTINUE",
-                    "callback": test_lang,
-                },
-                {
-                    "text": "NEW GAME",
-                    "callback": ExitState(self),
-                },
-                {
-                    "text": "SETTINGS",
-                    "callback": TransitionToNextState(
-                        state=self, next_state="SettingsMenu"
-                    ),
-                },
-                {
-                    "text": "QUIT",
-                    "callback": QuitGame(),
-                },
-            ]
-        )
+        widgets = [
+            TitleScreenButton(text=ButtonText("CONTINUE"), callback=test_lang),
+            TitleScreenButton(text=ButtonText("NEW GAME"), callback=ExitState(self)),
+            TitleScreenButton(
+                text=ButtonText("SETTINGS"),
+                callback=TransitionToNextState(state=self, next_state="SettingsMenu"),
+            ),
+            TitleScreenButton(text=ButtonText("QUIT"), callback=QuitGame()),
+        ]
+        return MenuWidgetGroup(pos=Pos(0, 400), margin=20, widgets=widgets)

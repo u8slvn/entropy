@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from entropy import platform
-from entropy.logger import get_logger
+from entropy.logging import get_logger
 
 
 logger = get_logger()

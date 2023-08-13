@@ -4,10 +4,8 @@ from typing import TYPE_CHECKING
 
 import pygame
 
-from entropy import assets
 from entropy import mixer
 from entropy import mouse
-from entropy.constants import GUI_TEXT_COLOR
 from entropy.constants import SLIDER_BG_COLOR
 from entropy.constants import SLIDER_PROGRESS_COLOR
 from entropy.gui.components.text import Text
@@ -24,13 +22,13 @@ if TYPE_CHECKING:
 class Slider(WidgetComponent):
     def __init__(
         self,
-        pos: Pos,
         size: Size,
         min: int,
         max: int,
         button: pygame.Surface,
         initial_value: float,
         channel: Channel,
+        pos: Pos = Pos(0, 0),
     ) -> None:
         self._pos = pos
         self._size = size
@@ -39,20 +37,29 @@ class Slider(WidgetComponent):
         self._channel = channel
         self._focus = False
         self._grabbed = False
-        self._min_pos = self._pos.x
-        self._max_pos = self._pos.x + self._size.w
+        self._min_pos = 0
+        self._max_pos = 0
         self._background = pygame.Rect(*self._pos, *self._size)
         self._progress = pygame.Rect(*self._pos, *self._size)
         self._buttons = self._build_buttons(button)
         self._button = self._buttons[self._focus]
         self._button_rect = self._button.get_rect()
+        self._button_x = 0
+        self._last_value = 0
+        self._initial_value = initial_value
+
+        self._setup_pos()
+
+    def _setup_pos(self) -> None:
+        self._min_pos = self._pos.x
+        self._max_pos = self._pos.x + self._size.w
+        self._background.topleft = self._pos
+        self._progress.topleft = self._pos
         self._button_rect.topleft = (
             self._pos.x,
             self._pos.y - (self._button_rect.h - self._size.h) // 2,
         )
-        self._button_x = 0
-        self.set_value(initial_value)
-        self._last_value = self.get_value()
+        self.set_value(value=self._initial_value)
 
     @staticmethod
     def _build_buttons(image: pygame.Surface) -> list[pygame.Surface]:
@@ -67,19 +74,27 @@ class Slider(WidgetComponent):
 
         return buttons
 
-    @property
-    def width(self) -> int:
+    def get_width(self) -> int:
         return self._size.w
 
-    @property
-    def height(self) -> int:
+    def get_height(self) -> int:
         return self._button_rect.h
+
+    def set_pos(self, pos: Pos, center_x: bool = False) -> None:
+        if center_x is True:
+            self._pos = Pos(self.get_center_x(), pos.y)
+        else:
+            self._pos = pos
+        self._setup_pos()
 
     def set_focus(self) -> None:
         self._focus = True
 
     def unset_focus(self) -> None:
         self._focus = False
+
+    def has_focus(self) -> None:
+        return self._focus is True
 
     @property
     def range_value(self) -> int:
@@ -100,6 +115,7 @@ class Slider(WidgetComponent):
         return round(value, 2)
 
     def set_value(self, value: float) -> None:
+        self._last_value = self.get_value()
         self._button_x = int(self._min_pos + self.range_value * value)
 
     def setup(self) -> None:
@@ -140,25 +156,21 @@ class Slider(WidgetComponent):
 
 
 class TitledSlider(Slider):
-    _margin = 15
+    _margin = 7
 
     def __init__(
         self,
-        text: str,
-        pos: Pos,
+        text: Text,
         size: Size,
         min: int,
         max: int,
         button: pygame.Surface,
         initial_value: float,
         channel: Channel,
+        pos: Pos = Pos(0, 0),
     ) -> None:
-        font = assets.fonts.get("LanaPixel", "small")
-        self._text = Text(text=text, font=font, color=GUI_TEXT_COLOR)
-        slider_pos = Pos(pos.x, pos.y + self._text.height + self._margin)
-        self._text.set_pos(Pos(pos.x + ((size.w - self._text.width) // 2), pos.y))
         super().__init__(
-            pos=slider_pos,
+            pos=pos,
             size=size,
             min=min,
             max=max,
@@ -166,19 +178,30 @@ class TitledSlider(Slider):
             initial_value=initial_value,
             channel=channel,
         )
+        self._text = text
+        self.set_pos(pos=pos)
 
-    @property
-    def height(self) -> int:
-        return super().height + self._margin + self._text.height
+    def get_height(self) -> int:
+        return super().get_height() + self._margin + self._text.height
+
+    def set_pos(self, pos: Pos, center_x: bool = False) -> None:
+        super().set_pos(
+            pos=Pos(pos.x, pos.y + self._text.height + self._margin),
+            center_x=center_x,
+        )
+        self._text.set_pos(
+            pos=Pos(pos.x + ((self._size.w - self._text.width) // 2), pos.y),
+            center_x=center_x,
+        )
 
     def setup(self) -> None:
-        self._text.setup()
         super().setup()
+        self._text.setup()
 
     def update(self) -> None:
-        self._text.update()
         super().update()
+        self._text.update()
 
     def draw(self, surface: pygame.Surface) -> None:
-        self._text.draw(surface=surface)
         super().draw(surface=surface)
+        self._text.draw(surface=surface)

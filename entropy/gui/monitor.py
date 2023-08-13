@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pygame
 
-from entropy.logger import get_logger
+from entropy.logging import get_logger
 from entropy.utils import Res
 
 

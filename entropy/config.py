@@ -6,15 +6,27 @@ from collections import OrderedDict
 from pathlib import Path
 from typing import Any
 
-from entropy.logger import get_logger
+from entropy.locations import CONFIG_FILE_PATH
+from entropy.logging import get_logger
 from entropy.tools.observer import Subject
 from entropy.utils import Res
 
 
 logger = get_logger()
 
+_config: _Config | None = None
 
-class Config(Subject):
+
+def get_config() -> _Config:
+    global _config
+
+    if _config is None:
+        _config = _Config(config_file=CONFIG_FILE_PATH)
+
+    return _config
+
+
+class _Config(Subject):
     _default_config = OrderedDict(
         {
             "display": OrderedDict(
@@ -28,7 +40,16 @@ class Config(Subject):
             "game": OrderedDict(
                 {
                     "locale": "en",
-                    "font": "",
+                    "font": "LanaPixel",
+                }
+            ),
+            "sound": OrderedDict(
+                {
+                    "main_volume": 1.0,
+                    "music_volume": 1.0,
+                    "atmosphere_volume": 1.0,
+                    "voice_volume": 1.0,
+                    "uisfx_volume": 1.0,
                 }
             ),
         }
@@ -51,6 +72,13 @@ class Config(Subject):
         # Game
         self.locale = self._config.get("game", "locale")
         self.font = self._config.get("game", "font")
+
+        # Sound
+        self.main_volume = self._config.getfloat("sound", "main_volume")
+        self.music_volume = self._config.getfloat("sound", "music_volume")
+        self.atmosphere_volume = self._config.getfloat("sound", "atmosphere_volume")
+        self.voice_volume = self._config.getfloat("sound", "voice_volume")
+        self.uisfx_volume = self._config.getfloat("sound", "uisfx_volume")
 
         logger.info("Config loaded.")
 

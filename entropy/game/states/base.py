@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from typing import Type
 
 from entropy.game.entity import GameEntity
-from entropy.logger import get_logger
+from entropy.logging import get_logger
 
 
 if TYPE_CHECKING:

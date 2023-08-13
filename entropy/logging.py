@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 
-from entropy import GAME_NAME
+from entropy.constants import GAME_NAME
 
 
 _logger: logging.Logger | None = None

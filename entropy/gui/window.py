@@ -5,7 +5,7 @@ import pygame
 import entropy
 
 from entropy.gui.monitor import Monitor
-from entropy.logger import get_logger
+from entropy.logging import get_logger
 from entropy.utils import Pos
 from entropy.utils import PosScale
 from entropy.utils import Res

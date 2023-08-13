@@ -6,25 +6,24 @@ import pygame
 
 from entropy import platform
 from entropy.assets_library import AssetsLibrary
+from entropy.config import get_config
 from entropy.constants import GAME_NAME
 from entropy.game.control import Control
 from entropy.gui.mouse import Mouse
 from entropy.gui.window import Window
 from entropy.locations import ASSETS_DIR
-from entropy.locations import CONFIG_FILE_PATH
 from entropy.locations import USER_LOCAL_DIR
-from entropy.logger import get_logger
-from entropy.misc.config import Config
+from entropy.logging import get_logger
 from entropy.misc.translator import Translator
 from entropy.mixer import Mixer
 from entropy.utils import Res
 
 
-__all__ = ["assets", "config", "window", "translator", "mouse", "mixer"]
+__all__ = ["assets", "window", "translator", "mouse", "mixer"]
 
+config = get_config()
 logger = get_logger()
 
-config: Config
 window: Window
 mouse: Mouse
 translator: Translator
@@ -34,7 +33,7 @@ mixer = Mixer()
 
 
 def init() -> None:
-    global config, window, mouse, translator, assets, control
+    global window, mouse, translator, assets, control
 
     logger.info(f"Initialize {GAME_NAME}.")
 
@@ -46,7 +45,6 @@ def init() -> None:
 
     pygame.init()
 
-    config = Config(config_file=CONFIG_FILE_PATH)
     window = Window(
         title=GAME_NAME.title(),
         default_res=Res(w=1920, h=1080),
