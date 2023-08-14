@@ -7,7 +7,6 @@ import pygame as pg
 
 from entropy import mouse
 from entropy.game.entity import GameEntity
-from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
@@ -23,21 +22,10 @@ class Adjacent(IntEnum):
 class MenuWidgetGroup(GameEntity):
     def __init__(
         self,
-        pos: Pos,
-        margin: int,
         widgets: list[WidgetComponent],
-        center_x: bool = False,
     ) -> None:
         self._focus_index: int | None = None
         self._widgets = widgets
-        self._set_widgets_pos(pos=pos, margin=margin, center_x=center_x)
-
-    def _set_widgets_pos(self, pos: Pos, margin: int, center_x: bool) -> None:
-        x, y = pos
-
-        for widget in self._widgets:
-            widget.set_pos(pos=Pos(x, y), center_x=center_x)
-            y += widget.get_height() + margin
 
     @property
     def _focused_widget(self) -> WidgetComponent | None:

@@ -4,7 +4,6 @@ from abc import ABC
 from abc import abstractmethod
 from typing import TYPE_CHECKING
 
-from entropy import window
 from entropy.game.entity import GameEntity
 
 
@@ -34,8 +33,5 @@ class WidgetComponent(GameEntity, ABC):
         ...
 
     @abstractmethod
-    def set_pos(self, pos: Pos, center_x: bool = False) -> int:
+    def set_pos(self, pos: Pos) -> int:
         ...
-
-    def get_center_x(self) -> int:
-        return (window.default_res.w - self.get_width()) // 2

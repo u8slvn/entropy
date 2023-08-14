@@ -11,6 +11,8 @@ class KeyboardInputs(InputsController):
         self.KEYUP = False
         self.UP = False
         self.DOWN = False
+        self.LEFT = False
+        self.RIGHT = False
         self.ENTER = False
         self.SPACE = False
         self.F5 = False
@@ -23,6 +25,10 @@ class KeyboardInputs(InputsController):
                 self.UP = True
             elif event.key == pygame.K_DOWN:
                 self.DOWN = True
+            elif event.key == pygame.K_LEFT:
+                self.LEFT = True
+            elif event.key == pygame.K_RIGHT:
+                self.RIGHT = True
             elif event.key == pygame.K_RETURN:
                 self.ENTER = True
             elif event.key == pygame.K_SPACE:
@@ -38,6 +44,10 @@ class KeyboardInputs(InputsController):
                 self.UP = False
             elif event.key == pygame.K_DOWN:
                 self.DOWN = False
+            elif event.key == pygame.K_LEFT:
+                self.LEFT = False
+            elif event.key == pygame.K_RIGHT:
+                self.RIGHT = False
             elif event.key == pygame.K_RETURN:
                 self.ENTER = False
             elif event.key == pygame.K_SPACE:

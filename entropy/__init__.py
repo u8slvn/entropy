@@ -29,7 +29,13 @@ mouse: Mouse
 translator: Translator
 assets: AssetsLibrary
 control: Control
-mixer = Mixer()
+mixer = Mixer(
+    main_vol=config.main_volume,
+    music_vol=config.music_volume,
+    atmos_vol=config.atmosphere_volume,
+    voice_vol=config.voice_volume,
+    uisfx_vol=config.uisfx_volume,
+)
 
 
 def init() -> None:

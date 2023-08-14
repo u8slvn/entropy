@@ -52,13 +52,28 @@ class TitleScreen(State):
         self._covered = True
 
     def _build_main_menu(self) -> MenuWidgetGroup:
+        y = 350
+        margin = 100
         widgets = [
-            TitleScreenButton(text=ButtonText("CONTINUE"), callback=test_lang),
-            TitleScreenButton(text=ButtonText("NEW GAME"), callback=ExitState(self)),
             TitleScreenButton(
+                pos=Pos(0, y + margin * 1),
+                text=ButtonText("CONTINUE"),
+                callback=test_lang,
+            ),
+            TitleScreenButton(
+                pos=Pos(0, y + margin * 2),
+                text=ButtonText("NEW GAME"),
+                callback=ExitState(self),
+            ),
+            TitleScreenButton(
+                pos=Pos(0, y + margin * 3),
                 text=ButtonText("SETTINGS"),
                 callback=TransitionToNextState(state=self, next_state="SettingsMenu"),
             ),
-            TitleScreenButton(text=ButtonText("QUIT"), callback=QuitGame()),
+            TitleScreenButton(
+                pos=Pos(0, y + margin * 4),
+                text=ButtonText("QUIT"),
+                callback=QuitGame(),
+            ),
         ]
-        return MenuWidgetGroup(pos=Pos(0, 400), margin=20, widgets=widgets)
+        return MenuWidgetGroup(widgets=widgets)

@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING
 import pygame
 
 from entropy import translator
-from entropy import window
 from entropy.game.entity import GameEntity
 from entropy.tools.observer import Observer
 from entropy.utils import Color
@@ -48,10 +47,7 @@ class Text(GameEntity, Observer):
         self._rect.center = pos
         self._center_pos = pos
 
-    def set_pos(self, pos: Pos, center_x: bool = False) -> None:
-        if center_x is True:
-            x = (window.default_res.w - self.width) // 2
-            pos = Pos(x, pos.y)
+    def set_pos(self, pos: Pos) -> None:
         self._rect.topleft = pos
         self._pos = pos
 

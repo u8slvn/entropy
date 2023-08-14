@@ -9,6 +9,8 @@ import pygame
 import pygame as pg
 
 from entropy import assets
+from entropy import mixer
+from entropy import window
 from entropy.commands.display import DisableFullscreen
 from entropy.commands.display import EnableFullscreen
 from entropy.commands.locale import SwitchLocaleTo
@@ -19,21 +21,19 @@ from entropy.game.states.base import State
 from entropy.gui.components.background import ColorBackground
 from entropy.gui.components.button import AttrObserver
 from entropy.gui.components.menu import MenuWidgetGroup
-from entropy.gui.components.slider import TitledSlider
 from entropy.gui.components.templates.button import ConfigSettingsButton
 from entropy.gui.components.templates.button import SettingsButton
+from entropy.gui.components.templates.slider import VolumeSlider
 from entropy.gui.components.templates.text import ButtonText
 from entropy.gui.components.templates.text import SliderText
 from entropy.gui.components.text import Text
 from entropy.mixer import Channel
 from entropy.utils import Color
 from entropy.utils import Pos
-from entropy.utils import Size
 
 
 if TYPE_CHECKING:
     from entropy.game.control import Control
-    from entropy.gui.components.button import Button
     from entropy.gui.input import Inputs
 
 
@@ -75,6 +75,7 @@ class SettingsMenu(State):
         self._submenu.draw(surface=surface)
 
     def teardown(self) -> None:
+        mixer.save_volume()
         config.save()
         self._submenu.teardown()
 
@@ -84,15 +85,19 @@ class SettingsMenu(State):
         self._submenu.setup()
 
     def _build_submenu(self, submenu: Submenu) -> SettingsSubmenu:
-        back_button = SettingsButton(
-            text=ButtonText("BACK"),
-            callback=partial(self.transition_to, Submenu.SETTINGS),
-        )
+        button_x = 735
+        slider_x = 685
+        menu_y = 200
+        menu_step = 100
+        back_button_y = 900
+        back_button_action = partial(self.transition_to, Submenu.SETTINGS)
+
         match submenu:
             case Submenu.DISPLAY:
                 title = SettingsMenuTitle("DISPLAY")
                 widgets = [
                     ConfigSettingsButton(
+                        pos=(Pos(button_x, menu_y + menu_step * 1)),
                         text=ButtonText("FULLSCREEN"),
                         callback=EnableFullscreen(),
                         attr_observer=AttrObserver(
@@ -100,6 +105,7 @@ class SettingsMenu(State):
                         ),
                     ),
                     ConfigSettingsButton(
+                        pos=(Pos(button_x, menu_y + menu_step * 2)),
                         text=ButtonText("FRAMED"),
                         callback=DisableFullscreen(),
                         attr_observer=AttrObserver(
@@ -109,51 +115,38 @@ class SettingsMenu(State):
                 ]
 
             case Submenu.SOUND:
+                menu_y = 180
+                menu_step = 100
                 title = SettingsMenuTitle("SOUND")
                 widgets = [
-                    TitledSlider(
+                    VolumeSlider(
+                        pos=(Pos(slider_x, menu_y + menu_step * 1)),
                         text=SliderText("MAIN VOLUME"),
-                        size=Size(550, 30),
                         initial_value=config.main_volume,
-                        min=0,
-                        max=1,
-                        button=assets.images.get("slider-button-sheet"),
-                        channel=Channel.GENERAL,
+                        channel=Channel.MAIN,
                     ),
-                    TitledSlider(
+                    VolumeSlider(
+                        pos=(Pos(slider_x, menu_y + menu_step * 2)),
                         text=SliderText("MUSIC VOLUME"),
-                        size=Size(550, 30),
                         initial_value=config.music_volume,
-                        min=0,
-                        max=1,
-                        button=assets.images.get("slider-button-sheet"),
                         channel=Channel.MUSIC,
                     ),
-                    TitledSlider(
+                    VolumeSlider(
+                        pos=(Pos(slider_x, menu_y + menu_step * 3)),
                         text=SliderText("ATMOSPHERE VOLUME"),
-                        size=Size(550, 30),
                         initial_value=config.atmosphere_volume,
-                        min=0,
-                        max=1,
-                        button=assets.images.get("slider-button-sheet"),
                         channel=Channel.ATMOSPHERE,
                     ),
-                    TitledSlider(
+                    VolumeSlider(
+                        pos=(Pos(slider_x, menu_y + menu_step * 4)),
                         text=SliderText("VOICE VOLUME"),
-                        size=Size(550, 30),
                         initial_value=config.voice_volume,
-                        min=0,
-                        max=1,
-                        button=assets.images.get("slider-button-sheet"),
                         channel=Channel.VOICE,
                     ),
-                    TitledSlider(
+                    VolumeSlider(
+                        pos=(Pos(slider_x, menu_y + menu_step * 5)),
                         text=SliderText("UI SFX VOLUME"),
-                        size=Size(550, 30),
                         initial_value=config.uisfx_volume,
-                        min=0,
-                        max=1,
-                        button=assets.images.get("slider-button-sheet"),
                         channel=Channel.UISFX,
                     ),
                 ]
@@ -162,6 +155,7 @@ class SettingsMenu(State):
                 title = SettingsMenuTitle("LANGUAGE")
                 widgets = [
                     ConfigSettingsButton(
+                        pos=(Pos(button_x, menu_y + menu_step * 1)),
                         text=ButtonText("ENGLISH"),
                         callback=SwitchLocaleTo(locale="en"),
                         attr_observer=AttrObserver(
@@ -169,6 +163,7 @@ class SettingsMenu(State):
                         ),
                     ),
                     ConfigSettingsButton(
+                        pos=(Pos(button_x, menu_y + menu_step * 2)),
                         text=ButtonText("FRANÇAIS"),
                         callback=SwitchLocaleTo(locale="fr"),
                         attr_observer=AttrObserver(
@@ -185,34 +180,44 @@ class SettingsMenu(State):
                 title = SettingsMenuTitle("SETTINGS")
                 widgets = [
                     SettingsButton(
+                        pos=(Pos(button_x, menu_y + menu_step * 1)),
                         text=ButtonText("DISPLAY"),
                         callback=partial(self.transition_to, Submenu.DISPLAY),
                     ),
                     SettingsButton(
+                        pos=(Pos(button_x, menu_y + menu_step * 2)),
                         text=ButtonText("SOUND"),
                         callback=partial(self.transition_to, Submenu.SOUND),
                     ),
                     SettingsButton(
+                        pos=(Pos(button_x, menu_y + menu_step * 3)),
                         text=ButtonText("LANGUAGE"),
                         callback=partial(self.transition_to, Submenu.LANGUAGE),
                     ),
                     SettingsButton(
+                        pos=(Pos(button_x, menu_y + menu_step * 4)),
                         text=ButtonText("DIALOGUE"),
                         callback=partial(self.transition_to, Submenu.DIALOGUE),
                     ),
                 ]
-                back_button = SettingsButton(
-                    text=ButtonText("BACK"),
-                    callback=self.exit,
-                )
+                back_button_action = self.exit
 
-        menu = MenuWidgetGroup(
-            pos=Pos(0, 310),
-            margin=30,
-            widgets=widgets,
-            center_x=True,
+        back_button = SettingsButton(
+            pos=Pos(button_x, back_button_y),
+            text=ButtonText("BACK"),
+            callback=back_button_action,
         )
-        return SettingsSubmenu(title=title, menu=menu, back_button=back_button)
+
+        title_x = (window.default_res.w - title.width) // 2
+        title.set_pos(Pos(title_x, 150))
+
+        widgets.append(back_button)
+
+        menu = MenuWidgetGroup(widgets=widgets)
+        return SettingsSubmenu(
+            title=title,
+            menu=menu,
+        )
 
 
 SettingsMenuTitle = partial(
@@ -223,34 +228,26 @@ SettingsMenuTitle = partial(
 
 
 class SettingsSubmenu(GameEntity):
-    def __init__(self, title: Text, menu: MenuWidgetGroup, back_button: Button):
+    def __init__(self, title: Text, menu: MenuWidgetGroup):
         self._title = title
         self._menu = menu
-        self._back_button = back_button
 
     def setup(self) -> None:
         self._title.setup()
         self._menu.setup()
-        self._back_button.setup()
 
     def process_inputs(self, inputs: Inputs) -> None:
         self._title.process_inputs(inputs=inputs)
         self._menu.process_inputs(inputs=inputs)
-        self._back_button.process_inputs(inputs=inputs)
 
     def update(self) -> None:
         self._title.update()
         self._menu.update()
-        self._back_button.update()
 
     def draw(self, surface: pygame.Surface) -> None:
-        self._title.set_pos(pos=Pos(0, 150), center_x=True)
         self._title.draw(surface=surface)
         self._menu.draw(surface=surface)
-        self._back_button.set_pos(pos=Pos(0, 900), center_x=True)
-        self._back_button.draw(surface=surface)
 
     def teardown(self) -> None:
         self._title.teardown()
         self._menu.teardown()
-        self._back_button.teardown()

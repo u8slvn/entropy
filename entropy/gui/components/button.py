@@ -65,11 +65,8 @@ class Button(WidgetComponent):
     def get_height(self) -> int:
         return self._image.get_height()
 
-    def set_pos(self, pos: Pos, center_x: bool = False) -> None:
-        if center_x is True:
-            self._rect.topleft = Pos(self.get_center_x(), pos.y)
-        else:
-            self._rect.topleft = pos
+    def set_pos(self, pos: Pos) -> None:
+        self._rect.topleft = pos
 
     def check(self) -> None:
         if self.has_focus():
@@ -160,9 +157,9 @@ class TextButton(Button):
         )
         self._text_padding = text_padding
         self._text = text
-        self._set_text_pos()
+        self._setup_pos()
 
-    def _set_text_pos(self) -> None:
+    def _setup_pos(self) -> None:
         self._text.set_center_pos(
             Pos(
                 self._rect.centerx + self._text_padding.x,
@@ -170,9 +167,9 @@ class TextButton(Button):
             )
         )
 
-    def set_pos(self, pos: Pos, center_x: bool = False) -> None:
-        super().set_pos(pos=pos, center_x=center_x)
-        self._set_text_pos()
+    def set_pos(self, pos: Pos) -> None:
+        super().set_pos(pos=pos)
+        self._setup_pos()
 
     def setup(self) -> None:
         super().setup()
