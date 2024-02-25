@@ -8,7 +8,7 @@ from entropy import mixer
 from entropy import mouse
 from entropy.constants import SLIDER_BG_COLOR
 from entropy.constants import SLIDER_PROGRESS_COLOR
-from entropy.gui.components.text import Text
+from entropy.gui.components.text import TText
 from entropy.gui.components.widget import WidgetComponent
 from entropy.mixer import Channel
 from entropy.utils import Pos
@@ -183,7 +183,7 @@ class TitledSlider(Slider):
     def __init__(
         self,
         pos: Pos,
-        text: Text,
+        text: TText,
         size: Size,
         min_value: int,
         max_value: int,

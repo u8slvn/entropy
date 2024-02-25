@@ -6,7 +6,7 @@ from entropy import assets
 from entropy.config import get_config
 from entropy.constants import GUI_BUTTON_FONT_SIZE
 from entropy.constants import GUI_BUTTON_TEXT_COLOR
-from entropy.gui.components.text import Text
+from entropy.gui.components.text import TText
 
 
 config = get_config()
@@ -14,13 +14,13 @@ config = get_config()
 default_button_font = assets.fonts.get(name=config.font, size=GUI_BUTTON_FONT_SIZE)
 
 ButtonText = partial(
-    Text,
+    TText,
     font=default_button_font,
     color=GUI_BUTTON_TEXT_COLOR,
 )
 
 SliderText = partial(
-    Text,
+    TText,
     font=default_button_font,
     color=GUI_BUTTON_TEXT_COLOR,
 )

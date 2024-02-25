@@ -15,7 +15,7 @@ from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
-    from entropy.gui.components.text import Text
+    from entropy.gui.components.text import TText
     from entropy.gui.input import Inputs
     from entropy.tools.observer import Subject
 
@@ -144,7 +144,7 @@ class TextButton(Button):
         sound_focus: str,
         sound_clicked: str,
         callback: Callable[[], None],
-        text: Text,
+        text: TText,
         pos: Pos = Pos(0, 0),
         text_padding: Pos = Pos(0, 0),
     ) -> None:
@@ -206,7 +206,7 @@ class ObserverButton(TextButton, Observer):
         sound_clicked: str,
         callback: Callable[[], None],
         attr_observer: AttrObserver,
-        text: Text,
+        text: TText,
         pos: Pos = Pos(0, 0),
         text_padding: Pos = Pos(0, 0),
     ) -> None:

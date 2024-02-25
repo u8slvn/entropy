@@ -18,7 +18,7 @@ class Window:
     """
     Window manager.
 
-    Manage the whole game window related actions.
+    Manage the whole game actions window related.
     """
 
     _fullscreen_flags = pygame.FULLSCREEN | pygame.SCALED

@@ -41,7 +41,7 @@ class _FaderTransition(Transition):
 
     def draw(self, surface: pygame.Surface) -> None:
         if self.is_active():
-            surface.blit(self._background, self._background.pos)
+            self._background.draw(surface=surface)
 
     def teardown(self) -> None:
         self._timer.teardown()

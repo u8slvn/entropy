@@ -26,7 +26,7 @@ from entropy.gui.components.templates.button import SettingsButton
 from entropy.gui.components.templates.slider import VolumeSlider
 from entropy.gui.components.templates.text import ButtonText
 from entropy.gui.components.templates.text import SliderText
-from entropy.gui.components.text import Text
+from entropy.gui.components.text import TText
 from entropy.mixer import Channel
 from entropy.utils import Color
 from entropy.utils import Pos
@@ -221,14 +221,14 @@ class SettingsMenu(State):
 
 
 SettingsMenuTitle = partial(
-    Text,
+    TText,
     font=assets.fonts.get(name=config.font, size="settings"),
     color=GUI_TEXT_COLOR,
 )
 
 
 class SettingsSubmenu(GameEntity):
-    def __init__(self, title: Text, menu: MenuWidgetGroup):
+    def __init__(self, title: TText, menu: MenuWidgetGroup):
         self._title = title
         self._menu = menu
 

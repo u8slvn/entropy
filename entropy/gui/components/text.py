@@ -1,23 +1,68 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 import pygame
 
 from entropy import translator
 from entropy.game.entity import GameEntity
+from entropy.gui.components.base import Component
 from entropy.tools.observer import Observer
 from entropy.utils import Color
 from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
+    from entropy.gui.components.base import ALIGN
     from entropy.gui.input import Inputs
 
 T = translator
 
 
-class Text(GameEntity, Observer):
+@dataclass
+class Text(Component):
+    def __init__(
+        self,
+        parent: Component | None,
+        text: str,
+        font: pygame.font.Font,
+        color: Color | str,
+        pos: Pos = Pos(0, 0),
+        align: ALIGN | None = None,
+        background: Color | str | None = None,
+    ):
+        super().__init__(parent=parent)
+        self._text = text
+        self._font = font
+        self._color = color
+        self._background = background
+        self._surf = self._render()
+        self.set_size(*self._surf.get_rect().size)
+        self.set_pos(pos=pos, align=align)
+
+    def _render(self) -> pygame.Surface:
+        return self._font.render(self._text, False, self._color, self._background)
+
+    def setup(self) -> None:
+        pass
+
+    def process_inputs(self, inputs: Inputs) -> None:
+        pass
+
+    def update(self) -> None:
+        pass
+
+    def draw(self, surface: pygame.Surface) -> None:
+        surface.blit(self._surf, self.pos)
+
+    def teardown(self) -> None:
+        pass
+
+
+class TText(GameEntity, Observer):
+    """Translated Text."""
+
     def __init__(
         self,
         text: str,

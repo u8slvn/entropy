@@ -7,9 +7,13 @@ import pygame
 import entropy
 
 from entropy.game.states.base import State
+from entropy.gui.components.background import ColorBackground
+from entropy.gui.components.base import ALIGN
+from entropy.gui.components.text import Text
 from entropy.gui.transistions.fader import FadeIn
 from entropy.gui.transistions.fader import FadeOut
 from entropy.tools.timer import TimerSecond
+from entropy.utils import Color
 
 
 if TYPE_CHECKING:
@@ -21,9 +25,14 @@ class Splash(State):
     def __init__(self, control: Control) -> None:
         super().__init__(control=control)
         font = entropy.assets.fonts.get("LanaPixel", "big")
-        self._text = font.render("ENTROPY", False, "white", "black")
-        self._text_rect = self._text.get_rect()
-        self._text_rect.center = pygame.Rect(0, 0, *entropy.window.default_res).center
+        self._background = ColorBackground(color=Color(0, 0, 0, 255))
+        self._text = Text(
+            parent=self._background,
+            align=ALIGN.CENTER,
+            font=font,
+            text="ENTROPY",
+            color="white",
+        )
         self._fade_out = FadeOut(duration=4000, callback=self.mark_as_done)
         self._timer = TimerSecond(
             duration=1,
@@ -58,8 +67,8 @@ class Splash(State):
         if self._done:
             return
 
-        surface.fill("black")
-        surface.blit(self._text, self._text_rect)
+        self._background.draw(surface=surface)
+        self._text.draw(surface=surface)
         self._fade_out.draw(surface=surface)
         self._fade_in.draw(surface=surface)
 
