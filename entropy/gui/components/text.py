@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 import pygame
@@ -8,6 +7,7 @@ import pygame
 from entropy import translator
 from entropy.game.entity import GameEntity
 from entropy.gui.components.base import Component
+from entropy.gui.components.base import UIComponent
 from entropy.tools.observer import Observer
 from entropy.utils import Color
 from entropy.utils import Pos
@@ -20,15 +20,13 @@ if TYPE_CHECKING:
 T = translator
 
 
-@dataclass
-class Text(Component):
+class Text(UIComponent):
     def __init__(
         self,
         parent: Component | None,
         text: str,
         font: pygame.font.Font,
         color: Color | str,
-        pos: Pos = Pos(0, 0),
         align: ALIGN | None = None,
         background: Color | str | None = None,
     ):
@@ -36,10 +34,10 @@ class Text(Component):
         self._text = text
         self._font = font
         self._color = color
+        self.align = align
         self._background = background
         self._surf = self._render()
-        self.set_size(*self._surf.get_rect().size)
-        self.set_pos(pos=pos, align=align)
+        self.set_rect(self._surf.get_rect())
 
     def _render(self) -> pygame.Surface:
         return self._font.render(self._text, False, self._color, self._background)
