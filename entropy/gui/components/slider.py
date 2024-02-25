@@ -26,8 +26,8 @@ class Slider(WidgetComponent):
         self,
         pos: Pos,
         size: Size,
-        min: int,
-        max: int,
+        min_value: int,
+        max_value: int,
         button: pygame.Surface,
         initial_value: float,
         sound_focus: str,
@@ -35,8 +35,8 @@ class Slider(WidgetComponent):
     ) -> None:
         self._pos = pos
         self._size = size
-        self._min = min
-        self._max = max
+        self._min_value = min_value
+        self._max_value = max_value
         self._sound_focus = sound_focus
         self._channel = channel
         self._focus = False
@@ -115,7 +115,9 @@ class Slider(WidgetComponent):
     def get_value(self) -> float:
         button_value = self._button_rect.centerx - self._min_pos
 
-        value = (button_value / self.range_value) * (self._max - self._min) + self._min
+        value = (button_value / self.range_value) * (
+            self._max_value - self._min_value
+        ) + self._min_value
         return round(value, 2)
 
     def set_value(self, value: float) -> None:
@@ -183,20 +185,20 @@ class TitledSlider(Slider):
         pos: Pos,
         text: Text,
         size: Size,
-        min: int,
-        max: int,
-        button: pygame.Surface,
+        min_value: int,
+        max_value: int,
         initial_value: float,
+        button: pygame.Surface,
         sound_focus: str,
         channel: Channel,
     ) -> None:
         super().__init__(
             pos=pos,
             size=size,
-            min=min,
-            max=max,
-            button=button,
+            min_value=min_value,
+            max_value=max_value,
             initial_value=initial_value,
+            button=button,
             sound_focus=sound_focus,
             channel=channel,
         )

@@ -75,7 +75,7 @@ class Mixer:
             volume = self._volumes[Channel.MAIN] * self._volumes[channel]
             self._channels[channel].set_volume(volume)
 
-    def save_volume(self) -> None:
+    def save_volumes(self) -> None:
         config.main_volume = self._volumes[Channel.MAIN]
         config.music_volume = self._volumes[Channel.MUSIC]
         config.atmosphere_volume = self._volumes[Channel.ATMOSPHERE]

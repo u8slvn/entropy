@@ -75,7 +75,7 @@ class SettingsMenu(State):
         self._submenu.draw(surface=surface)
 
     def teardown(self) -> None:
-        mixer.save_volume()
+        mixer.save_volumes()
         config.save()
         self._submenu.teardown()
 
