@@ -1,8 +1,12 @@
 from __future__ import annotations
 
 from abc import ABC
+from abc import abstractmethod
+from dataclasses import dataclass
+from dataclasses import field
 from enum import Enum
 from enum import auto
+from typing import Optional
 
 import pygame
 
@@ -21,33 +25,36 @@ class ALIGN(Enum):
 
 
 class BaseWidget(GameEntity, ABC):
-    _default_rect = pygame.Rect(0, 0, 0, 0)
-
-    def __init__(self) -> None:
-        self._rect = self._default_rect
-
-    def get_rect(self) -> pygame.Rect:
-        return self._rect
+    def __init__(self, rect: pygame.Rect) -> None:
+        self.rect = rect
 
     @property
     def pos(self) -> Pos:
-        return Pos(*self._rect.topleft)
+        return Pos(*self.rect.topleft)
+
+    @pos.setter
+    def pos(self, pos: Pos) -> None:
+        self.rect.topleft = pos
 
     @property
     def size(self) -> Size:
-        return Size(*self._rect.size)
+        return Size(*self.rect.size)
+
+    @size.setter
+    def size(self, size: Size) -> None:
+        self.rect.size = size
 
     @property
     def center(self) -> tuple[int, int]:
-        return self._rect.center
+        return self.rect.center
 
     @property
     def centery(self) -> int:
-        return self._rect.centery
+        return self.rect.centery
 
     @property
     def centerx(self) -> int:
-        return self._rect.centerx
+        return self.rect.centerx
 
     def set_focus(self) -> None:
         pass
@@ -60,7 +67,8 @@ class BaseWidget(GameEntity, ABC):
 
 
 class DefaultRoot(BaseWidget):
-    _default_rect = pygame.Rect(0, 0, *entropy.window.default_res)
+    def __init__(self) -> None:
+        super().__init__(rect=pygame.Rect(0, 0, *entropy.window.default_res))
 
     def setup(self) -> None:
         pass
@@ -79,20 +87,23 @@ class DefaultRoot(BaseWidget):
 
 
 class Widget(BaseWidget, ABC):
-    def __init__(self, parent: Widget | None = None) -> None:
-        super().__init__()
-        self._parent = parent or DefaultRoot()
-        self.align: ALIGN | None = None
+    def __init__(
+        self,
+        parent: Widget | None = None,
+        rect: pygame.Rect | None = None,
+        align: ALIGN | None = None,
+    ):
+        self.parent = parent or DefaultRoot()
+        self.align = align
 
-    def set_rect(self, rect: pygame.Rect) -> None:
-        self._rect = rect
-        self.refresh_pos()
+        super().__init__(rect=rect)
+        self.update_align()
 
-    def refresh_pos(self) -> None:
+    def update_align(self) -> None:
         match self.align:
             case ALIGN.CENTER:
-                self._rect.center = self._parent.center
+                self.rect.center = self.parent.center
             case ALIGN.CENTER_X:
-                self._rect.centerx = self._parent.centerx
+                self.rect.centerx = self.parent.centerx
             case ALIGN.CENTER_Y:
-                self._rect.centery = self._parent.centery
+                self.rect.centery = self.parent.centery

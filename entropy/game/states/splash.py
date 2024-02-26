@@ -25,55 +25,56 @@ class Splash(State):
     def __init__(self, control: Control) -> None:
         super().__init__(control=control)
         font = entropy.assets.fonts.get("LanaPixel", "big")
-        self._background = ColorBackground(color=Color(0, 0, 0, 255))
-        self._text = Text(
-            parent=self._background,
+        self.background = ColorBackground(color=Color(0, 0, 0, 255))
+        self.text = Text(
+            parent=self.background,
             align=ALIGN.CENTER,
             font=font,
             text="ENTROPY",
             color="white",
         )
-        self._fade_out = FadeOut(duration=4000, callback=self.mark_as_done)
-        self._timer = TimerSecond(
+        self.fade_out = FadeOut(duration=4000, callback=self.mark_as_done)
+        self.timer = TimerSecond(
             duration=1,
             autostart=False,
-            callback=self._fade_out.activate,
+            callback=self.fade_out.activate,
         )
-        self._fade_in = FadeIn(duration=4000, callback=self._timer.start)
-        self._done = False
+        self.fade_in = FadeIn(duration=4000, callback=self.timer.start)
+        self.done = False
 
     def mark_as_done(self):
-        self._done = True
+        self.done = True
 
     def setup(self) -> None:
         entropy.mixer.play_music("main-theme")
-        self._fade_in.setup()
-        self._fade_out.setup()
-        self._timer.setup()
+        self.text.setup()
+        self.fade_in.setup()
+        self.fade_out.setup()
+        self.timer.setup()
 
     def process_inputs(self, inputs: Inputs) -> None:
         if inputs.keyboard.SPACE or inputs.keyboard.ENTER:
             self.mark_as_done()
 
     def update(self) -> None:
-        if self._done:
+        if self.done:
             self.control.transition_to("TitleScreen")
 
-        self._fade_in.update()
-        self._fade_out.update()
-        self._timer.update()
+        self.fade_in.update()
+        self.fade_out.update()
+        self.timer.update()
 
     def draw(self, surface: pygame.Surface) -> None:
-        if self._done:
+        if self.done:
             return
 
-        self._background.draw(surface=surface)
-        self._text.draw(surface=surface)
-        self._fade_out.draw(surface=surface)
-        self._fade_in.draw(surface=surface)
+        self.background.draw(surface=surface)
+        self.text.draw(surface=surface)
+        self.fade_out.draw(surface=surface)
+        self.fade_in.draw(surface=surface)
 
     def teardown(self) -> None:
-        self._done = False
-        self._fade_out.teardown()
-        self._fade_in.teardown()
-        self._timer.teardown()
+        self.done = False
+        self.fade_out.teardown()
+        self.fade_in.teardown()
+        self.timer.teardown()
