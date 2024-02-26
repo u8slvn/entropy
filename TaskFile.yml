@@ -1,0 +1,33 @@
+version: '3'
+
+tasks:
+  default:
+    desc: List all commands.
+    cmds:
+      - task -l
+    silent: true
+
+  init-pre-commit:
+    desc: Init pre-commit.
+    cmds:
+      - pre-commit install
+      - pre-commit install --hook-type commit-msg
+
+  lint:
+    desc: Check lint.
+    cmds:
+      - pre-commit run --all-files
+
+  test:
+    desc: Run tests.
+    cmds:
+      - mypy
+
+  bump-version:
+    desc: Bump version, define target version with "VERSION=*.*.*".
+    vars:
+      VERSION: '{{.VERSION}}'
+    cmds:
+      - sed -i "s/^\(version = \"\)\(.\)*\"/\1{{.VERSION}}\"/" pyproject.toml
+      - echo "Version replaced by {{.VERSION}} in 'pyproject.toml'"
+    silent: true
