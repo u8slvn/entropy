@@ -8,8 +8,7 @@ from typing import Any
 
 class AssetsCollection(ABC):
     @abstractmethod
-    def load(self) -> None:
-        ...
+    def load(self) -> None: ...
 
 
 class DirAssetsCollection(AssetsCollection, ABC):
@@ -28,8 +27,7 @@ class DirAssetsCollection(AssetsCollection, ABC):
                 self._files.append(item)
 
     @abstractmethod
-    def _load_file(self, file: Path) -> Any:
-        ...
+    def _load_file(self, file: Path) -> Any: ...
 
     def load(self) -> None:
         for file in self._files:

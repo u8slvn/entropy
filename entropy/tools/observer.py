@@ -6,8 +6,7 @@ from abc import abstractmethod
 
 class Observer(ABC):
     @abstractmethod
-    def on_notify(self) -> None:
-        ...
+    def on_notify(self) -> None: ...
 
 
 class Subject(ABC):

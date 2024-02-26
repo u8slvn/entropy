@@ -6,8 +6,7 @@ from abc import abstractmethod
 
 class Command(ABC):
     @abstractmethod
-    def __call__(self):
-        ...
+    def __call__(self): ...
 
 
 class Commands(list, Command):
