@@ -4,14 +4,14 @@ from abc import ABC
 from abc import abstractmethod
 from typing import TYPE_CHECKING
 
-from entropy.game.entity import GameEntity
+from entropy.gui.components.base import Widget
 
 
 if TYPE_CHECKING:
     from entropy.utils import Pos
 
 
-class WidgetComponent(GameEntity, ABC):
+class WidgetComponent(Widget, ABC):
     @abstractmethod
     def set_focus(self) -> None:
         ...

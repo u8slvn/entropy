@@ -6,8 +6,7 @@ import pygame
 
 from entropy import translator
 from entropy.game.entity import GameEntity
-from entropy.gui.components.base import Component
-from entropy.gui.components.base import UIComponent
+from entropy.gui.components.base import Widget
 from entropy.tools.observer import Observer
 from entropy.utils import Color
 from entropy.utils import Pos
@@ -20,10 +19,10 @@ if TYPE_CHECKING:
 T = translator
 
 
-class Text(UIComponent):
+class Text(Widget):
     def __init__(
         self,
-        parent: Component | None,
+        parent: Widget | None,
         text: str,
         font: pygame.font.Font,
         color: Color | str,

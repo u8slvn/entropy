@@ -12,6 +12,8 @@ if TYPE_CHECKING:
 
 
 class GameEntity(ABC):
+    """Informal Interface for all Game Entity"""
+
     @abstractmethod
     def setup(self) -> None:
         ...
