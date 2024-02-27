@@ -7,7 +7,6 @@ import pygame
 
 from entropy import mouse
 from entropy.gui.components.base import Widget
-from entropy.utils import Pos
 
 
 if TYPE_CHECKING:

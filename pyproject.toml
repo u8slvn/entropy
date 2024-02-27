@@ -30,15 +30,15 @@ target-version = "py38"
 
 [tool.ruff.lint]
 select = [
+    "F",   # pyflakes
     "I",   # isort
     "N",   # pep8-naming
     "RUF", # ruff checks
+    "TID", # flake8-tidy-imports
 ]
 
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
-skip-magic-trailing-comma = false
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
 
 [tool.ruff.lint.isort]
 force-single-line = true

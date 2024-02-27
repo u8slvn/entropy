@@ -4,8 +4,6 @@ from typing import TYPE_CHECKING
 
 import pygame
 
-from pygame import Surface
-
 from entropy import assets
 from entropy import window
 from entropy.gui.components.base import Widget
