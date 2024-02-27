@@ -4,6 +4,7 @@ from abc import ABC
 from abc import abstractmethod
 from pathlib import Path
 from typing import Any
+from typing import ClassVar
 
 
 class AssetsCollection(ABC):
@@ -12,7 +13,7 @@ class AssetsCollection(ABC):
 
 
 class DirAssetsCollection(AssetsCollection, ABC):
-    extensions: list[str]
+    extensions: ClassVar[list[str]]
 
     def __init__(self) -> None:
         self.assets: dict[str, Any] = {}

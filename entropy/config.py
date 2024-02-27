@@ -5,6 +5,7 @@ import configparser
 from collections import OrderedDict
 from pathlib import Path
 from typing import Any
+from typing import ClassVar
 
 from entropy.locations import CONFIG_FILE_PATH
 from entropy.logging import get_logger
@@ -27,7 +28,7 @@ def get_config() -> _Config:
 
 
 class _Config(Subject):
-    _default_config = OrderedDict(
+    _default_config: ClassVar[OrderedDict] = OrderedDict(
         {
             "display": OrderedDict(
                 {

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from abc import ABC
 from typing import TYPE_CHECKING
+from typing import ClassVar
 from typing import Type
 
 from entropy.game.entity import GameEntity
@@ -15,7 +16,7 @@ logger = get_logger()
 
 
 class State(GameEntity, ABC):
-    _states: dict[str, Type[State]] = {}
+    _states: ClassVar[dict[str, Type[State]]] = {}
 
     def __init__(self, control: Control) -> None:
         self.control = control

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import logging
 
+from types import MappingProxyType
+
 from entropy.constants import GAME_NAME
 
 
@@ -20,13 +22,15 @@ class LogColor:
 
 class ColorFormatter(logging.Formatter):
     log_format = "{level}[%(levelname)s]{reset} {base}%(message)s{reset}"
-    log_level_colors = {
-        logging.DEBUG: (LogColor.GREY, LogColor.GREY),
-        logging.INFO: (LogColor.WHITE, LogColor.CYAN),
-        logging.WARNING: (LogColor.WHITE, LogColor.YELLOW),
-        logging.ERROR: (LogColor.WHITE, LogColor.RED),
-        logging.CRITICAL: (LogColor.RED, LogColor.RED_BACKGROUND),
-    }
+    log_level_colors = MappingProxyType(
+        {
+            logging.DEBUG: (LogColor.GREY, LogColor.GREY),
+            logging.INFO: (LogColor.WHITE, LogColor.CYAN),
+            logging.WARNING: (LogColor.WHITE, LogColor.YELLOW),
+            logging.ERROR: (LogColor.WHITE, LogColor.RED),
+            logging.CRITICAL: (LogColor.RED, LogColor.RED_BACKGROUND),
+        }
+    )
 
     def format(self, record):
         base, level = self.log_level_colors.get(record.levelno)

@@ -30,8 +30,9 @@ target-version = "py38"
 
 [tool.ruff.lint]
 select = [
-    "I",
-    "N"
+    "I",   # isort
+    "N",   # pep8-naming
+    "RUF", # ruff checks
 ]
 
 [tool.ruff.format]
@@ -39,7 +40,7 @@ quote-style = "double"
 indent-style = "space"
 skip-magic-trailing-comma = false
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 force-single-line = true
 lines-between-types = 1
 lines-after-imports = 2
