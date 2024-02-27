@@ -16,11 +16,11 @@ if TYPE_CHECKING:
 
 class Background(Widget):
     def __init__(self, surf: pygame.Surface) -> None:
-        self.surf = surf
-        super().__init__(rect=self.surf.get_rect())
+        self._surf = surf
+        super().__init__(rect=self._surf.get_rect())
 
     def set_alpha(self, value: int) -> None:
-        self.surf.set_alpha(value)
+        self._surf.set_alpha(value)
 
     def setup(self) -> None:
         pass
@@ -32,7 +32,7 @@ class Background(Widget):
         pass
 
     def draw(self, surface: pygame.Surface) -> None:
-        surface.blit(self.surf, self.pos)
+        surface.blit(self._surf, self.pos)
 
     def teardown(self) -> None:
         pass

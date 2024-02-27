@@ -6,11 +6,11 @@ from typing import Callable
 import pygame
 
 from entropy import assets
-from entropy import get_config
 from entropy import translator
 from entropy.commands.game import QuitGame
 from entropy.commands.state import ExitState
 from entropy.commands.state import TransitionToNextState
+from entropy.config import get_config
 from entropy.constants import GUI_BUTTON_FONT_SIZE
 from entropy.constants import GUI_BUTTON_TEXT_COLOR
 from entropy.game.states.base import State
@@ -36,32 +36,32 @@ def test_lang():
 class TitleScreen(State):
     def __init__(self, control: Control) -> None:
         super().__init__(control=control)
-        self.covered = False
-        self.background = ImageBackground(name="title-screen-bg")
-        self.logo = assets.images.get("title-screen-logo-a")
-        self.main_menu = self._build_menu()
+        self._covered = False
+        self._background = ImageBackground(name="title-screen-bg")
+        self._logo = assets.images.get("title-screen-logo-a")
+        self._main_menu = self._build_menu()
 
     def setup(self) -> None:
-        self.covered = False
-        self.main_menu.setup()
+        self._covered = False
+        self._main_menu.setup()
 
     def process_inputs(self, inputs: Inputs) -> None:
-        self.main_menu.process_inputs(inputs=inputs)
+        self._main_menu.process_inputs(inputs=inputs)
 
     def update(self) -> None:
-        self.main_menu.update()
+        self._main_menu.update()
 
     def draw(self, surface: pygame.Surface) -> None:
-        self.background.draw(surface=surface)
-        if self.covered is False:
-            surface.blit(self.logo, (660, 0))
-            self.main_menu.draw(surface=surface)
+        self._background.draw(surface=surface)
+        if self._covered is False:
+            surface.blit(self._logo, (660, 0))
+            self._main_menu.draw(surface=surface)
 
     def teardown(self) -> None:
-        self.covered = True
+        self._covered = True
 
     def _build_menu(self) -> MenuGroup:
-        menu_group = MenuGroup(parent=self.background)
+        menu_group = MenuGroup(parent=self._background)
 
         widgets = [
             {

@@ -22,7 +22,15 @@ class ALIGN(Enum):
 
 class BaseWidget(GameEntity, ABC):
     def __init__(self, rect: pygame.Rect) -> None:
-        self.rect = rect
+        self._rect = rect
+
+    @property
+    def rect(self) -> pygame.Rect:
+        return self._rect
+
+    @rect.setter
+    def rect(self, rect: pygame.Rect) -> None:
+        self._rect = rect
 
     @property
     def pos(self) -> Pos:

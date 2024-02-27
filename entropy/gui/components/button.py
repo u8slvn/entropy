@@ -40,16 +40,15 @@ class Button(Widget):
         pos: Pos = Pos(0, 0),
         align: ALIGN | None = None,
     ) -> None:
+        self._pressed = False
+        self._images = self._build_images(image=image)
+        self._image = self._images[ButtonState.NORMAL]
+        self._state = ButtonState.NORMAL
+        self._sound_focus = sound_focus
+        self._sound_clicked = sound_clicked
+        self._callback = callback
 
-        self.pressed = False
-        self.images = self._build_images(image=image)
-        self.image = self.images[ButtonState.NORMAL]
-        self.state = ButtonState.NORMAL
-        self.sound_focus = sound_focus
-        self.sound_clicked = sound_clicked
-        self.callback = callback
-
-        rect = pygame.Rect(*pos, *self.image.get_size())
+        rect = pygame.Rect(*pos, *self._image.get_size())
         super().__init__(parent=parent, rect=rect, align=align)
 
     @staticmethod
@@ -67,45 +66,45 @@ class Button(Widget):
 
     def check(self) -> None:
         if self.has_focus():
-            self.state = ButtonState.FOCUS_CHECKED
+            self._state = ButtonState.FOCUS_CHECKED
         else:
-            self.state = ButtonState.CHECKED
+            self._state = ButtonState.CHECKED
 
     def uncheck(self) -> None:
         if self.has_focus():
-            self.state = ButtonState.FOCUS
+            self._state = ButtonState.FOCUS
         else:
-            self.state = ButtonState.NORMAL
+            self._state = ButtonState.NORMAL
 
     def is_checked(self) -> bool:
-        return self.state in [ButtonState.CHECKED, ButtonState.FOCUS_CHECKED]
+        return self._state in [ButtonState.CHECKED, ButtonState.FOCUS_CHECKED]
 
     def set_focus(self):
         if self.is_checked():
-            self.state = ButtonState.FOCUS_CHECKED
+            self._state = ButtonState.FOCUS_CHECKED
         else:
-            self.state = ButtonState.FOCUS
-        mixer.play_uisfx(self.sound_focus)
+            self._state = ButtonState.FOCUS
+        mixer.play_uisfx(self._sound_focus)
 
     def unset_focus(self):
         if self.is_checked():
-            self.state = ButtonState.CHECKED
+            self._state = ButtonState.CHECKED
         else:
-            self.state = ButtonState.NORMAL
+            self._state = ButtonState.NORMAL
 
     def has_focus(self) -> bool:
-        return self.state in [ButtonState.FOCUS, ButtonState.FOCUS_CHECKED]
+        return self._state in [ButtonState.FOCUS, ButtonState.FOCUS_CHECKED]
 
     def press(self) -> None:
-        self.pressed = True
+        self._pressed = True
 
     def release(self) -> None:
-        self.pressed = False
-        mixer.play_uisfx(self.sound_clicked)
-        self.callback()
+        self._pressed = False
+        mixer.play_uisfx(self._sound_clicked)
+        self._callback()
 
     def is_pressed(self) -> bool:
-        return self.pressed
+        return self._pressed
 
     def setup(self) -> None:
         pass
@@ -125,10 +124,10 @@ class Button(Widget):
     def update(self):
         if self.is_pressed():
             self.release()
-        self.image = self.images[self.state]
+        self._image = self._images[self._state]
 
     def draw(self, surface: pygame.Surface) -> None:
-        surface.blit(self.image, self.rect)
+        surface.blit(self._image, self.rect)
 
     def teardown(self) -> None:
         pass

@@ -29,17 +29,17 @@ class Text(Widget):
         pos: Pos = Pos(0, 0),
         align: ALIGN | None = None,
     ):
-        self.text = text
-        self.color = color
-        self.font = font
-        self.background = background
-        self.surf = self._render()
+        self._text = text
+        self._color = color
+        self._font = font
+        self._background = background
+        self._surf = self._render()
 
-        rect = pygame.Rect(*(pos + parent.pos), *self.surf.get_size())
+        rect = pygame.Rect(*(pos + parent.pos), *self._surf.get_size())
         super().__init__(parent=parent, rect=rect, align=align)
 
     def _render(self) -> pygame.Surface:
-        return self.font.render(self.text, False, self.color, self.background)
+        return self._font.render(self._text, False, self._color, self._background)
 
     def setup(self) -> None:
         pass
@@ -51,7 +51,7 @@ class Text(Widget):
         pass
 
     def draw(self, surface: pygame.Surface) -> None:
-        surface.blit(self.surf, self.rect)
+        surface.blit(self._surf, self.rect)
 
     def teardown(self) -> None:
         pass
@@ -71,7 +71,7 @@ class TText(Text, Observer):
         align: ALIGN | None = None,
     ) -> None:
         self.__text = text
-        self.locale_changed = False
+        self._locale_changed = False
 
         super().__init__(
             parent=parent,
@@ -83,10 +83,8 @@ class TText(Text, Observer):
             align=align,
         )
 
-        self.surf = self._render()
-
     def on_notify(self) -> None:
-        self.locale_changed = True
+        self._locale_changed = True
 
     def setup(self) -> None:
         super().setup()
@@ -96,17 +94,17 @@ class TText(Text, Observer):
         pass
 
     def update(self) -> None:
-        if self.locale_changed is True:
-            self.locale_changed = False
-            self.text = T(self.__text)
-            self.surf = self._render()
+        if self._locale_changed is True:
+            self._locale_changed = False
+            self._text = T(self.__text)
+            self._surf = self._render()
 
-            rect = pygame.Rect(*self.pos, *self.surf.get_size())
+            rect = pygame.Rect(*self.pos, *self._surf.get_size())
             self.rect = rect
             self.update_align()
 
     def draw(self, surface: pygame.Surface) -> None:
-        surface.blit(self.surf, self.rect)
+        surface.blit(self._surf, self.rect)
 
     def teardown(self) -> None:
         translator.remove_observer(observer=self)
