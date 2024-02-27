@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 import pygame
 
 from entropy import translator
+from entropy.gui.components.base import ALIGN
 from entropy.gui.components.base import Widget
 from entropy.tools.observer import Observer
 from entropy.utils import Color
@@ -12,7 +13,6 @@ from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
-    from entropy.gui.components.base import ALIGN
     from entropy.gui.input import Inputs
 
 T = translator
@@ -27,16 +27,31 @@ class Text(Widget):
         font: pygame.font.Font,
         background: Color | str | None = None,
         pos: Pos = Pos(0, 0),
+        align_margin: Pos = Pos(0, 0),  # Topleft margin, works also with align.
         align: ALIGN | None = None,
     ):
         self._text = text
         self._color = color
         self._font = font
         self._background = background
+        self._align_margin = align_margin
         self._surf = self._render()
 
         rect = pygame.Rect(*(pos + parent.pos), *self._surf.get_size())
         super().__init__(parent=parent, rect=rect, align=align)
+
+    def update_align(self) -> None:
+        """Overwrite base update align method in order to take margin in account."""
+        match self.align:
+            case ALIGN.CENTER:
+                self.rect.center = self.parent.center
+                self.rect.topleft = Pos(*self.rect.topleft) + self._align_margin
+            case ALIGN.CENTER_X:
+                self.rect.centerx = self.parent.centerx
+                self.rect.top += self._align_margin.x
+            case ALIGN.CENTER_Y:
+                self.rect.centery = self.parent.centery
+                self.rect.left += self._align_margin.y
 
     def _render(self) -> pygame.Surface:
         return self._font.render(self._text, False, self._color, self._background)
@@ -68,6 +83,7 @@ class TText(Text, Observer):
         font: pygame.font.Font,
         background: Color | str | None = None,
         pos: Pos = Pos(0, 0),
+        align_margin: Pos = Pos(0, 0),
         align: ALIGN | None = None,
     ) -> None:
         self.__text = text
@@ -80,6 +96,7 @@ class TText(Text, Observer):
             font=font,
             background=background,
             pos=pos,
+            align_margin=align_margin,
             align=align,
         )
 

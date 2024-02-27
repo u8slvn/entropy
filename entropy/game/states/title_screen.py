@@ -111,5 +111,6 @@ class TitleScreen(State):
             text_color=GUI_BUTTON_TEXT_COLOR,
             text_font=assets.fonts.get(name=config.font, size=GUI_BUTTON_FONT_SIZE),
             text_align=ALIGN.CENTER,
+            text_align_margin=Pos(0, 4),
             pos=pos,
         )

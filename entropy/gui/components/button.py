@@ -146,6 +146,7 @@ class TextButton(Button):
         text_font: pygame.font.Font,
         text_align: ALIGN | None = None,
         text_pos: Pos = Pos(0, 0),
+        text_align_margin: Pos = Pos(0, 0),
         pos: Pos = Pos(0, 0),
         align: ALIGN | None = None,
     ) -> None:
@@ -166,6 +167,7 @@ class TextButton(Button):
             font=text_font,
             align=text_align,
             pos=text_pos,
+            align_margin=text_align_margin,
         )
 
     def setup(self) -> None:
