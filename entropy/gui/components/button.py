@@ -200,15 +200,20 @@ class AttrObserver:
 class ObserverButton(TextButton, Observer):
     def __init__(
         self,
-        parent: Widget | None,
+        parent: Widget,
         image: pygame.Surface,
         sound_focus: str,
         sound_clicked: str,
         callback: Callable[[], None],
         attr_observer: AttrObserver,
-        text: TText,
+        text: str,
+        text_color: Color | str,
+        text_font: pygame.font.Font,
+        text_align: ALIGN | None = None,
+        text_pos: Pos = Pos(0, 0),
+        text_align_margin: Pos = Pos(0, 0),
         pos: Pos = Pos(0, 0),
-        text_padding: Pos = Pos(0, 0),
+        align: ALIGN | None = None,
     ) -> None:
         super().__init__(
             parent=parent,
@@ -216,9 +221,14 @@ class ObserverButton(TextButton, Observer):
             sound_focus=sound_focus,
             sound_clicked=sound_clicked,
             callback=callback,
-            pos=pos,
             text=text,
-            text_padding=text_padding,
+            text_color=text_color,
+            text_font=text_font,
+            text_align=text_align,
+            text_pos=text_pos,
+            text_align_margin=text_align_margin,
+            pos=pos,
+            align=align,
         )
         self._attr_observer = attr_observer
 

@@ -32,6 +32,9 @@ class State(GameEntity, ABC):
     def get_states(cls) -> dict[str, Type[State]]:
         return cls._states
 
+    def transition_to(self, state_name: str):
+        self.control.transition_to(state_name=state_name)
+
     def exit(self) -> None:
         self.teardown()
         self.control.state_stack.pop()

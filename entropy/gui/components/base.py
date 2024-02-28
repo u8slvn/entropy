@@ -100,6 +100,7 @@ class Widget(BaseWidget, ABC):
         self.parent = parent or DefaultRoot()
         self.align = align
 
+        rect = rect or self.parent.rect
         super().__init__(rect=rect)
         self.update_align()
 

@@ -19,17 +19,48 @@ class Adjacent(IntEnum):
     PREV = -1
 
 
-class MenuGroup(Widget):
+class Group(Widget):
     def __init__(
         self,
         parent: Widget,
     ) -> None:
-        self.focus_index: int | None = None
         self.widgets = []
         super().__init__(parent=parent)
 
     def add_widget(self, widget: Widget) -> None:
         self.widgets.append(widget)
+
+    def add_widgets(self, widgets: list[Widget]) -> None:
+        self.widgets.extend(widgets)
+
+    def setup(self) -> None:
+        for widget in self.widgets:
+            widget.setup()
+
+    def process_inputs(self, inputs: Inputs) -> None:
+        for widget in self.widgets:
+            widget.process_inputs(inputs=inputs)
+
+    def update(self) -> None:
+        for widget in self.widgets:
+            widget.update()
+
+    def draw(self, surface: pygame.Surface) -> None:
+        for widget in self.widgets:
+            widget.draw(surface=surface)
+
+    def teardown(self):
+        for widget in self.widgets:
+            widget.teardown()
+
+
+class MenuGroup(Group):
+    def __init__(
+        self,
+        parent: Widget,
+    ) -> None:
+        self.focus_index: int | None = None
+        super().__init__(parent=parent)
 
     @property
     def _focused_widget(self) -> Widget | None:
@@ -46,10 +77,6 @@ class MenuGroup(Widget):
         self.focus_index = (self.focus_index + adjacent) % len(self.widgets)
         self._focused_widget.set_focus()  # type: ignore
 
-    def setup(self) -> None:
-        for widget in self.widgets:
-            widget.setup()
-
     def process_inputs(self, inputs: Inputs) -> None:
         if inputs.keyboard.KEYUP or inputs.keyboard.KEYDOWN:
             if inputs.keyboard.UP:
@@ -61,18 +88,6 @@ class MenuGroup(Widget):
             if mouse.is_visible() and widget.has_focus():
                 self.focus_index = index
             widget.process_inputs(inputs=inputs)
-
-    def update(self) -> None:
-        for widget in self.widgets:
-            widget.update()
-
-    def draw(self, surface: pygame.Surface) -> None:
-        for widget in self.widgets:
-            widget.draw(surface=surface)
-
-    def teardown(self):
-        for widget in self.widgets:
-            widget.teardown()
 
 
 class MenuWidgetGroup(Widget):

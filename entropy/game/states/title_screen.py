@@ -65,24 +65,20 @@ class TitleScreen(State):
 
         widgets = [
             {
-                "parent": menu_group,
                 "text": "CONTINUE",
                 "callback": test_lang,
             },
             {
-                "parent": menu_group,
                 "text": "NEW GAME",
                 "callback": ExitState(state=self),
             },
             {
-                "parent": menu_group,
                 "text": "SETTINGS",
                 "callback": TransitionToNextState(
                     state=self, next_state="SettingsMenu"
                 ),
             },
             {
-                "parent": menu_group,
                 "text": "QUIT",
                 "callback": QuitGame(),
             },
@@ -92,7 +88,7 @@ class TitleScreen(State):
         space_between = 100
         for i, widget in enumerate(widgets, start=1):
             pos = Pos(0, y + space_between * i)
-            button = self._build_menu_button(**widget, pos=pos)
+            button = self._build_menu_button(parent=menu_group, **widget, pos=pos)
             menu_group.add_widget(button)
 
         return menu_group
@@ -100,7 +96,7 @@ class TitleScreen(State):
     @staticmethod
     def _build_menu_button(
         parent: Widget, callback: Callable[[], None], text: str, pos: Pos
-    ):
+    ) -> TextButton:
         return TextButton(
             parent=parent,
             image=assets.images.get("main-menu-button-sheet-a"),

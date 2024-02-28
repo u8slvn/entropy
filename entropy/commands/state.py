@@ -15,7 +15,7 @@ class TransitionToNextState(Command):
         self._next_state = next_state
 
     def __call__(self) -> None:
-        self._state.control.transition_to(self._next_state)
+        self._state.transition_to(state_name=self._next_state)
 
 
 class ExitState(Command):

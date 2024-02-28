@@ -21,14 +21,6 @@ if TYPE_CHECKING:
 config = get_config()
 
 
-TitleScreenButton = partial(
-    TextButton,
-    image=assets.images.get("main-menu-button-sheet-a"),
-    sound_focus="hover",
-    sound_clicked="click",
-    text_padding=Pos(0, 4),
-)
-
 SettingsButton = partial(
     TextButton,
     image=assets.images.get("settings-button-sheet"),
