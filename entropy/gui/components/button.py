@@ -144,6 +144,7 @@ class TextButton(Button):
         text: str,
         text_color: Color | str,
         text_font: pygame.font.Font,
+        text_background: Color | str | None = None,
         text_align: ALIGN | None = None,
         text_pos: Pos = Pos(0, 0),
         text_align_margin: Pos = Pos(0, 0),
@@ -159,12 +160,12 @@ class TextButton(Button):
             pos=pos,
             align=align,
         )
-
         self._text = TText(
             parent=self,
             text=text,
             color=text_color,
             font=text_font,
+            background=text_background,
             align=text_align,
             pos=text_pos,
             align_margin=text_align_margin,
@@ -209,6 +210,7 @@ class ObserverButton(TextButton, Observer):
         text: str,
         text_color: Color | str,
         text_font: pygame.font.Font,
+        text_background: Color | str | None = None,
         text_align: ALIGN | None = None,
         text_pos: Pos = Pos(0, 0),
         text_align_margin: Pos = Pos(0, 0),
@@ -226,6 +228,7 @@ class ObserverButton(TextButton, Observer):
             text_font=text_font,
             text_align=text_align,
             text_pos=text_pos,
+            text_background=text_background,
             text_align_margin=text_align_margin,
             pos=pos,
             align=align,

@@ -36,17 +36,9 @@ class BaseWidget(GameEntity, ABC):
     def pos(self) -> Pos:
         return Pos(*self.rect.topleft)
 
-    @pos.setter
-    def pos(self, pos: Pos) -> None:
-        self.rect.topleft = pos
-
     @property
     def size(self) -> Size:
         return Size(*self.rect.size)
-
-    @size.setter
-    def size(self, size: Size) -> None:
-        self.rect.size = size
 
     @property
     def center(self) -> tuple[int, int]:

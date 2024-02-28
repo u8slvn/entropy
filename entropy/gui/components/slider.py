@@ -8,61 +8,74 @@ from entropy import mixer
 from entropy import mouse
 from entropy.constants import SLIDER_BG_COLOR
 from entropy.constants import SLIDER_PROGRESS_COLOR
+from entropy.gui.components.base import ALIGN
+from entropy.gui.components.base import Widget
 from entropy.gui.components.text import TText
-from entropy.gui.components.widget import WidgetComponent
-from entropy.mixer import Channel
 from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
+    from entropy.commands.base import ConfigurableCommand
     from entropy.gui.input import Inputs
+    from entropy.utils import Color
     from entropy.utils import Size
 
 
-class Slider(WidgetComponent):
+class Slider(Widget):
     _step = 0.1
 
     def __init__(
         self,
-        pos: Pos,
+        parent: Widget,
         size: Size,
         min_value: int,
         max_value: int,
-        button: pygame.Surface,
         initial_value: float,
         sound_focus: str,
-        channel: Channel,
+        command: ConfigurableCommand,
+        button_image: pygame.Surface,
+        pos: Pos = Pos(0, 0),
+        align: ALIGN | None = None,
     ) -> None:
-        self._pos = pos
-        self._size = size
-        self._min_value = min_value
-        self._max_value = max_value
-        self._sound_focus = sound_focus
-        self._channel = channel
         self._focus = False
         self._grabbed = False
-        self._min_pos = 0
-        self._max_pos = 0
-        self._background = pygame.Rect(*self._pos, *self._size)
-        self._progress = pygame.Rect(*self._pos, *self._size)
-        self._buttons = self._build_buttons(button)
+
+        self._last_value = 0
+        self._value = initial_value
+        self._min_value = min_value
+        self._max_value = max_value
+
+        self._sound_focus = sound_focus
+
+        self._buttons = self._build_buttons(button_image)
         self._button = self._buttons[self._focus]
         self._button_rect = self._button.get_rect()
         self._button_x = 0
-        self._last_value = 0
-        self._initial_value = initial_value
-        self._setup_pos()
+        self._command = command
 
-    def _setup_pos(self) -> None:
-        self._min_pos = self._pos.x
-        self._max_pos = self._pos.x + self._size.w
-        self._background.topleft = self._pos
-        self._progress.topleft = self._pos
+        self._progress = pygame.Rect(*pos, *size)
+        rect = pygame.Rect(*pos, *size)
+        super().__init__(parent=parent, rect=rect, align=align)
+
+        self._min_pos = self.pos.x
+        self._max_pos = self.pos.x + self.size.w
         self._button_rect.topleft = (
-            self._pos.x,
-            self._pos.y - (self._button_rect.h - self._size.h) // 2,
+            self.pos.x,
+            self.pos.y - (self._button_rect.h - self.size.h) // 2,
         )
-        self.set_value(value=self._initial_value)
+        self.set_value(value=self._value)
+
+    def update_align(self) -> None:
+        match self.align:
+            case ALIGN.CENTER:
+                self.rect.center = self.parent.center
+                self._progress.center = self.parent.center
+            case ALIGN.CENTER_X:
+                self.rect.centerx = self.parent.centerx
+                self._progress.centerx = self.parent.centerx
+            case ALIGN.CENTER_Y:
+                self.rect.centery = self.parent.centery
+                self._progress.centery = self.parent.centery
 
     @staticmethod
     def _build_buttons(image: pygame.Surface) -> list[pygame.Surface]:
@@ -76,16 +89,6 @@ class Slider(WidgetComponent):
             y += height
 
         return buttons
-
-    def get_width(self) -> int:
-        return self._size.w
-
-    def get_height(self) -> int:
-        return self._button_rect.h
-
-    def set_pos(self, pos: Pos) -> None:
-        self._pos = pos
-        self._setup_pos()
 
     def set_focus(self) -> None:
         if self.has_focus():
@@ -130,9 +133,7 @@ class Slider(WidgetComponent):
 
     def process_inputs(self, inputs: Inputs) -> None:
         if mouse.is_visible():
-            if mouse.collide_with(self._background) or mouse.collide_with(
-                self._button_rect
-            ):
+            if mouse.collide_with(self._rect) or mouse.collide_with(self._button_rect):
                 if inputs.mouse.BUTTON1 and mouse.is_button_pressed(mouse.BUTTON1):
                     self._grabbed = True
             if not mouse.is_button_pressed(mouse.BUTTON1):
@@ -166,10 +167,11 @@ class Slider(WidgetComponent):
 
             value = self.get_value()
             if self._last_value != value:
-                mixer.set_volume(value, self._channel)
+                self._command.configure(value)
+                self._command()
 
     def draw(self, surface: pygame.Surface) -> None:
-        pygame.draw.rect(surface, SLIDER_BG_COLOR, self._background)
+        pygame.draw.rect(surface, SLIDER_BG_COLOR, self._rect)
         pygame.draw.rect(surface, SLIDER_PROGRESS_COLOR, self._progress)
         surface.blit(self._button, self._button_rect)
 
@@ -177,53 +179,97 @@ class Slider(WidgetComponent):
         pass
 
 
-class TitledSlider(Slider):
+class TitledSlider(Widget):
     _margin = 7
 
     def __init__(
         self,
-        pos: Pos,
-        text: TText,
+        parent: Widget,
         size: Size,
         min_value: int,
         max_value: int,
         initial_value: float,
-        button: pygame.Surface,
         sound_focus: str,
-        channel: Channel,
+        command: ConfigurableCommand,
+        button_image: pygame.Surface,
+        text: str,
+        text_color: Color | str,
+        text_font: pygame.font.Font,
+        space_between: int,
+        text_background: Color | str | None = None,
+        text_align: ALIGN | None = None,
+        text_align_margin: Pos = Pos(0, 0),
+        pos: Pos = Pos(0, 0),
+        align: ALIGN | None = None,
     ) -> None:
-        super().__init__(
+        self._space_between = space_between
+
+        self._text = TText(
+            parent=parent,
+            text=text,
+            color=text_color,
+            font=text_font,
+            background=text_background,
+            align=text_align,
             pos=pos,
+            align_margin=text_align_margin,
+        )
+        self._slider = Slider(
+            parent=parent,
             size=size,
             min_value=min_value,
             max_value=max_value,
             initial_value=initial_value,
-            button=button,
             sound_focus=sound_focus,
-            channel=channel,
+            command=command,
+            button_image=button_image,
+            pos=Pos(pos.x, pos.y + self._space_between),
+            align=align,
         )
-        self._text = text
-        self.set_pos(pos=pos)
 
-    def get_height(self) -> int:
-        return super().get_height() + self._margin + self._text.height
+        rect = pygame.Rect(*pos, 0, 0)
+        super().__init__(parent=parent, rect=rect, align=align)
 
-    def set_pos(self, pos: Pos) -> None:
-        super().set_pos(
-            pos=Pos(pos.x, pos.y + self._text.height + self._margin),
-        )
-        self._text.set_pos(
-            pos=Pos(pos.x + ((self._size.w - self._text.width) // 2), pos.y),
-        )
+    def update_align(self) -> None:
+        super().update_align()
+        match self.align:
+            case ALIGN.CENTER:
+                pass
+            case ALIGN.CENTER_X:
+                self._text.rect.centerx = self.parent.centerx
+                self._slider.rect.centerx = self.parent.centerx
+            case ALIGN.CENTER_Y:
+                pass
+
+    @property
+    def size(self) -> Size:
+        return Size(self.size.w, self.size.h + self._margin + self._text.size.h)
 
     def setup(self) -> None:
-        super().setup()
         self._text.setup()
+        self._slider.setup()
+
+    def process_inputs(self, inputs: Inputs) -> None:
+        self._text.process_inputs(inputs=inputs)
+        self._slider.process_inputs(inputs=inputs)
 
     def update(self) -> None:
-        super().update()
         self._text.update()
+        self._slider.update()
 
     def draw(self, surface: pygame.Surface) -> None:
-        super().draw(surface=surface)
         self._text.draw(surface=surface)
+        self._slider.draw(surface=surface)
+
+    def teardown(self) -> None:
+        self._text.teardown()
+        self._slider.teardown()
+
+    def set_focus(self) -> None:
+        self._slider.set_focus()
+
+    def unset_focus(self) -> None:
+        self._slider.unset_focus()
+
+    def has_focus(self) -> None:
+        self._slider.has_focus()
