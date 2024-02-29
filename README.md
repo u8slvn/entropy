@@ -1,5 +1,7 @@
 # entropy
 
+> Beware, here be ~~dragons~~ spaghetti!
+
 A **work in progress** visual novel made with [Pygame](https://pyga.me/).
 
   - code name: **entropy**
