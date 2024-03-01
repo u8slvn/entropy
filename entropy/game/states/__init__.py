@@ -16,10 +16,13 @@ def load():
     global _states
 
     pwd = os.path.dirname(__file__)
-    files = glob.glob(os.path.join(pwd, "*.py"))
-    module_names = [os.path.basename(f)[:-3] for f in files if "__" not in f]
-    for module_name in module_names:
-        importlib.import_module(f"{__name__}.{module_name}")
+    entries = glob.glob(os.path.join(pwd, "*"))
+    for entry in entries:
+        if entry.startswith("__"):
+            continue
+
+        entry = os.path.basename(entry).replace(".py", "")
+        importlib.import_module(f"{__name__}.{entry}")
 
     _states = State.get_states()
 
