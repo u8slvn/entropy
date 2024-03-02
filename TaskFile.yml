@@ -3,9 +3,9 @@ version: '3'
 tasks:
   default:
     desc: List all commands.
+    silent: true
     cmds:
       - task -l
-    silent: true
 
   init-pre-commit:
     desc: Init pre-commit.
@@ -25,21 +25,24 @@ tasks:
 
   bump-version:
     desc: Bump version, define target version with "VERSION=*.*.*".
+    silent: true
     vars:
       VERSION: '{{.VERSION}}'
     cmds:
       - sed -i "s/^\(version = \"\)\(.\)*\"/\1{{.VERSION}}\"/" pyproject.toml
       - echo "Version replaced by {{.VERSION}} in 'pyproject.toml'"
-    silent: true
 
   build-translations:
       desc: Create MO files for existing PO translation files.
       cmds:
         - mkdir -p ./entropy/locales/en/LC_MESSAGES ./entropy/locales/fr/LC_MESSAGES
         - msgfmt locales/en/LC_MESSAGES/base.po -o entropy/locales/en/LC_MESSAGES/base.mo
+        - msgfmt locales/en/LC_MESSAGES/chapter01.po -o entropy/locales/en/LC_MESSAGES/chapter01.mo
         - msgfmt locales/fr/LC_MESSAGES/base.po -o entropy/locales/fr/LC_MESSAGES/base.mo
+        - msgfmt locales/fr/LC_MESSAGES/chapter01.po -o entropy/locales/fr/LC_MESSAGES/chapter01.mo
 
   build-story:
     desc: Build story's files.
+    silent: true
     cmds:
       - python ./scripts/build-story.py

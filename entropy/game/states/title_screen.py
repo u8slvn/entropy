@@ -41,6 +41,7 @@ class TitleScreen(State):
         self._main_menu = self._build_menu()
 
     def setup(self) -> None:
+        translator.set_translation(config.locale, domain="base")
         self._covered = False
         self._main_menu.setup()
 

@@ -1,0 +1,55 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-07-15 02:24+0200\n"
+"PO-Revision-Date: 2023-07-15 02:31+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.3.2\n"
+
+msgid "CONTINUE"
+msgstr "CONTINUER"
+
+msgid "NEW GAME"
+msgstr "NOUVELLE PARTIE"
+
+msgid "SETTINGS"
+msgstr "PARAMÈTRES"
+
+msgid "QUIT"
+msgstr "QUITTER"
+
+msgid "DISPLAY"
+msgstr "AFFICHAGE"
+
+msgid "SOUND"
+msgstr "AUDIO"
+
+msgid "LANGUAGE"
+msgstr "LANGUE"
+
+msgid "DIALOGUE"
+msgstr "DIALOGUES"
+
+msgid "BACK"
+msgstr "RETOUR"
+
+msgid "TEXT"
+msgstr "TEXTE"
+
+msgid "FULLSCREEN"
+msgstr "PLEIN ÉCRAN"
+
+msgid "FRAMED"
+msgstr "FENÊTRÉ"
+
+msgid "ENGLISH"
+msgstr "ENGLISH"
+
+msgid "FRANÇAIS"
+msgstr "FRANÇAIS"

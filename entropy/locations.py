@@ -15,6 +15,8 @@ ASSETS_DIR = ROOT.joinpath("assets")
 logger.debug(f"Assets dir: {ROOT}")
 LOCALES_DIR = ROOT.joinpath("locales")
 logger.debug(f"Locales dir: {ROOT}")
+STORY_DIR = ROOT.joinpath("story")
+logger.debug(f"Story dir: {ROOT}")
 
 USER_LOCAL_DIR = platform.get_user_local_storage()
 logger.debug(f"User local dir: {USER_LOCAL_DIR}")

@@ -12,11 +12,25 @@ OUTPUT = ROOT / "entropy/story"
 
 OUTPUT.mkdir(exist_ok=True)
 
-for chapter in STORY.glob("*"):
-    json_files = []
-    for filepath in chapter.glob("*.json"):
-        with open(filepath, "r") as file:
-            json_files.append(json.load(file))
+print(f"Building story from '{STORY}'...")
 
-    with open(OUTPUT / f"{chapter.name}.json", "w") as file:
-        json.dump(list(itertools.chain.from_iterable(json_files)), file, indent=4)
+mainfile = STORY / "main.json"
+with open(mainfile, "r") as file:
+    main = json.load(file)
+
+for key, value in main.items():
+    nodes = []
+    chapter_dir = STORY.joinpath(key)
+    for filepath in chapter_dir.glob("*"):
+        with open(filepath, "r") as file:
+            nodes.append(json.load(file))
+
+    output_file = f"{chapter_dir.name}.json"
+    with open(OUTPUT / output_file, "w") as file:
+        json.dump(list(itertools.chain.from_iterable(nodes)), file, indent=4)
+        print(f"  * {chapter_dir.name} built.")
+    value["configfile"] = output_file
+
+with open(OUTPUT / "main.json", "w") as file:
+    print("  * Chapters config built.")
+    json.dump(main, file, indent=4)

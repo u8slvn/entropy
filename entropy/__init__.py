@@ -12,6 +12,7 @@ from entropy.game.control import Control
 from entropy.gui.mouse import Mouse
 from entropy.gui.window import Window
 from entropy.locations import ASSETS_DIR
+from entropy.locations import LOCALES_DIR
 from entropy.locations import USER_LOCAL_DIR
 from entropy.logging import get_logger
 from entropy.misc.translator import Translator
@@ -57,7 +58,7 @@ def init() -> None:
         fullscreen=config.fullscreen,
     )
     mouse = Mouse()
-    translator = Translator(locales=["en", "fr"], locale=config.locale)
+    translator = Translator(localedir=LOCALES_DIR, locale=config.locale)
 
     assets = AssetsLibrary()
     assets.fonts.add_font(
