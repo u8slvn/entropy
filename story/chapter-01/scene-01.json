@@ -1,0 +1,46 @@
+[
+  {
+    "background": "color:black",
+    "events": [
+      {
+        "align": "center",
+        "type": "text",
+        "value": "Hello 1"
+      },
+      {
+        "align": "center",
+        "type": "text",
+        "value": "Hello 2"
+      }
+    ],
+    "id": "00001",
+    "music": "main-theme",
+    "next": "00002",
+    "transition": {
+      "intro": "fade-in"
+    },
+    "type": "contemplation"
+  },
+  {
+    "background": "color:black",
+    "events": [
+      {
+        "align": "center",
+        "type": "text",
+        "value": "Hello 2"
+      },
+      {
+        "align": "center",
+        "type": "text",
+        "value": "Hello 4"
+      }
+    ],
+    "id": "00002",
+    "music": "main-theme",
+    "next": "00003",
+    "transition": {
+      "intro": "fade-in"
+    },
+    "type": "contemplation"
+  }
+]

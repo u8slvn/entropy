@@ -38,3 +38,8 @@ tasks:
         - mkdir -p ./entropy/locales/en/LC_MESSAGES ./entropy/locales/fr/LC_MESSAGES
         - msgfmt locales/en/LC_MESSAGES/base.po -o entropy/locales/en/LC_MESSAGES/base.mo
         - msgfmt locales/fr/LC_MESSAGES/base.po -o entropy/locales/fr/LC_MESSAGES/base.mo
+
+  build-story:
+    desc: Build story's files.
+    cmds:
+      - python ./scripts/build-story.py

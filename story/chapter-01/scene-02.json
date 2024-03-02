@@ -1,0 +1,24 @@
+[
+  {
+    "background": "color:black",
+    "events": [
+      {
+        "align": "center",
+        "type": "text",
+        "value": "Hello 5"
+      },
+      {
+        "align": "center",
+        "type": "text",
+        "value": "Hello 6"
+      }
+    ],
+    "id": "00003",
+    "music": "main-theme",
+    "next": "end",
+    "transition": {
+      "intro": "fade-in"
+    },
+    "type": "contemplation"
+  }
+]

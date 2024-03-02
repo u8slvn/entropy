@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from time import sleep
 from typing import TYPE_CHECKING
 
 import pygame
@@ -35,7 +34,6 @@ class Play(State):
         )
 
     def setup(self) -> None:
-        sleep(2)
         self._text.setup()
 
     def process_inputs(self, inputs: Inputs) -> None: ...
