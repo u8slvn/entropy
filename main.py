@@ -3,11 +3,19 @@
 
 from __future__ import annotations
 
+import argparse
+
 import entropy
 
 
-entropy.init()
-entropy.start(state="Splash")
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="entropy")
+    parser.add_argument("-s", "--state", type=str, default="Splash")
+    args = parser.parse_args()
+    state = args.state
+
+    entropy.init()
+    entropy.start(state=state)
 
 # import gettext
 #
