@@ -10,7 +10,7 @@ from entropy import config
 from entropy import get_logger
 from entropy import translator
 from entropy.game.states.base import State
-from entropy.game.states.story.node import Chapter
+from entropy.game.states.story.chapter import Chapter
 from entropy.locations import STORY_DIR
 
 
