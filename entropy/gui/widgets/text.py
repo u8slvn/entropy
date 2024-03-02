@@ -5,8 +5,8 @@ from typing import TYPE_CHECKING
 import pygame
 
 from entropy import translator
-from entropy.gui.components.base import ALIGN
-from entropy.gui.components.base import Widget
+from entropy.gui.widgets.base import ALIGN
+from entropy.gui.widgets.base import Widget
 from entropy.tools.observer import Observer
 from entropy.utils import Color
 from entropy.utils import Pos

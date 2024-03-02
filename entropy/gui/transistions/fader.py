@@ -4,9 +4,9 @@ from typing import Callable
 
 import pygame
 
-from entropy.gui.components.background import ColorBackground
 from entropy.gui.transistions.base import Ease
 from entropy.gui.transistions.base import Transition
+from entropy.gui.widgets.background import ColorBackground
 from entropy.utils import Color
 
 

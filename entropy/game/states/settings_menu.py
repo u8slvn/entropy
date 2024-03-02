@@ -19,17 +19,17 @@ from entropy.constants import GUI_BUTTON_FONT_SIZE
 from entropy.constants import GUI_BUTTON_TEXT_COLOR
 from entropy.constants import GUI_TEXT_COLOR
 from entropy.game.states.base import State
-from entropy.gui.components import button
-from entropy.gui.components import slider
-from entropy.gui.components.background import ColorBackground
-from entropy.gui.components.base import ALIGN
-from entropy.gui.components.button import AttrObserver
-from entropy.gui.components.button import ObserverButton
-from entropy.gui.components.button import TextButton
-from entropy.gui.components.menu import Group
-from entropy.gui.components.menu import MenuGroup
-from entropy.gui.components.slider import TitledSlider
-from entropy.gui.components.text import TText
+from entropy.gui.widgets import button
+from entropy.gui.widgets import slider
+from entropy.gui.widgets.background import ColorBackground
+from entropy.gui.widgets.base import ALIGN
+from entropy.gui.widgets.button import AttrObserver
+from entropy.gui.widgets.button import ObserverButton
+from entropy.gui.widgets.button import TextButton
+from entropy.gui.widgets.menu import Group
+from entropy.gui.widgets.menu import MenuGroup
+from entropy.gui.widgets.slider import TitledSlider
+from entropy.gui.widgets.text import TText
 from entropy.mixer import Channel
 from entropy.utils import Color
 from entropy.utils import Pos
@@ -38,8 +38,8 @@ from entropy.utils import Size
 
 if TYPE_CHECKING:
     from entropy.game.control import Control
-    from entropy.gui.components.base import Widget
     from entropy.gui.input import Inputs
+    from entropy.gui.widgets.base import Widget
 
 config = get_config()
 

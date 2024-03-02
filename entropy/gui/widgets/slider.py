@@ -8,9 +8,9 @@ from entropy import mixer
 from entropy import mouse
 from entropy.constants import SLIDER_BG_COLOR
 from entropy.constants import SLIDER_PROGRESS_COLOR
-from entropy.gui.components.base import ALIGN
-from entropy.gui.components.base import Widget
-from entropy.gui.components.text import TText
+from entropy.gui.widgets.base import ALIGN
+from entropy.gui.widgets.base import Widget
+from entropy.gui.widgets.text import TText
 from entropy.utils import Pos
 
 

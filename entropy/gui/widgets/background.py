@@ -6,8 +6,8 @@ import pygame
 
 from entropy import assets
 from entropy import window
-from entropy.gui.components.base import Widget
 from entropy.gui.input import Inputs
+from entropy.gui.widgets.base import Widget
 
 
 if TYPE_CHECKING:

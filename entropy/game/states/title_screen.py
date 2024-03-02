@@ -14,17 +14,17 @@ from entropy.config import get_config
 from entropy.constants import GUI_BUTTON_FONT_SIZE
 from entropy.constants import GUI_BUTTON_TEXT_COLOR
 from entropy.game.states.base import State
-from entropy.gui.components.background import ImageBackground
-from entropy.gui.components.base import ALIGN
-from entropy.gui.components.button import TextButton
-from entropy.gui.components.menu import MenuGroup
+from entropy.gui.widgets.background import ImageBackground
+from entropy.gui.widgets.base import ALIGN
+from entropy.gui.widgets.button import TextButton
+from entropy.gui.widgets.menu import MenuGroup
 from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
     from entropy.game.control import Control
-    from entropy.gui.components.base import Widget
     from entropy.gui.input import Inputs
+    from entropy.gui.widgets.base import Widget
 
 config = get_config()
 

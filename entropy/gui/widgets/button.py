@@ -9,15 +9,15 @@ import pygame
 
 from entropy import mixer
 from entropy import mouse
-from entropy.gui.components.base import Widget
-from entropy.gui.components.text import TText
+from entropy.gui.widgets.base import Widget
+from entropy.gui.widgets.text import TText
 from entropy.tools.observer import Observer
 from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
-    from entropy.gui.components.base import ALIGN
     from entropy.gui.input import Inputs
+    from entropy.gui.widgets.base import ALIGN
     from entropy.tools.observer import Subject
     from entropy.utils import Color
 

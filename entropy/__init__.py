@@ -76,7 +76,7 @@ def init() -> None:
     control = Control(fps=config.fps)
 
 
-def start() -> None:
+def start(state: str = "Splash") -> None:
     global control
 
-    control.start()
+    control.start(state=state)

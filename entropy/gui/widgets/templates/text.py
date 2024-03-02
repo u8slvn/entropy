@@ -6,7 +6,7 @@ from entropy import assets
 from entropy.config import get_config
 from entropy.constants import GUI_BUTTON_FONT_SIZE
 from entropy.constants import GUI_BUTTON_TEXT_COLOR
-from entropy.gui.components.text import TText
+from entropy.gui.widgets.text import TText
 
 
 config = get_config()

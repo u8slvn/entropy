@@ -7,7 +7,7 @@ import entropy
 
 
 entropy.init()
-entropy.start()
+entropy.start(state="Splash")
 
 # import gettext
 #

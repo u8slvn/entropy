@@ -6,16 +6,16 @@ from typing import Callable
 
 from entropy import assets
 from entropy.config import get_config
-from entropy.gui.components.button import Button
-from entropy.gui.components.button import ObserverButton
-from entropy.gui.components.button import TextButton
-from entropy.gui.components.text import TText
+from entropy.gui.widgets.button import Button
+from entropy.gui.widgets.button import ObserverButton
+from entropy.gui.widgets.button import TextButton
+from entropy.gui.widgets.text import TText
 from entropy.utils import Color
 from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
-    from entropy.gui.components.button import AttrObserver
+    from entropy.gui.widgets.button import AttrObserver
 
 
 config = get_config()

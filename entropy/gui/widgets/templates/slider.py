@@ -3,7 +3,7 @@ from __future__ import annotations
 from functools import partial
 
 from entropy import assets
-from entropy.gui.components.slider import TitledSlider
+from entropy.gui.widgets.slider import TitledSlider
 from entropy.utils import Size
 
 

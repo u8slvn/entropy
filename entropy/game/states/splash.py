@@ -7,11 +7,11 @@ import pygame
 import entropy
 
 from entropy.game.states.base import State
-from entropy.gui.components.background import ColorBackground
-from entropy.gui.components.base import ALIGN
-from entropy.gui.components.text import Text
 from entropy.gui.transistions.fader import FadeIn
 from entropy.gui.transistions.fader import FadeOut
+from entropy.gui.widgets.background import ColorBackground
+from entropy.gui.widgets.base import ALIGN
+from entropy.gui.widgets.text import Text
 from entropy.tools.timer import TimerSecond
 from entropy.utils import Color
 
