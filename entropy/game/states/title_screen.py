@@ -70,7 +70,7 @@ class TitleScreen(State):
             # },
             {
                 "text": "NEW GAME",
-                "callback": TransitionToNextState(state=self, next_state="Play"),
+                "callback": TransitionToNextState(state=self, next_state="Story"),
             },
             {
                 "text": "SETTINGS",

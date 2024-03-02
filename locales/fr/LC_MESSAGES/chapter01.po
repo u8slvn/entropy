@@ -6,64 +6,50 @@ msgstr ""
 "PO-Revision-Date: 2023-07-15 02:31+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: en\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.3.2\n"
 
-#: menu
-msgid "CONTINUE"
-msgstr "CONTINUE"
+msgid "Chapter 1"
+msgstr "CHAPITRE I"
 
-#: menu
 msgid "NEW GAME"
-msgstr "NEW GAME"
+msgstr "NOUVELLE PARTIE"
 
-#: menu
 msgid "SETTINGS"
-msgstr "SETTINGS"
+msgstr "PARAMÈTRES"
 
-#: menu
 msgid "QUIT"
-msgstr "QUIT"
+msgstr "QUITTER"
 
-#: menu
 msgid "DISPLAY"
-msgstr "DISPLAY"
+msgstr "AFFICHAGE"
 
-#: menu
 msgid "SOUND"
-msgstr "SOUND"
+msgstr "AUDIO"
 
-#: menu
 msgid "LANGUAGE"
-msgstr "LANGUAGE"
+msgstr "LANGUE"
 
-#: menu
 msgid "DIALOGUE"
-msgstr "DIALOGUE"
+msgstr "DIALOGUES"
 
-#: menu
 msgid "BACK"
 msgstr "RETOUR"
 
-#: menu
 msgid "TEXT"
-msgstr "TEXT"
+msgstr "TEXTE"
 
-#: menu
 msgid "FULLSCREEN"
-msgstr "FULLSCREEN"
+msgstr "PLEIN ÉCRAN"
 
-#: menu
 msgid "FRAMED"
-msgstr "FRAMED"
+msgstr "FENÊTRÉ"
 
-#: menu
 msgid "ENGLISH"
 msgstr "ENGLISH"
 
-#: menu
 msgid "FRANÇAIS"
 msgstr "FRANÇAIS"

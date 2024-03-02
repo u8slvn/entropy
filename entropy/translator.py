@@ -1,16 +1,16 @@
 from __future__ import annotations
 
 import gettext
-import logging
 
 from collections import defaultdict
 from pathlib import Path
 from typing import Callable
 
+from entropy.logging import get_logger
 from entropy.tools.observer import Subject
 
 
-logger = logging.getLogger(__name__)
+logger = get_logger()
 
 
 class Translator(Subject):
@@ -38,7 +38,7 @@ class Translator(Subject):
                 )
 
     def set_translation(self, locale: str, domain: str = "base") -> None:
-        logger.info(f'Locale set to "{locale}".')
+        logger.info(f'Locale set to "{domain}" "{locale}".')
         self._translations[locale][domain].install()
         self._translator = self._translations[locale][domain].gettext
         self.locale = locale

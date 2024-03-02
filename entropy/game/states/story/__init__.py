@@ -6,7 +6,9 @@ from typing import TYPE_CHECKING
 
 import pygame
 
+from entropy import config
 from entropy import get_logger
+from entropy import translator
 from entropy.game.states.base import State
 from entropy.game.states.story.node import Chapter
 from entropy.locations import STORY_DIR
@@ -33,17 +35,23 @@ class Story(State):
 
     def _set_chapter(self, name: str) -> None:
         logger.info(f'Story chapter set to "{name}".')
+        translator.set_translation(locale=config.locale, domain=name)
         self._current_chapter = Chapter(state=self, **(self._chapters[name]))
 
-    def setup(self) -> None: ...
+    def setup(self) -> None:
+        self._current_chapter.setup()
 
-    def process_inputs(self, inputs: Inputs) -> None: ...
+    def process_inputs(self, inputs: Inputs) -> None:
+        self._current_chapter.process_inputs(inputs)
 
-    def update(self) -> None: ...
+    def update(self) -> None:
+        self._current_chapter.update()
 
-    def draw(self, surface: pygame.Surface) -> None: ...
+    def draw(self, surface: pygame.Surface) -> None:
+        self._current_chapter.draw(surface=surface)
 
-    def teardown(self) -> None: ...
+    def teardown(self) -> None:
+        self._current_chapter.teardown()
 
 
 # self._text = TypeWriterText(

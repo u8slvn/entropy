@@ -15,8 +15,8 @@ from entropy.locations import ASSETS_DIR
 from entropy.locations import LOCALES_DIR
 from entropy.locations import USER_LOCAL_DIR
 from entropy.logging import get_logger
-from entropy.misc.translator import Translator
 from entropy.mixer import Mixer
+from entropy.translator import Translator
 from entropy.utils import Res
 
 
@@ -67,6 +67,7 @@ def init() -> None:
         medium=33,
         big=44,
         settings=55,
+        chapter=88,
     )
     assets.images.add_dir(path=ASSETS_DIR / "gui")
     assets.images.add_dir(path=ASSETS_DIR / "images")
