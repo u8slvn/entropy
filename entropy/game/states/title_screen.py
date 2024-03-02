@@ -8,7 +8,6 @@ import pygame
 from entropy import assets
 from entropy import translator
 from entropy.commands.game import QuitGame
-from entropy.commands.state import ExitState
 from entropy.commands.state import TransitionToNextState
 from entropy.config import get_config
 from entropy.constants import GUI_BUTTON_FONT_SIZE
@@ -64,13 +63,13 @@ class TitleScreen(State):
         menu_group = MenuGroup(parent=self._background)
 
         widgets = [
-            {
-                "text": "CONTINUE",
-                "callback": test_lang,
-            },
+            # {
+            #     "text": "CONTINUE",
+            #     "callback": test_lang,
+            # },
             {
                 "text": "NEW GAME",
-                "callback": ExitState(state=self),
+                "callback": TransitionToNextState(state=self, next_state="Play"),
             },
             {
                 "text": "SETTINGS",

@@ -128,3 +128,81 @@ class TText(Text, Observer):
 
     def __repr__(self):
         return f'<TText value="{self.__text}">'
+
+
+class TypeWriterText(Widget):
+    def __init__(
+        self,
+        parent: Widget,
+        text: str,
+        color: Color | str,
+        font: pygame.font.Font,
+        width: int,
+        speed: float,
+        pos: Pos = Pos(0, 0),
+        align: ALIGN | None = None,
+    ) -> None:
+        self._text = text
+        self._color = color
+        self._font = font
+        self._speed = speed
+        self._counter = 0
+        self._done = False
+        self._surf = self._render_surf(width=width)
+        self._text_surf = pygame.Surface((0, 0), pygame.SRCALPHA, 32)
+
+        rect = pygame.Rect(*pos, *self._surf.get_size())
+        super().__init__(parent=parent, rect=rect, align=align)
+
+    def _render_surf(self, width: int) -> pygame.Surface:
+        words = self._text.split(" ")
+        output_text = []
+        line = []
+
+        for i, word in enumerate(words, start=1):
+            line.append(word)
+            rendered = self._font.render(" ".join(line), antialias=False, color=0)
+
+            if rendered.get_width() > width:
+                output_text.append(" ".join(line[:-1]))
+                line = [word]
+
+            if i >= len(words):
+                output_text.append(" ".join(line))
+
+        self._text = "\n".join(output_text)
+
+        text_surf = self._font.render(self._text, antialias=False, color=(0, 0, 0, 0))
+        surf = pygame.Surface(text_surf.get_size(), pygame.SRCALPHA, 32)
+        surf.set_alpha(0)
+
+        return surf
+
+    def setup(self) -> None:
+        self._counter = 0
+        self._done = False
+
+    def process_inputs(self, inputs: Inputs) -> None:
+        pass
+
+    def update(self) -> None:
+        if self._done is True:
+            return
+
+        if self._counter < self._speed * len(self._text):
+            self._counter += 1
+        elif self._counter >= self._speed * len(self._text):
+            self._done = True
+
+        self._text_surf = self._font.render(
+            self._text[0 : int(self._counter // self._speed)],
+            antialias=False,
+            color=self._color,
+        )
+
+    def draw(self, surface: pygame.Surface) -> None:
+        surface.blit(self._surf, self.rect)
+        surface.blit(self._text_surf, self.rect)
+
+    def teardown(self) -> None:
+        pass
