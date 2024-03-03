@@ -41,7 +41,7 @@ class FPSViewer(GameEntity):
         if inputs.keyboard.F5:
             self._visible = not self._visible
 
-    def update(self) -> None:
+    def update(self, dt: float) -> None:
         if self._visible:
             self._fps = self._clock.get_fps()
             self._text = self._get_text()

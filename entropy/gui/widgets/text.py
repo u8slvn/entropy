@@ -62,7 +62,7 @@ class Text(Widget):
     def process_inputs(self, inputs: Inputs) -> None:
         pass
 
-    def update(self) -> None:
+    def update(self, dt: float) -> None:
         pass
 
     def draw(self, surface: pygame.Surface) -> None:
@@ -110,7 +110,7 @@ class TText(Text, Observer):
     def process_inputs(self, inputs: Inputs) -> None:
         pass
 
-    def update(self) -> None:
+    def update(self, dt: float) -> None:
         if self._locale_changed is True:
             self._locale_changed = False
             self._text = T(self.__text)
@@ -185,23 +185,21 @@ class TypeWriterText(Widget):
     def process_inputs(self, inputs: Inputs) -> None:
         pass
 
-    def update(self) -> None:
+    def update(self, dt: float) -> None:
         if self._done is True:
             return
 
-        if self._counter < self._speed * len(self._text):
-            self._counter += 1
-        elif self._counter >= self._speed * len(self._text):
+        self._counter += self._speed * dt
+        if self._counter >= len(self._text):
             self._done = True
 
         self._text_surf = self._font.render(
-            self._text[0 : int(self._counter // self._speed)],
+            self._text[0 : int(self._counter)],
             antialias=False,
             color=self._color,
         )
 
     def draw(self, surface: pygame.Surface) -> None:
-        surface.blit(self._surf, self.rect)
         surface.blit(self._text_surf, self.rect)
 
     def teardown(self) -> None:

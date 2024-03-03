@@ -160,7 +160,7 @@ class Slider(Widget):
             else:
                 self._grabbed = False
 
-    def update(self) -> None:
+    def update(self, dt: float) -> None:
         self._button = self._buttons[self._focus]
         if self._grabbed:
             self.move_slider(self._button_x)
@@ -253,9 +253,9 @@ class TitledSlider(Widget):
         self._text.process_inputs(inputs=inputs)
         self._slider.process_inputs(inputs=inputs)
 
-    def update(self) -> None:
-        self._text.update()
-        self._slider.update()
+    def update(self, dt: float) -> None:
+        self._text.update(dt=dt)
+        self._slider.update(dt=dt)
 
     def draw(self, surface: pygame.Surface) -> None:
         self._text.draw(surface=surface)

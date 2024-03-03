@@ -48,8 +48,8 @@ class TitleScreen(State):
     def process_inputs(self, inputs: Inputs) -> None:
         self._main_menu.process_inputs(inputs=inputs)
 
-    def update(self) -> None:
-        self._main_menu.update()
+    def update(self, dt: float) -> None:
+        self._main_menu.update(dt=dt)
 
     def draw(self, surface: pygame.Surface) -> None:
         self._background.draw(surface=surface)

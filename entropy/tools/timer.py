@@ -61,7 +61,7 @@ class Timer(GameEntity):
     def process_inputs(self, inputs: Inputs) -> None:
         pass
 
-    def update(self) -> None:
+    def update(self, dt: float) -> None:
         if self.is_done() or not self.is_started():
             return
 

@@ -10,7 +10,7 @@
   },
   {
     "background": "image:ch01-sc01-01",
-    "delay": 2,
+    "delay": 1,
     "event": {
       "align": "center_x",
       "type": "text",

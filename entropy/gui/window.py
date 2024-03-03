@@ -21,7 +21,9 @@ class Window:
     Manage the whole game actions window related.
     """
 
-    _fullscreen_flags = pygame.FULLSCREEN | pygame.SCALED
+    # TODO: Fix SCALED flags crashed fullscreen
+    # _fullscreen_flags = pygame.FULLSCREEN | pygame.SCALED
+    _fullscreen_flags = pygame.FULLSCREEN
     _framed_flags = pygame.RESIZABLE
 
     def __init__(

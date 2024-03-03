@@ -68,8 +68,8 @@ class SettingsMenu(State):
 
         self._submenu.process_inputs(inputs=inputs)
 
-    def update(self) -> None:
-        self._submenu.update()
+    def update(self, dt: float) -> None:
+        self._submenu.update(dt=dt)
 
     def draw(self, surface: pg.Surface) -> None:
         if self.control.prev_state is not None:

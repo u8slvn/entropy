@@ -121,7 +121,7 @@ class Button(Widget):
         if inputs.keyboard.ENTER and self.has_focus():
             self.press()
 
-    def update(self):
+    def update(self, dt: float):
         if self.is_pressed():
             self.release()
         self._image = self._images[self._state]
@@ -175,9 +175,9 @@ class TextButton(Button):
         super().setup()
         self._text.setup()
 
-    def update(self):
-        super().update()
-        self._text.update()
+    def update(self, dt: float):
+        super().update(dt=dt)
+        self._text.update(dt=dt)
 
     def draw(self, surface: pygame.Surface) -> None:
         super().draw(surface=surface)

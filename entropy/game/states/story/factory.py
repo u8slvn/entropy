@@ -36,7 +36,7 @@ def build_background(params: str) -> Background:
 def build_event(parent: Widget, params: dict[str, str]) -> TypeWriterText:
     return TypeWriterText(
         parent=parent,
-        font=entropy.assets.fonts.get("LanaPixel", "big"),
+        font=entropy.assets.fonts.get("LanaPixel", "medium"),
         text=params["value"],
         color="white",
         width=1700,

@@ -72,7 +72,7 @@ class DefaultRoot(BaseWidget):
     def process_inputs(self, inputs: Inputs) -> None:
         pass
 
-    def update(self) -> None:
+    def update(self, dt: float) -> None:
         pass
 
     def draw(self, surface: pygame.Surface) -> None:

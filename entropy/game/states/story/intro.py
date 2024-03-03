@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import entropy
-
+from entropy import assets
+from entropy import mixer
 from entropy.game.states.story.node import Node
 from entropy.gui.transistions.fader import FadeIn
 from entropy.gui.transistions.fader import FadeOut
@@ -34,11 +34,13 @@ class IntroScene(Node):
     ):
         super().__init__(chapter=chapter, next=next)
         self._id = id
-        self._music = music
+        if music is not None:
+            self._music = mixer.play_music(music)
+
         self.chapter.set_background(config=background)
         self._title = TText(
             parent=self.chapter.background,
-            font=entropy.assets.fonts.get("LanaPixel", "chapter"),
+            font=assets.fonts.get("LanaPixel", "chapter"),
             text=title,
             color="white",
             pos=Pos(0, 400),
@@ -46,7 +48,7 @@ class IntroScene(Node):
         )
         self._subtitle = TText(
             parent=self.chapter.background,
-            font=entropy.assets.fonts.get("LanaPixel", "big"),
+            font=assets.fonts.get("LanaPixel", "big"),
             text=subtitle,
             color="white",
             pos=Pos(0, 550),
@@ -73,14 +75,15 @@ class IntroScene(Node):
         self._timer.setup()
 
     def process_inputs(self, inputs: Inputs) -> None:
-        pass
+        if inputs.keyboard.SPACE or inputs.keyboard.ENTER:
+            self.mark_as_done()
 
-    def update(self) -> None:
-        self._title.update()
-        self._subtitle.update()
-        self._fade_in.update()
-        self._fade_out.update()
-        self._timer.update()
+    def update(self, dt: float) -> None:
+        self._title.update(dt=dt)
+        self._subtitle.update(dt=dt)
+        self._fade_in.update(dt=dt)
+        self._fade_out.update(dt=dt)
+        self._timer.update(dt=dt)
 
     def draw(self, surface: pygame.Surface) -> None:
         self._title.draw(surface=surface)

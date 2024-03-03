@@ -27,8 +27,8 @@ class _FaderTransition(Transition):
         super().setup()
         self._background.set_alpha(self._default_alpha_value())
 
-    def update(self) -> None:
-        super().update()
+    def update(self, dt: float) -> None:
+        super().update(dt=dt)
 
         if not self.is_active():
             return

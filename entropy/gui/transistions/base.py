@@ -51,8 +51,8 @@ class Transition(GameEntity, ABC):
     def process_inputs(self, inputs: Inputs) -> None:
         pass
 
-    def update(self) -> None:
-        self._timer.update()
+    def update(self, dt: float) -> None:
+        self._timer.update(dt=dt)
 
         if self._timer.is_done() or not self._timer.is_started():
             self._active = False

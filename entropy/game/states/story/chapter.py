@@ -36,18 +36,17 @@ NODE_TYPE_MAPPING: dict[str, Type[Node]] = {
 
 class Chapter(BaseNode):
     def __init__(
-        self, state: State, title: str, subtitle: str, start_node: str, configfile: Path
+        self, state: State, name: str, start_node: str, configfile: Path
     ) -> None:
         super().__init__()
-        self._name = title
+        self._background = ColorBackground(color=Color(0, 0, 0, 255))
+        self._name = name
         self._state = state
         self._nodes: dict[str, Callable[[], None]] = {}
         self._load_nodes(configfile=configfile)
         self._current_node: Node | None = None
         self.transition_to_node(id_=start_node)
         self._loaded = False
-
-        self._background = ColorBackground(color=Color(0, 0, 0, 255))
 
     def _load_nodes(self, configfile: Path) -> None:
         with open(STORY_DIR / configfile, "r") as file:
@@ -86,8 +85,8 @@ class Chapter(BaseNode):
     def process_inputs(self, inputs: Inputs) -> None:
         self._current_node.process_inputs(inputs=inputs)
 
-    def update(self) -> None:
-        self._current_node.update()
+    def update(self, dt: float) -> None:
+        self._current_node.update(dt=dt)
 
     def draw(self, surface: pygame.Surface) -> None:
         self._background.draw(surface=surface)

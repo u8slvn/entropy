@@ -78,8 +78,8 @@ class Control:
 
     def update(self) -> None:
         entropy.mouse.update()
-        self.current_state.update()
-        self.fps_viewer.update()
+        self.current_state.update(dt=self.dt)
+        self.fps_viewer.update(dt=self.dt)
 
         self.inputs.flush()
 

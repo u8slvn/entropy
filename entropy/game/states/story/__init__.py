@@ -36,7 +36,7 @@ class Story(State):
     def _set_chapter(self, name: str) -> None:
         logger.info(f'Story chapter set to "{name}".')
         translator.set_translation(locale=config.locale, domain=name)
-        self._current_chapter = Chapter(state=self, **(self._chapters[name]))
+        self._current_chapter = Chapter(state=self, name=name, **(self._chapters[name]))
 
     def setup(self) -> None:
         self._current_chapter.setup()
@@ -44,8 +44,8 @@ class Story(State):
     def process_inputs(self, inputs: Inputs) -> None:
         self._current_chapter.process_inputs(inputs)
 
-    def update(self) -> None:
-        self._current_chapter.update()
+    def update(self, dt: float) -> None:
+        self._current_chapter.update(dt=dt)
 
     def draw(self, surface: pygame.Surface) -> None:
         self._current_chapter.draw(surface=surface)

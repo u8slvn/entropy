@@ -56,13 +56,13 @@ class Splash(State):
         if inputs.keyboard.SPACE or inputs.keyboard.ENTER:
             self.mark_as_done()
 
-    def update(self) -> None:
+    def update(self, dt: float) -> None:
         if self._done:
             self.control.transition_to("TitleScreen")
 
-        self._fade_in.update()
-        self._fade_out.update()
-        self._timer.update()
+        self._fade_in.update(dt=dt)
+        self._fade_out.update(dt=dt)
+        self._timer.update(dt=dt)
 
     def draw(self, surface: pygame.Surface) -> None:
         if self._done:

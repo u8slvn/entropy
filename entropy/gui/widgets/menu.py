@@ -40,9 +40,9 @@ class Group(Widget):
         for widget in self.widgets:
             widget.process_inputs(inputs=inputs)
 
-    def update(self) -> None:
+    def update(self, dt: float) -> None:
         for widget in self.widgets:
-            widget.update()
+            widget.update(dt=dt)
 
     def draw(self, surface: pygame.Surface) -> None:
         for widget in self.widgets:

@@ -42,7 +42,7 @@ class _Config(Subject):
                 {
                     "locale": "en",
                     "font": "LanaPixel",
-                    "text_speed": 2,
+                    "text_speed": 40,
                 }
             ),
             "sound": OrderedDict(

@@ -51,11 +51,11 @@ class ContemplationScene(Node):
     def process_inputs(self, inputs: Inputs) -> None:
         pass
 
-    def update(self) -> None:
+    def update(self, dt: float) -> None:
         if self._delay.is_done():
-            self._event.update()
+            self._event.update(dt=dt)
         else:
-            self._delay.update()
+            self._delay.update(dt=dt)
 
     def draw(self, surface: pygame.Surface) -> None:
         self._background_event.draw(surface=surface)
