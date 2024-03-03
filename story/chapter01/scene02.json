@@ -1,19 +1,12 @@
 [
   {
-    "background": "color:black",
-    "events": [
-      {
-        "align": "center",
-        "type": "text",
-        "value": "Hello 5"
-      },
-      {
-        "align": "center",
-        "type": "text",
-        "value": "Hello 6"
-      }
-    ],
-    "id": "00003",
+    "background": "image:ch01-sc02-01",
+    "events": {
+      "align": "center",
+      "type": "text",
+      "value": "Hello 5"
+    },
+    "id": "ch01sc02n01",
     "music": "main-theme",
     "next": "end",
     "transition": {

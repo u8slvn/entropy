@@ -13,6 +13,8 @@ if TYPE_CHECKING:
 
 
 class Timer(GameEntity):
+    """Simple timer object in millisecond."""
+
     def __init__(
         self,
         duration: int,
@@ -80,6 +82,8 @@ class Timer(GameEntity):
 
 
 class TimerSecond(Timer):
+    """Simple timer object in second."""
+
     def __init__(
         self,
         duration: int,

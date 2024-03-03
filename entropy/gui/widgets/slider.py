@@ -8,7 +8,7 @@ from entropy import mixer
 from entropy import mouse
 from entropy.constants import SLIDER_BG_COLOR
 from entropy.constants import SLIDER_PROGRESS_COLOR
-from entropy.gui.widgets.base import ALIGN
+from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.base import Widget
 from entropy.gui.widgets.text import TText
 from entropy.utils import Pos
@@ -35,7 +35,7 @@ class Slider(Widget):
         command: ConfigurableCommand,
         button_image: pygame.Surface,
         pos: Pos = Pos(0, 0),
-        align: ALIGN | None = None,
+        align: Align | None = None,
     ) -> None:
         self._focus = False
         self._grabbed = False
@@ -67,13 +67,13 @@ class Slider(Widget):
 
     def update_align(self) -> None:
         match self.align:
-            case ALIGN.CENTER:
+            case Align.CENTER:
                 self.rect.center = self.parent.center
                 self._progress.center = self.parent.center
-            case ALIGN.CENTER_X:
+            case Align.CENTER_X:
                 self.rect.centerx = self.parent.centerx
                 self._progress.centerx = self.parent.centerx
-            case ALIGN.CENTER_Y:
+            case Align.CENTER_Y:
                 self.rect.centery = self.parent.centery
                 self._progress.centery = self.parent.centery
 
@@ -197,10 +197,10 @@ class TitledSlider(Widget):
         text_font: pygame.font.Font,
         space_between: int,
         text_background: Color | str | None = None,
-        text_align: ALIGN | None = None,
+        text_align: Align | None = None,
         text_align_margin: Pos = Pos(0, 0),
         pos: Pos = Pos(0, 0),
-        align: ALIGN | None = None,
+        align: Align | None = None,
     ) -> None:
         self._space_between = space_between
 
@@ -233,12 +233,12 @@ class TitledSlider(Widget):
     def update_align(self) -> None:
         super().update_align()
         match self.align:
-            case ALIGN.CENTER:
+            case Align.CENTER:
                 pass
-            case ALIGN.CENTER_X:
+            case Align.CENTER_X:
                 self._text.rect.centerx = self.parent.centerx
                 self._slider.rect.centerx = self.parent.centerx
-            case ALIGN.CENTER_Y:
+            case Align.CENTER_Y:
                 pass
 
     @property

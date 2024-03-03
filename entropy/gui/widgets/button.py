@@ -17,7 +17,7 @@ from entropy.utils import Pos
 
 if TYPE_CHECKING:
     from entropy.gui.input import Inputs
-    from entropy.gui.widgets.base import ALIGN
+    from entropy.gui.widgets.base import Align
     from entropy.tools.observer import Subject
     from entropy.utils import Color
 
@@ -38,7 +38,7 @@ class Button(Widget):
         sound_clicked: str,
         callback: Callable[[], None],
         pos: Pos = Pos(0, 0),
-        align: ALIGN | None = None,
+        align: Align | None = None,
     ) -> None:
         self._pressed = False
         self._images = self._build_images(image=image)
@@ -145,11 +145,11 @@ class TextButton(Button):
         text_color: Color | str,
         text_font: pygame.font.Font,
         text_background: Color | str | None = None,
-        text_align: ALIGN | None = None,
+        text_align: Align | None = None,
         text_pos: Pos = Pos(0, 0),
         text_align_margin: Pos = Pos(0, 0),
         pos: Pos = Pos(0, 0),
-        align: ALIGN | None = None,
+        align: Align | None = None,
     ) -> None:
         super().__init__(
             parent=parent,
@@ -211,11 +211,11 @@ class ObserverButton(TextButton, Observer):
         text_color: Color | str,
         text_font: pygame.font.Font,
         text_background: Color | str | None = None,
-        text_align: ALIGN | None = None,
+        text_align: Align | None = None,
         text_pos: Pos = Pos(0, 0),
         text_align_margin: Pos = Pos(0, 0),
         pos: Pos = Pos(0, 0),
-        align: ALIGN | None = None,
+        align: Align | None = None,
     ) -> None:
         super().__init__(
             parent=parent,

@@ -2,35 +2,35 @@ from __future__ import annotations
 
 import json
 
+from functools import partial
 from pathlib import Path
 from typing import TYPE_CHECKING
+from typing import Callable
+from typing import Type
 
 import pygame
 
-import entropy
-
 from entropy.game.states.story.contemplation import ContemplationScene
+from entropy.game.states.story.factory import build_background
+from entropy.game.states.story.intro import IntroScene
 from entropy.game.states.story.node import BaseNode
-from entropy.gui.transistions.fader import FadeIn
-from entropy.gui.transistions.fader import FadeOut
 from entropy.gui.widgets.background import ColorBackground
-from entropy.gui.widgets.base import ALIGN
-from entropy.gui.widgets.text import TText
 from entropy.locations import STORY_DIR
 from entropy.logging import get_logger
-from entropy.tools.timer import TimerSecond
 from entropy.utils import Color
-from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
     from entropy.game.states.base import State
+    from entropy.game.states.story.node import Node
     from entropy.gui.input import Inputs
+    from entropy.gui.widgets.background import Background
 
 logger = get_logger()
 
-NODE_TYPE_MAPPING = {
+NODE_TYPE_MAPPING: dict[str, Type[Node]] = {
     "contemplation": ContemplationScene,
+    "intro": IntroScene,
 }
 
 
@@ -41,98 +41,58 @@ class Chapter(BaseNode):
         super().__init__()
         self._name = title
         self._state = state
-        self._current_node_id = start_node
-        self._nodes: dict[str, BaseNode] = {}
+        self._nodes: dict[str, Callable[[], None]] = {}
         self._load_nodes(configfile=configfile)
+        self._current_node: Node | None = None
+        self.transition_to_node(id_=start_node)
         self._loaded = False
 
         self._background = ColorBackground(color=Color(0, 0, 0, 255))
-        self._title = TText(
-            parent=self._background,
-            font=entropy.assets.fonts.get("LanaPixel", "chapter"),
-            text=title,
-            color="white",
-            pos=Pos(0, 400),
-            align=ALIGN.CENTER_X,
-        )
-        self._subtitle = TText(
-            parent=self._background,
-            font=entropy.assets.fonts.get("LanaPixel", "big"),
-            text=subtitle,
-            color="white",
-            pos=Pos(0, 550),
-            align=ALIGN.CENTER_X,
-        )
-        self._fade_out = FadeOut(duration=3000, callback=self.mark_as_loaded)
-        self._timer = TimerSecond(
-            duration=1,
-            autostart=False,
-            callback=self._fade_out.activate,
-        )
-        self._fade_in = FadeIn(duration=2000, callback=self._timer.start)
 
     def _load_nodes(self, configfile: Path) -> None:
         with open(STORY_DIR / configfile, "r") as file:
             nodes = json.load(file)
 
         for node in nodes:
-            self._nodes[node["id"]] = NODE_TYPE_MAPPING[node["type"]](
-                chapter=self, **node
+            self._nodes[node["id"]] = partial(
+                NODE_TYPE_MAPPING[node["type"]],
+                chapter=self,
+                **node,
             )
 
     @property
-    def current_node(self) -> BaseNode:
-        return self._nodes[self._current_node_id]
+    def background(self) -> Background:
+        return self._background
 
-    def mark_as_loaded(self) -> None:
-        logger.debug(f'Chapter "{self._name}" loaded.')
-        self._loaded = True
-        self.current_node.setup()
+    def set_background(self, config: str | None) -> None:
+        if config is not None:
+            self._background = build_background(config=config)
 
     def transition_to_node(self, id_: str) -> None:
-        if id_ == "end":
-            logger.debug(f'Chapter "{self._name}" ended.')
-            self.mark_as_done()
-        else:
-            logger.debug(f'Chapter "{self._name}" transition to node "{id_}".')
-            self._current_node_id = id_
+        # if id_ == "end":
+        #     logger.debug(f'Chapter "{self._name}" ended.')
+        #     self.mark_as_done()
+        # else:
+        if self._current_node is not None:
+            self._current_node.teardown()
+
+        self._current_node = self._nodes[id_]()
+        self._current_node.setup()
+        logger.debug(f'Chapter "{self._name}" transition to node "{id_}".')
 
     def setup(self) -> None:
         super().setup()
-        self._title.setup()
-        self._subtitle.setup()
-        self._fade_in.setup()
-        self._fade_out.setup()
-        self._timer.setup()
 
     def process_inputs(self, inputs: Inputs) -> None:
-        self.current_node.process_inputs(inputs=inputs)
+        self._current_node.process_inputs(inputs=inputs)
 
     def update(self) -> None:
-        if self._loaded is False:
-            self._title.update()
-            self._subtitle.update()
-            self._fade_in.update()
-            self._fade_out.update()
-            self._timer.update()
-        else:
-            if self.current_node.is_done():
-                self._current_node_id = self.current_node
-            self.current_node.update()
+        self._current_node.update()
 
     def draw(self, surface: pygame.Surface) -> None:
-        if self._loaded is False:
-            self._background.draw(surface=surface)
-            self._title.draw(surface=surface)
-            self._subtitle.draw(surface=surface)
-            self._fade_out.draw(surface=surface)
-            self._fade_in.draw(surface=surface)
-        else:
-            self.current_node.draw(surface=surface)
+        self._background.draw(surface=surface)
+        self._current_node.draw(surface=surface)
 
     def teardown(self) -> None:
         super().teardown()
-        self._fade_out.teardown()
-        self._fade_in.teardown()
-        self._timer.teardown()
-        self.current_node.teardown()
+        self._current_node.teardown()

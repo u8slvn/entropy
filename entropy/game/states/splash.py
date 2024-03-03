@@ -10,7 +10,7 @@ from entropy.game.states.base import State
 from entropy.gui.transistions.fader import FadeIn
 from entropy.gui.transistions.fader import FadeOut
 from entropy.gui.widgets.background import ColorBackground
-from entropy.gui.widgets.base import ALIGN
+from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.text import Text
 from entropy.tools.timer import TimerSecond
 from entropy.utils import Color
@@ -28,7 +28,7 @@ class Splash(State):
         self._background = ColorBackground(color=Color(0, 0, 0, 255))
         self._text = Text(
             parent=self._background,
-            align=ALIGN.CENTER,
+            align=Align.CENTER,
             font=font,
             text="ENTROPY",
             color="white",

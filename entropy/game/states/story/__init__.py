@@ -52,14 +52,3 @@ class Story(State):
 
     def teardown(self) -> None:
         self._current_chapter.teardown()
-
-
-# self._text = TypeWriterText(
-#     parent=self._background,
-#     font=font,
-#     text="Gamer Barbany était un prodige des mondes virtuels, où il régnait en maître. Mais son plus grand défi l'attendait dans la réalité, où il trouva l'amour, dépassant ainsi les limites de son écran pour découvrir un univers bien plus vaste et profond.",
-#     color="white",
-#     width=600,
-#     speed=1.4,
-#     align=ALIGN.CENTER,
-# )

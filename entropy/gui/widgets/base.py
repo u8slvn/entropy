@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC
-from enum import Enum
+from enum import StrEnum
 from enum import auto
 
 import pygame
@@ -14,7 +14,7 @@ from entropy.utils import Pos
 from entropy.utils import Size
 
 
-class ALIGN(Enum):
+class Align(StrEnum):
     CENTER = auto()
     CENTER_X = auto()
     CENTER_Y = auto()
@@ -87,7 +87,7 @@ class Widget(BaseWidget, ABC):
         self,
         parent: Widget | None = None,
         rect: pygame.Rect | None = None,
-        align: ALIGN | None = None,
+        align: Align | None = None,
     ):
         self.parent = parent or DefaultRoot()
         self.align = align
@@ -98,9 +98,9 @@ class Widget(BaseWidget, ABC):
 
     def update_align(self) -> None:
         match self.align:
-            case ALIGN.CENTER:
+            case Align.CENTER:
                 self.rect.center = self.parent.center
-            case ALIGN.CENTER_X:
+            case Align.CENTER_X:
                 self.rect.centerx = self.parent.centerx
-            case ALIGN.CENTER_Y:
+            case Align.CENTER_Y:
                 self.rect.centery = self.parent.centery

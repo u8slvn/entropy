@@ -2,8 +2,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from entropy.game.states.story.factory import build_background
+from entropy.game.states.story.factory import build_event
 from entropy.game.states.story.node import Node
+from entropy.tools.timer import TimerSecond
 
 
 if TYPE_CHECKING:
@@ -19,30 +20,40 @@ class ContemplationScene(Node):
         chapter: Chapter,
         id: str,
         next: str,
-        music: str,
-        transition: dict[str, str],
-        events: list[dict[str, str]],
+        event: dict[str, str],
         background: str,
+        delay: int = 0,
+        music: str | None = None,
+        transition: dict[str, str] | None = None,
         **_,
     ):
         super().__init__(chapter=chapter, next=next)
         self._id = id
         self._music = music
         self._transition = transition
-        self._events = events
-        self._background = build_background(config=background)
+        self.chapter.set_background(config=background)
+        self._event = build_event(parent=self.chapter.background, config=event)
+        self._delay = TimerSecond(duration=delay, callback=self._event.setup)
 
     def setup(self) -> None:
         super().setup()
+        self._delay.setup()
 
     def process_inputs(self, inputs: Inputs) -> None:
         pass
 
     def update(self) -> None:
-        pass
+        if self._delay.is_done():
+            print(self._event)
+            self._event.update()
+        else:
+            self._delay.update()
 
     def draw(self, surface: pygame.Surface) -> None:
-        self._background.draw(surface=surface)
+        if self._delay.is_done():
+            self._event.draw(surface=surface)
 
     def teardown(self) -> None:
         super().teardown()
+        self._delay.teardown()
+        self._event.teardown()

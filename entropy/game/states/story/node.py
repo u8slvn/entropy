@@ -33,8 +33,8 @@ class BaseNode(GameEntity, ABC):
 class Node(BaseNode, ABC):
     def __init__(self, chapter: Chapter, next: str):
         super().__init__()
-        self._chapter = chapter
-        self._next = next
+        self.chapter = chapter
+        self.next = next
 
     def transition_to_next(self):
-        self._chapter.transition_to_node(id_=self._next)
+        self.chapter.transition_to_node(id_=self.next)

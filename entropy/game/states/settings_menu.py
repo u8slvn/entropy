@@ -22,7 +22,7 @@ from entropy.game.states.base import State
 from entropy.gui.widgets import button
 from entropy.gui.widgets import slider
 from entropy.gui.widgets.background import ColorBackground
-from entropy.gui.widgets.base import ALIGN
+from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.button import AttrObserver
 from entropy.gui.widgets.button import ObserverButton
 from entropy.gui.widgets.button import TextButton
@@ -248,7 +248,7 @@ class SettingsMenu(State):
             font=assets.fonts.get(name=config.font, size="settings"),
             color=GUI_TEXT_COLOR,
             pos=pos,
-            align=ALIGN.CENTER_X,
+            align=Align.CENTER_X,
         )
 
     @staticmethod
@@ -267,8 +267,8 @@ class SettingsMenu(State):
                     sound_clicked="click",
                     text_color=GUI_BUTTON_TEXT_COLOR,
                     text_font=text_font,
-                    text_align=ALIGN.CENTER,
-                    align=ALIGN.CENTER_X,
+                    text_align=Align.CENTER,
+                    align=Align.CENTER_X,
                 )
 
             case slider.TitledSlider:
@@ -282,6 +282,6 @@ class SettingsMenu(State):
                     text_color=GUI_BUTTON_TEXT_COLOR,
                     text_font=text_font,
                     space_between=30,
-                    text_align=ALIGN.CENTER_X,
-                    align=ALIGN.CENTER_X,
+                    text_align=Align.CENTER_X,
+                    align=Align.CENTER_X,
                 )

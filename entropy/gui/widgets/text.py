@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 import pygame
 
 from entropy import translator
-from entropy.gui.widgets.base import ALIGN
+from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.base import Widget
 from entropy.tools.observer import Observer
 from entropy.utils import Color
@@ -28,7 +28,7 @@ class Text(Widget):
         background: Color | str | None = None,
         pos: Pos = Pos(0, 0),
         align_margin: Pos = Pos(0, 0),  # Topleft margin, works also with align.
-        align: ALIGN | None = None,
+        align: Align | None = None,
     ):
         self._text = text
         self._color = color
@@ -43,13 +43,13 @@ class Text(Widget):
     def update_align(self) -> None:
         """Overwrite base update align method in order to take margin in account."""
         match self.align:
-            case ALIGN.CENTER:
+            case Align.CENTER:
                 self.rect.center = self.parent.center
                 self.rect.topleft = Pos(*self.rect.topleft) + self._align_margin
-            case ALIGN.CENTER_X:
+            case Align.CENTER_X:
                 self.rect.centerx = self.parent.centerx
                 self.rect.top += self._align_margin.x
-            case ALIGN.CENTER_Y:
+            case Align.CENTER_Y:
                 self.rect.centery = self.parent.centery
                 self.rect.left += self._align_margin.y
 
@@ -84,7 +84,7 @@ class TText(Text, Observer):
         background: Color | str | None = None,
         pos: Pos = Pos(0, 0),
         align_margin: Pos = Pos(0, 0),
-        align: ALIGN | None = None,
+        align: Align | None = None,
     ) -> None:
         self.__text = text
         self._locale_changed = False
@@ -140,7 +140,7 @@ class TypeWriterText(Widget):
         width: int,
         speed: float,
         pos: Pos = Pos(0, 0),
-        align: ALIGN | None = None,
+        align: Align | None = None,
     ) -> None:
         self._text = text
         self._color = color

@@ -1,46 +1,33 @@
 [
   {
-    "background": "color:red",
-    "events": [
-      {
-        "align": "center",
-        "type": "text",
-        "value": "Hello 1"
-      },
-      {
-        "align": "center",
-        "type": "text",
-        "value": "Hello 2"
-      }
-    ],
-    "id": "00001",
+    "background": "color:black",
+    "id": "ch01sc01n00",
     "music": "main-theme",
-    "next": "00002",
-    "transition": {
-      "intro": "fade-in"
+    "next": "ch01sc01n01",
+    "subtitle": "The beginning of the story",
+    "title": "Chapter 1",
+    "type": "intro"
+  },
+  {
+    "background": "image:ch01-sc01-01",
+    "delay": 2,
+    "event": {
+      "align": "center",
+      "type": "text",
+      "value": "Hello 1"
     },
+    "id": "ch01sc01n01",
+    "next": "ch01sc01n02",
     "type": "contemplation"
   },
   {
-    "background": "color:black",
-    "events": [
-      {
-        "align": "center",
-        "type": "text",
-        "value": "Hello 2"
-      },
-      {
-        "align": "center",
-        "type": "text",
-        "value": "Hello 4"
-      }
-    ],
-    "id": "00002",
-    "music": "main-theme",
-    "next": "00003",
-    "transition": {
-      "intro": "fade-in"
+    "event": {
+      "align": "center",
+      "type": "text",
+      "value": "Hello 2"
     },
+    "id": "ch01sc01n02",
+    "next": "ch01sc02n01",
     "type": "contemplation"
   }
 ]
