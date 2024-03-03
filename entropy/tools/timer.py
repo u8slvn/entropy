@@ -47,6 +47,7 @@ class Timer(GameEntity):
     def stop(self) -> None:
         self._start_ticks = 0
         self._done = True
+        self._trigger_callback()
 
     def is_started(self) -> bool:
         return self._started
@@ -69,7 +70,6 @@ class Timer(GameEntity):
         self._countdown = self._duration - ticks
         if self._countdown <= 0:
             self.stop()
-            self._trigger_callback()
 
     def draw(self, surface: pygame.Surface) -> None:
         pass

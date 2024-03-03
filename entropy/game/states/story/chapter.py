@@ -45,7 +45,7 @@ class Chapter(BaseNode):
         self._nodes: dict[str, Callable[[], None]] = {}
         self._load_nodes(configfile=configfile)
         self._current_node: Node | None = None
-        self.transition_to_node(id_=start_node)
+        self.transition_to_node(id=start_node)
         self._loaded = False
 
     def _load_nodes(self, configfile: Path) -> None:
@@ -67,17 +67,18 @@ class Chapter(BaseNode):
         if config is not None:
             self._background = build_background(params=config)
 
-    def transition_to_node(self, id_: str) -> None:
-        # if id_ == "end":
-        #     logger.debug(f'Chapter "{self._name}" ended.')
-        #     self.mark_as_done()
-        # else:
+    def transition_to_node(self, id: str) -> None:
+        if id == "end":
+            logger.debug(f'Chapter "{self._name}" ended.')
+            self.mark_as_done()
+            return
+
         if self._current_node is not None:
             self._current_node.teardown()
 
-        self._current_node = self._nodes[id_]()
+        self._current_node = self._nodes[id]()
         self._current_node.setup()
-        logger.debug(f'Chapter "{self._name}" transition to node "{id_}".')
+        logger.debug(f'Chapter "{self._name}" transition to node "{id}".')
 
     def setup(self) -> None:
         super().setup()

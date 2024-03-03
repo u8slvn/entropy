@@ -45,6 +45,8 @@ class Story(State):
         self._current_chapter.process_inputs(inputs)
 
     def update(self, dt: float) -> None:
+        if self._current_chapter.is_done():
+            self.transition_to(state_name="TitleScreen")
         self._current_chapter.update(dt=dt)
 
     def draw(self, surface: pygame.Surface) -> None:

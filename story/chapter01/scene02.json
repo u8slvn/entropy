@@ -1,18 +1,20 @@
 [
   {
     "background": "image:ch01-sc02-01",
+    "ease_in": {
+      "duration": 250,
+      "type": "fade-in"
+    },
     "event": {
       "type": "text",
       "values": [
-        "Hello 5 fewfewfwe dwqd qwd qwd dqwd qwd qwdqw ddqwd qwd qwdqw dqwd I LOVE KRATOS"
+        "Hello 5 fewfewfwe dwqd qwd qwd dqwd qwd qwddw qdw qdw qdqw dqw dqw dqwd qwd qwd qwd qwd qwd qwd qwdqwqw ddqwd qwd qwdqw dqwd I LOVE KRATOS"
       ]
     },
     "id": "ch01sc02n01",
     "music": "main-theme",
     "next_id": "end",
-    "transition": {
-      "intro": "fade-in"
-    },
+    "transition-in": "fade-in",
     "type": "contemplation"
   }
 ]

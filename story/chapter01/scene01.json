@@ -11,6 +11,10 @@
   {
     "background": "image:ch01-sc01-01",
     "delay": 1,
+    "ease_in": {
+      "duration": 500,
+      "type": "fade-in"
+    },
     "event": {
       "type": "text",
       "values": [
@@ -23,7 +27,10 @@
     "type": "contemplation"
   },
   {
-    "delay": 0,
+    "ease_out": {
+      "duration": 150,
+      "type": "fade-out"
+    },
     "event": {
       "type": "text",
       "values": [

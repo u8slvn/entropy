@@ -27,11 +27,17 @@ class ContemplationScene(Node):
         delay: int = 0,
         background: str | None = None,
         music: str | None = None,
-        transition: dict[str, str] | None = None,
+        ease_in: dict[str, str | int] | None = None,
+        ease_out: dict[str, str | int] | None = None,
         **_,
     ):
         super().__init__(
-            chapter=chapter, next_id=next_id, music=music, background=background
+            chapter=chapter,
+            next_id=next_id,
+            music=music,
+            background=background,
+            ease_in=ease_in,
+            ease_out=ease_out,
         )
         self._id = id
         self._event_store = build_event(parent=self.chapter.background, params=event)
@@ -50,15 +56,18 @@ class ContemplationScene(Node):
 
     def process_inputs(self, inputs: Inputs) -> None:
         if inputs.keyboard.SPACE or inputs.keyboard.ENTER:
-            if self._event.is_done():
+            if not self._delay.is_done():
+                self._delay.stop()
+            elif self._event.is_done():
                 try:
                     self._event = next(self._event_store)
                 except StopIteration:
-                    self.mark_as_done()
+                    self.close()
             else:
                 self._event.skip()
 
     def update(self, dt: float) -> None:
+        super().update(dt=dt)
         if self._delay.is_done():
             self._event.update(dt=dt)
         else:
@@ -67,8 +76,8 @@ class ContemplationScene(Node):
     def draw(self, surface: pygame.Surface) -> None:
         self._background_event.draw(surface=surface)
         if self._delay.is_done():
-            print(self._event._text)
             self._event.draw(surface=surface)
+        super().draw(surface=surface)
 
     def teardown(self) -> None:
         super().teardown()
