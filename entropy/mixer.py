@@ -29,6 +29,7 @@ class Mixer:
         voice_vol: float = 1.0,
         uisfx_vol: float = 1.0,
     ):
+        self._currently_playing: str | None = None
         pygame.mixer.init(frequency=48000, buffer=2048)
         self._volumes = {
             Channel.MAIN: main_vol,
@@ -45,31 +46,36 @@ class Mixer:
         }
         self._refresh_volume()
 
+    @property
+    def currently_playing(self):
+        return self._currently_playing
+
     def play_music(self, name: str) -> None:
+        self._currently_playing = name
         sound = entropy.assets.sound.get(name=name)
         self._channels[Channel.MUSIC].play(sound, -1)
 
     def stop_music(self, fadeout: int = 0):
-        self._channels[Channel.MUSIC].fadeout(time=fadeout)
+        self._channels[Channel.MUSIC].fadeout(fadeout)
 
     def play_atmos(self, sound: pygame.mixer.Sound) -> None:
         self._channels[Channel.ATMOSPHERE].play(sound, -1)
 
     def stop_atmos(self, fadeout: int = 0):
-        self._channels[Channel.MUSIC].fadeout(time=fadeout)
+        self._channels[Channel.MUSIC].fadeout(fadeout)
 
     def play_voice(self, sound: pygame.mixer.Sound) -> None:
         self._channels[Channel.ATMOSPHERE].play(sound)
 
     def stop_voice(self, fadeout: int = 0):
-        self._channels[Channel.MUSIC].fadeout(time=fadeout)
+        self._channels[Channel.MUSIC].fadeout(fadeout)
 
     def play_uisfx(self, name: str) -> None:
         sound = entropy.assets.sound.get(name=name)
         self._channels[Channel.UISFX].queue(sound)
 
     def stop_uisfx(self, fadeout: int = 0):
-        self._channels[Channel.MUSIC].fadeout(time=fadeout)
+        self._channels[Channel.MUSIC].fadeout(fadeout)
 
     def set_volume(self, value: float, channel: Channel):
         assert 0.0 <= value <= 1.0

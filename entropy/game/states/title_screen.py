@@ -6,6 +6,7 @@ from typing import Callable
 import pygame
 
 from entropy import assets
+from entropy import mixer
 from entropy import translator
 from entropy.commands.game import QuitGame
 from entropy.commands.state import TransitionToNextState
@@ -39,8 +40,11 @@ class TitleScreen(State):
         self._background = ImageBackground(name="title-screen-bg")
         self._logo = assets.images.get("title-screen-logo-a")
         self._main_menu = self._build_menu()
+        self._music = "main-theme"
 
     def setup(self) -> None:
+        if mixer.currently_playing != self._music:
+            mixer.play_music(name="main-theme")
         translator.set_translation(config.locale, domain="base")
         self._covered = False
         self._main_menu.setup()
