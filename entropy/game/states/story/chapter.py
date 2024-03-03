@@ -66,7 +66,7 @@ class Chapter(BaseNode):
 
     def set_background(self, config: str | None) -> None:
         if config is not None:
-            self._background = build_background(config=config)
+            self._background = build_background(params=config)
 
     def transition_to_node(self, id_: str) -> None:
         # if id_ == "end":

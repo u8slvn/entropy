@@ -12,9 +12,9 @@
     "background": "image:ch01-sc01-01",
     "delay": 2,
     "event": {
-      "align": "center",
+      "align": "center_x",
       "type": "text",
-      "value": "Hello 1"
+      "value": "Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit\u200b\u200b, morbo vel maleficia? "
     },
     "id": "ch01sc01n01",
     "next": "ch01sc01n02",

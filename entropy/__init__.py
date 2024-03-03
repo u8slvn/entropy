@@ -67,6 +67,7 @@ def init() -> None:
         medium=33,
         big=44,
         settings=55,
+        extra=66,
         chapter=88,
     )
     assets.images.add_dir(path=ASSETS_DIR / "gui")

@@ -4,7 +4,10 @@ from typing import TYPE_CHECKING
 
 from entropy.game.states.story.factory import build_event
 from entropy.game.states.story.node import Node
+from entropy.gui.widgets.base import Align
+from entropy.gui.widgets.image import Image
 from entropy.tools.timer import TimerSecond
+from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
@@ -32,7 +35,13 @@ class ContemplationScene(Node):
         self._music = music
         self._transition = transition
         self.chapter.set_background(config=background)
-        self._event = build_event(parent=self.chapter.background, config=event)
+        self._event = build_event(parent=self.chapter.background, params=event)
+        self._background_event = Image(
+            parent=self.chapter.background,
+            name="contemplation-text-bg-a",
+            pos=Pos(0, 672),
+            align=Align.CENTER_X,
+        )
         self._delay = TimerSecond(duration=delay, callback=self._event.setup)
 
     def setup(self) -> None:
@@ -44,12 +53,12 @@ class ContemplationScene(Node):
 
     def update(self) -> None:
         if self._delay.is_done():
-            print(self._event)
             self._event.update()
         else:
             self._delay.update()
 
     def draw(self, surface: pygame.Surface) -> None:
+        self._background_event.draw(surface=surface)
         if self._delay.is_done():
             self._event.draw(surface=surface)
 

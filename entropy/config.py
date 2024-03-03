@@ -42,6 +42,7 @@ class _Config(Subject):
                 {
                     "locale": "en",
                     "font": "LanaPixel",
+                    "text_speed": 2,
                 }
             ),
             "sound": OrderedDict(
@@ -73,6 +74,7 @@ class _Config(Subject):
         # Game
         self.locale = self._config.get("game", "locale")
         self.font = self._config.get("game", "font")
+        self.text_speed = self._config.getfloat("game", "text_speed")
 
         # Sound
         self.main_volume = self._config.getfloat("sound", "main_volume")

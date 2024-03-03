@@ -4,11 +4,16 @@ from typing import TYPE_CHECKING
 
 import entropy
 
+from entropy.config import get_config
 from entropy.gui.widgets.background import ColorBackground
 from entropy.gui.widgets.background import ImageBackground
 from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.text import TypeWriterText
 from entropy.utils import Color
+from entropy.utils import Pos
+
+
+config = get_config()
 
 
 if TYPE_CHECKING:
@@ -16,8 +21,8 @@ if TYPE_CHECKING:
     from entropy.gui.widgets.base import Widget
 
 
-def build_background(config: str) -> Background:
-    type_, value = config.split(":")
+def build_background(params: str) -> Background:
+    type_, value = params.split(":")
 
     match type_:
         case "color":
@@ -28,13 +33,14 @@ def build_background(config: str) -> Background:
             raise ValueError(f"Unknown config type: '{type_}' for background.")
 
 
-def build_event(parent: Widget, config: dict[str, str]) -> TypeWriterText:
+def build_event(parent: Widget, params: dict[str, str]) -> TypeWriterText:
     return TypeWriterText(
         parent=parent,
         font=entropy.assets.fonts.get("LanaPixel", "big"),
-        text=config["value"],
-        color="red",
-        width=600,
-        speed=1.4,
-        align=Align(config["align"]),
+        text=params["value"],
+        color="white",
+        width=1700,
+        speed=config.text_speed,
+        pos=Pos(0, 700),
+        align=Align(params["align"]),
     )
