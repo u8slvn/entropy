@@ -21,8 +21,8 @@ class Window:
     Manage the whole game actions window related.
     """
 
-    _fullscreen_flags = pygame.FULLSCREEN | pygame.SCALED
-    # _fullscreen_flags = pygame.FULLSCREEN
+    # _fullscreen_flags = pygame.FULLSCREEN | pygame.SCALED
+    _fullscreen_flags = pygame.FULLSCREEN
     _framed_flags = pygame.RESIZABLE
 
     def __init__(
@@ -60,7 +60,7 @@ class Window:
 
         fullscreen = '"fullscreen", ' if self.fullscreen else ""
         logger.info(f'Display mode set to {fullscreen}"{resolution}"')
-        return pygame.display.set_mode(resolution, flags=self.screen_flags)
+        return pygame.display.set_mode(resolution, flags=self.screen_flags, vsync=True)
 
     @property
     def screen_res(self) -> Res:
