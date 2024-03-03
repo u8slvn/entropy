@@ -47,6 +47,7 @@ def build_event(parent: Widget, params: dict[str, str]) -> Generator:
             color="white",
             width=1700,
             speed=config.text_speed,
+            voice=params["voice"],
             pos=Pos(113, 700),
             align=align,
         )

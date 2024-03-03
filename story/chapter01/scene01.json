@@ -20,7 +20,8 @@
       "values": [
         "Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit, morbo vel maleficia?",
         "Aenean condimentum malesuada libero, in malesuada dolor maximus a. Duis non ante erat. Ut finibus vel orci sit amet venenatis. Mauris a gravida felis."
-      ]
+      ],
+      "voice": "narrator"
     },
     "id": "ch01sc01n01",
     "next_id": "ch01sc01n02",
@@ -35,7 +36,8 @@
       "type": "text",
       "values": [
         "Hello 2 dqwd qwdqw dqwd qwd qwd qwd qwd qwdqwdqwqw dqwd qwd"
-      ]
+      ],
+      "voice": "narrator"
     },
     "id": "ch01sc01n02",
     "next_id": "ch01sc02n01",

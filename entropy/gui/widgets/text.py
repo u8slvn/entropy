@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 import pygame
 
+from entropy import mixer
 from entropy import translator
 from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.base import Widget
@@ -139,6 +140,7 @@ class TypeWriterText(Widget):
         font: pygame.font.Font,
         width: int,
         speed: float,
+        voice: str | None = None,
         pos: Pos = Pos(0, 0),
         align: Align | None = None,
     ) -> None:
@@ -146,6 +148,7 @@ class TypeWriterText(Widget):
         self._color = color
         self._font = font
         self._speed = speed
+        self._voice = voice
         self._counter = 0
         self._done = False
         self._surf = self._render_surf(width=width)
@@ -204,6 +207,9 @@ class TypeWriterText(Widget):
             antialias=False,
             color=self._color,
         )
+
+        if not mixer.voice_is_busy():
+            mixer.play_voice(name=self._voice)
 
     def draw(self, surface: pygame.Surface) -> None:
         surface.blit(self._text_surf, self.rect)

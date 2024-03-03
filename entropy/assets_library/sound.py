@@ -8,7 +8,7 @@ import pygame
 from entropy.assets_library.assets_collection import DirAssetsCollection
 
 
-class SoundCollection(DirAssetsCollection):
+class SoundsCollection(DirAssetsCollection):
     extensions: ClassVar[list[str]] = [".wav", ".ogg"]
 
     def _load_file(self, file: Path) -> pygame.mixer.Sound:

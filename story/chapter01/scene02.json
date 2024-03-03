@@ -1,6 +1,7 @@
 [
   {
     "background": "image:ch01-sc02-01",
+    "delay": 1,
     "ease_in": {
       "duration": 250,
       "type": "fade-in"
@@ -9,7 +10,8 @@
       "type": "text",
       "values": [
         "Hello 5 fewfewfwe dwqd qwd qwd dqwd qwd qwddw qdw qdw qdqw dqw dqw dqwd qwd qwd qwd qwd qwd qwd qwdqwqw ddqwd qwd qwdqw dqwd I LOVE KRATOS"
-      ]
+      ],
+      "voice": "narrator"
     },
     "id": "ch01sc02n01",
     "music": "nice-theme",

@@ -72,8 +72,9 @@ def init() -> None:
     )
     assets.images.add_dir(path=ASSETS_DIR / "gui")
     assets.images.add_dir(path=ASSETS_DIR / "images")
-    assets.sound.add_dir(path=ASSETS_DIR / "sound")
+    assets.sound.add_dir(path=ASSETS_DIR / "sounds")
     assets.sound.add_dir(path=ASSETS_DIR / "music")
+    assets.voice.add_dir(path=ASSETS_DIR / "voices")
     assets.load()
 
     control = Control(fps=config.fps)
