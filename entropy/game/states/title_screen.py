@@ -45,6 +45,7 @@ class TitleScreen(State):
     def setup(self) -> None:
         if mixer.currently_playing != self._music:
             mixer.play_music(name="main-theme")
+
         translator.set_translation(config.locale, domain="base")
         self._covered = False
         self._main_menu.setup()

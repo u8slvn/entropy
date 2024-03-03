@@ -34,6 +34,7 @@ from entropy.mixer import Channel
 from entropy.utils import Color
 from entropy.utils import Pos
 from entropy.utils import Size
+from entropy.utils import cleanup
 
 
 if TYPE_CHECKING:
@@ -63,7 +64,7 @@ class SettingsMenu(State):
         self._submenu.setup()
 
     def process_inputs(self, inputs: Inputs) -> None:
-        if inputs.keyboard.SPACE:
+        if inputs.keyboard.ESCAPE:
             self.exit()
 
         self._submenu.process_inputs(inputs=inputs)
@@ -83,8 +84,9 @@ class SettingsMenu(State):
         config.save()
         self._submenu.teardown()
 
-    def transition_to(self, state_name: str):
+    def transition_to(self, state_name: str, with_exit: bool = False):
         self._submenu.teardown()
+        cleanup(self._submenu)
         self._submenu = self._build_submenu(submenu=Submenu(state_name))
         self._submenu.setup()
 

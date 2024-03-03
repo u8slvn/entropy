@@ -58,7 +58,7 @@ class Splash(State):
 
     def update(self, dt: float) -> None:
         if self._done:
-            self.control.transition_to("TitleScreen")
+            self.control.transition_to("TitleScreen", with_exit=True)
 
         self._fade_in.update(dt=dt)
         self._fade_out.update(dt=dt)

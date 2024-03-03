@@ -18,6 +18,7 @@ from entropy.gui.widgets.background import ColorBackground
 from entropy.locations import STORY_DIR
 from entropy.logging import get_logger
 from entropy.utils import Color
+from entropy.utils import cleanup
 
 
 if TYPE_CHECKING:
@@ -75,6 +76,7 @@ class Chapter(BaseNode):
 
         if self._current_node is not None:
             self._current_node.teardown()
+            cleanup(self._current_node)
 
         self._current_node = self._nodes[id]()
         self._current_node.setup()

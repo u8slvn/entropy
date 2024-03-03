@@ -10,12 +10,15 @@ if TYPE_CHECKING:
 
 
 class TransitionToNextState(Command):
-    def __init__(self, state: State, next_state: str) -> None:
+    def __init__(self, state: State, next_state: str, with_exit: bool = False) -> None:
         self._state = state
         self._next_state = next_state
+        self._with_exit = with_exit
 
     def __call__(self) -> None:
-        self._state.transition_to(state_name=self._next_state)
+        self._state.transition_to(
+            state_name=self._next_state, with_exit=self._with_exit
+        )
 
 
 class ExitState(Command):

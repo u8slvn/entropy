@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import gc
+
+from typing import Any
 from typing import NamedTuple
 
 import pygame
@@ -64,3 +67,8 @@ class Color(pygame.Color):
     """Color object."""
 
     pass
+
+
+def cleanup(obj: Any) -> None:
+    del obj
+    gc.collect()

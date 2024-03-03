@@ -15,6 +15,7 @@ from entropy.gui.input import Inputs
 from entropy.gui.widgets.fps import FPSViewer
 from entropy.logging import get_logger
 from entropy.utils import Res
+from entropy.utils import cleanup
 
 
 if TYPE_CHECKING:
@@ -43,11 +44,16 @@ class Control:
     def current_state(self) -> State:
         return self.state_stack[-1]
 
-    def transition_to(self, state_name: str) -> None:
+    def transition_to(self, state_name: str, with_exit: bool = False) -> None:
         logger.info(f'Game state changed to "{state_name}".')
         if len(self.state_stack) >= 1:
             self.prev_state = self.current_state
             self.prev_state.teardown()
+
+            if with_exit is True:
+                self.state_stack.pop()
+                cleanup(self.prev_state)
+                self.prev_state = None
 
         state_cls = states.get(state_name)
         state = state_cls(control=self)

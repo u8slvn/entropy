@@ -32,11 +32,14 @@ class State(GameEntity, ABC):
     def get_states(cls) -> dict[str, Type[State]]:
         return cls._states
 
-    def transition_to(self, state_name: str):
-        self.control.transition_to(state_name=state_name)
+    def transition_to(self, state_name: str, with_exit: bool = False):
+        self.control.transition_to(state_name=state_name, with_exit=with_exit)
 
     def exit(self) -> None:
         self.teardown()
         self.control.state_stack.pop()
         self.control.current_state.setup()
         logger.info(f'Game state changed to "{self.control.current_state.get_name()}".')
+
+    def __repr__(self) -> str:
+        return f"State<{self.get_name()}>"

@@ -7,6 +7,7 @@ from entropy.gui.input import InputsController
 
 class KeyboardInputs(InputsController):
     def __init__(self):
+        self.ESCAPE = False
         self.KEYDOWN = False
         self.KEYUP = False
         self.UP = False
@@ -21,7 +22,9 @@ class KeyboardInputs(InputsController):
     def parse_event(self, event: pygame.event.Event) -> None:
         if event.type == pygame.KEYDOWN:
             self.KEYDOWN = True
-            if event.key == pygame.K_UP:
+            if event.key == pygame.K_ESCAPE:
+                self.ESCAPE = True
+            elif event.key == pygame.K_UP:
                 self.UP = True
             elif event.key == pygame.K_DOWN:
                 self.DOWN = True
@@ -40,7 +43,9 @@ class KeyboardInputs(InputsController):
 
         if event.type == pygame.KEYUP:
             self.KEYUP = True
-            if event.key == pygame.K_UP:
+            if event.key == pygame.K_ESCAPE:
+                self.ESCAPE = False
+            elif event.key == pygame.K_UP:
                 self.UP = False
             elif event.key == pygame.K_DOWN:
                 self.DOWN = False
