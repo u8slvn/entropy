@@ -38,7 +38,7 @@ class TitleScreen(State):
         super().__init__(control=control)
         self._covered = False
         self._background = ImageBackground(name="title-screen-bg")
-        self._logo = assets.images.get("title-screen-logo-a")
+        self._logo = assets.image.get("title-screen-logo-a")
         self._main_menu = self._build_menu()
         self._music = "main-theme"
 
@@ -104,13 +104,13 @@ class TitleScreen(State):
     ) -> TextButton:
         return TextButton(
             parent=parent,
-            image=assets.images.get("main-menu-button-sheet-a"),
+            image=assets.image.get("main-menu-button-sheet-a"),
             sound_focus="hover",
             sound_clicked="click",
             callback=callback,
             text=text,
             text_color=GUI_BUTTON_TEXT_COLOR,
-            text_font=assets.fonts.get(name=config.font, size=GUI_BUTTON_FONT_SIZE),
+            text_font=assets.font.get(name=config.font, size=GUI_BUTTON_FONT_SIZE),
             text_align=Align.CENTER,
             text_align_margin=Pos(0, 4),
             pos=pos,

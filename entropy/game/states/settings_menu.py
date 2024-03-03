@@ -14,6 +14,7 @@ from entropy.commands.display import EnableFullscreen
 from entropy.commands.locale import SwitchLocaleTo
 from entropy.commands.sound import SetVolume
 from entropy.commands.state import TransitionToNextState
+from entropy.commands.voice import PlayVoice
 from entropy.config import get_config
 from entropy.constants import GUI_BUTTON_FONT_SIZE
 from entropy.constants import GUI_BUTTON_TEXT_COLOR
@@ -57,7 +58,7 @@ class SettingsMenu(State):
     def __init__(self, control: Control) -> None:
         super().__init__(control=control)
         self._background = ColorBackground(color=Color(0, 0, 0, 150))
-        self._font = assets.fonts.get("LanaPixel", "settings")
+        self._font = assets.font.get("LanaPixel", "settings")
         self._submenu = self._build_submenu(Submenu.SETTINGS)
 
     def setup(self) -> None:
@@ -152,6 +153,7 @@ class SettingsMenu(State):
                         "text": "VOICE VOLUME",
                         "initial_value": config.voice_volume,
                         "command": SetVolume(channel=Channel.VOICE),
+                        "sound_on_hold": PlayVoice(name="narrator"),
                     },
                     {
                         "widget_cls": TitledSlider,
@@ -247,7 +249,7 @@ class SettingsMenu(State):
         return TText(
             parent=parent,
             text=text,
-            font=assets.fonts.get(name=config.font, size="settings"),
+            font=assets.font.get(name=config.font, size="settings"),
             color=GUI_TEXT_COLOR,
             pos=pos,
             align=Align.CENTER_X,
@@ -258,13 +260,13 @@ class SettingsMenu(State):
         widget_cls: Type[TextButton] | Type[ObserverButton] | Type[TitledSlider],
         **kwargs,
     ) -> Widget:
-        text_font = assets.fonts.get(name=config.font, size=GUI_BUTTON_FONT_SIZE)
+        text_font = assets.font.get(name=config.font, size=GUI_BUTTON_FONT_SIZE)
 
         match widget_cls:
             case button.TextButton | button.ObserverButton:
                 return widget_cls(
                     **kwargs,
-                    image=assets.images.get("settings-button-sheet"),
+                    image=assets.image.get("settings-button-sheet"),
                     sound_focus="hover",
                     sound_clicked="click",
                     text_color=GUI_BUTTON_TEXT_COLOR,
@@ -279,7 +281,7 @@ class SettingsMenu(State):
                     size=Size(550, 30),
                     min_value=0,
                     max_value=1,
-                    button_image=assets.images.get("slider-button-sheet"),
+                    button_image=assets.image.get("slider-button-sheet"),
                     sound_focus="hover",
                     text_color=GUI_BUTTON_TEXT_COLOR,
                     text_font=text_font,

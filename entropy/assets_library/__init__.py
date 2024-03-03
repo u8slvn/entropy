@@ -8,13 +8,20 @@ from entropy.assets_library.voice import VoicesCollection
 
 class AssetsLibrary:
     def __init__(self) -> None:
-        self.fonts = FontsCollection()
-        self.images = ImagesCollection()
+        self.font = FontsCollection()
+        self.image = ImagesCollection()
         self.sound = SoundsCollection()
         self.voice = VoicesCollection()
 
     def load(self) -> None:
-        self.fonts.load()
-        self.images.load()
+        self.font.load()
+        self.font.debug()
+
+        self.image.load()
+        self.image.debug()
+
         self.sound.load()
+        self.sound.debug()
+
         self.voice.load()
+        self.voice.debug()

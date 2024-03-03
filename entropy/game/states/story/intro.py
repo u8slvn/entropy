@@ -37,7 +37,7 @@ class IntroScene(Node):
         self._id = id
         self._title = TText(
             parent=self.chapter.background,
-            font=assets.fonts.get("LanaPixel", "chapter"),
+            font=assets.font.get("LanaPixel", "chapter"),
             text=title,
             color="white",
             pos=Pos(0, 400),
@@ -45,7 +45,7 @@ class IntroScene(Node):
         )
         self._subtitle = TText(
             parent=self.chapter.background,
-            font=assets.fonts.get("LanaPixel", "big"),
+            font=assets.font.get("LanaPixel", "big"),
             text=subtitle,
             color="white",
             pos=Pos(0, 550),
@@ -68,7 +68,7 @@ class IntroScene(Node):
         self._timer.setup()
 
     def process_inputs(self, inputs: Inputs) -> None:
-        if inputs.keyboard.SPACE or inputs.keyboard.ENTER:
+        if inputs.keyboard.SPACE or inputs.keyboard.ENTER or inputs.mouse.BUTTON1:
             self.mark_as_done()
 
     def update(self, dt: float) -> None:

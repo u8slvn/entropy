@@ -9,6 +9,10 @@ from typing import ClassVar
 import pygame
 
 from entropy.assets_library.assets_collection import AssetsCollection
+from entropy.logging import get_logger
+
+
+logger = get_logger()
 
 
 class VoicesCollection(AssetsCollection):
@@ -17,6 +21,13 @@ class VoicesCollection(AssetsCollection):
     def __init__(self) -> None:
         self.assets: dict[str, list[pygame.mixer.Sound]] = defaultdict(list)
         self._files: dict[str, list[Path]] = defaultdict(list)
+
+    def debug(self) -> None:
+        logger.debug(
+            f"Font library loaded with \"{', '.join(self.extensions)}\" files:"
+        )
+        for voice, files in self.assets.items():
+            logger.debug(f'→ Voice "{voice}" found with "{len(files)}" file(s).')
 
     def add_dir(self, path: str | Path) -> None:
         path = Path(path) if isinstance(path, str) else path

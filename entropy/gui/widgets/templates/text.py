@@ -11,7 +11,7 @@ from entropy.gui.widgets.text import TText
 
 config = get_config()
 
-default_button_font = assets.fonts.get(name=config.font, size=GUI_BUTTON_FONT_SIZE)
+default_button_font = assets.font.get(name=config.font, size=GUI_BUTTON_FONT_SIZE)
 
 ButtonText = partial(
     TText,

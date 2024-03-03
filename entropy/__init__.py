@@ -61,7 +61,7 @@ def init() -> None:
     translator = Translator(localedir=LOCALES_DIR, locale=config.locale)
 
     assets = AssetsLibrary()
-    assets.fonts.add_font(
+    assets.font.add_font(
         path=ASSETS_DIR / "fonts/LanaPixel.ttf",
         small=22,
         medium=33,
@@ -70,8 +70,8 @@ def init() -> None:
         extra=66,
         chapter=88,
     )
-    assets.images.add_dir(path=ASSETS_DIR / "gui")
-    assets.images.add_dir(path=ASSETS_DIR / "images")
+    assets.image.add_dir(path=ASSETS_DIR / "gui")
+    assets.image.add_dir(path=ASSETS_DIR / "images")
     assets.sound.add_dir(path=ASSETS_DIR / "sounds")
     assets.sound.add_dir(path=ASSETS_DIR / "music")
     assets.voice.add_dir(path=ASSETS_DIR / "voices")

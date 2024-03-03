@@ -42,7 +42,7 @@ def build_event(parent: Widget, params: dict[str, str]) -> Generator:
         align = Align(params["align"]) if params.get("align") else None
         yield TypeWriterText(
             parent=parent,
-            font=entropy.assets.fonts.get("LanaPixel", "medium"),
+            font=entropy.assets.font.get("LanaPixel", "medium"),
             text=value,
             color="white",
             width=1700,

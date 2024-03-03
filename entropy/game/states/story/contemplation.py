@@ -55,7 +55,7 @@ class ContemplationScene(Node):
         self._delay.setup()
 
     def process_inputs(self, inputs: Inputs) -> None:
-        if inputs.keyboard.SPACE or inputs.keyboard.ENTER:
+        if inputs.keyboard.SPACE or inputs.keyboard.ENTER or inputs.mouse.BUTTON1:
             if not self._delay.is_done():
                 self._delay.stop()
             elif self._event.is_done():

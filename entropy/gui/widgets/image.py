@@ -22,7 +22,7 @@ class Image(Widget):
         pos: Pos = Pos(0, 0),
         align: Align | None = None,
     ) -> None:
-        self._surf = assets.images.get(name=name)
+        self._surf = assets.image.get(name=name)
         rect = pygame.Rect(*pos, *self._surf.get_size())
         super().__init__(parent=parent, rect=rect, align=align)
 

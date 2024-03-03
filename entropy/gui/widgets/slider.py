@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from typing import Callable
 
 import pygame
 
@@ -31,9 +32,10 @@ class Slider(Widget):
         min_value: int,
         max_value: int,
         initial_value: float,
-        sound_focus: str,
         command: ConfigurableCommand,
         button_image: pygame.Surface,
+        sound_focus: str,
+        sound_on_hold: Callable[[], None] | None = None,
         pos: Pos = Pos(0, 0),
         align: Align | None = None,
     ) -> None:
@@ -46,6 +48,7 @@ class Slider(Widget):
         self._max_value = max_value
 
         self._sound_focus = sound_focus
+        self._sound_on_hold = sound_on_hold
 
         self._buttons = self._build_buttons(button_image)
         self._button = self._buttons[self._focus]
@@ -165,6 +168,9 @@ class Slider(Widget):
         if self._grabbed:
             self.move_slider(self._button_x)
 
+            if self._sound_on_hold is not None:
+                self._sound_on_hold()
+
             value = self.get_value()
             if self._last_value != value:
                 self._command.configure(value)
@@ -189,13 +195,14 @@ class TitledSlider(Widget):
         min_value: int,
         max_value: int,
         initial_value: float,
-        sound_focus: str,
         command: ConfigurableCommand,
         button_image: pygame.Surface,
         text: str,
         text_color: Color | str,
         text_font: pygame.font.Font,
         space_between: int,
+        sound_focus: str,
+        sound_on_hold: Callable[[], None] | None = None,
         text_background: Color | str | None = None,
         text_align: Align | None = None,
         text_align_margin: Pos = Pos(0, 0),
@@ -221,6 +228,7 @@ class TitledSlider(Widget):
             max_value=max_value,
             initial_value=initial_value,
             sound_focus=sound_focus,
+            sound_on_hold=sound_on_hold,
             command=command,
             button_image=button_image,
             pos=Pos(pos.x, pos.y + self._space_between),

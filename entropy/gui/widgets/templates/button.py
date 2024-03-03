@@ -23,14 +23,14 @@ config = get_config()
 
 SettingsButton = partial(
     TextButton,
-    image=assets.images.get("settings-button-sheet"),
+    image=assets.image.get("settings-button-sheet"),
     sound_focus="hover",
     sound_clicked="click",
 )
 
 ConfigSettingsButton = partial(
     ObserverButton,
-    image=assets.images.get("settings-button-sheet"),
+    image=assets.image.get("settings-button-sheet"),
     sound_focus="hover",
     sound_clicked="click",
 )
@@ -42,11 +42,11 @@ def build_settings_button(
     callback: Callable[[], None],
     attr_observer: AttrObserver | None = None,
 ) -> Button:
-    font = assets.fonts.get("LanaPixel", "small")
+    font = assets.font.get("LanaPixel", "small")
     if attr_observer is not None:
         return ObserverButton(
             text=TText(text=text, font=font, color=Color("white")),
-            image=assets.images.get("settings-button-sheet"),
+            image=assets.image.get("settings-button-sheet"),
             sound_focus="hover",
             sound_clicked="click",
             callback=callback,
@@ -55,7 +55,7 @@ def build_settings_button(
         )
     else:
         return TextButton(
-            image=assets.images.get("settings-button-sheet"),
+            image=assets.image.get("settings-button-sheet"),
             sound_focus="hover",
             sound_clicked="click",
             callback=callback,

@@ -24,7 +24,7 @@ if TYPE_CHECKING:
 class Splash(State):
     def __init__(self, control: Control) -> None:
         super().__init__(control=control)
-        font = entropy.assets.fonts.get("LanaPixel", "big")
+        font = entropy.assets.font.get("LanaPixel", "big")
         self._background = ColorBackground(color=Color(0, 0, 0, 255))
         self._text = Text(
             parent=self._background,

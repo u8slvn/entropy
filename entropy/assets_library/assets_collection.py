@@ -11,6 +11,9 @@ class AssetsCollection(ABC):
     @abstractmethod
     def load(self) -> None: ...
 
+    @abstractmethod
+    def debug(self) -> None: ...
+
 
 class DirAssetsCollection(AssetsCollection, ABC):
     extensions: ClassVar[list[str]]

@@ -40,7 +40,7 @@ class Background(Widget):
 
 class ImageBackground(Background):
     def __init__(self, name: str) -> None:
-        surf = assets.images.get(name=name)
+        surf = assets.image.get(name=name)
         super().__init__(surf=surf)
 
 
