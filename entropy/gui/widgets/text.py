@@ -178,6 +178,12 @@ class TypeWriterText(Widget):
 
         return surf
 
+    def is_done(self) -> bool:
+        return self._done
+
+    def skip(self) -> None:
+        self._counter = len(self._text)
+
     def setup(self) -> None:
         self._counter = 0
         self._done = False

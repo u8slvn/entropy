@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from entropy import assets
-from entropy import mixer
 from entropy.game.states.story.node import Node
 from entropy.gui.transistions.fader import FadeIn
 from entropy.gui.transistions.fader import FadeOut
@@ -25,19 +24,17 @@ class IntroScene(Node):
         self,
         chapter: Chapter,
         id: str,
-        next: str,
+        next_id: str,
         music: str,
         title: str,
         subtitle: str,
         background: str,
         **_,
     ):
-        super().__init__(chapter=chapter, next=next)
+        super().__init__(
+            chapter=chapter, next_id=next_id, music=music, background=background
+        )
         self._id = id
-        if music is not None:
-            self._music = mixer.play_music(music)
-
-        self.chapter.set_background(config=background)
         self._title = TText(
             parent=self.chapter.background,
             font=assets.fonts.get("LanaPixel", "chapter"),
@@ -61,10 +58,6 @@ class IntroScene(Node):
             callback=self._fade_out.activate,
         )
         self._fade_in = FadeIn(duration=2000, callback=self._timer.start)
-
-    def mark_as_done(self) -> None:
-        super().mark_as_done()
-        self.transition_to_next()
 
     def setup(self) -> None:
         super().setup()

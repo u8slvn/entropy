@@ -22,34 +22,41 @@ class ContemplationScene(Node):
         self,
         chapter: Chapter,
         id: str,
-        next: str,
+        next_id: str,
         event: dict[str, str],
-        background: str,
         delay: int = 0,
+        background: str | None = None,
         music: str | None = None,
         transition: dict[str, str] | None = None,
         **_,
     ):
-        super().__init__(chapter=chapter, next=next)
+        super().__init__(
+            chapter=chapter, next_id=next_id, music=music, background=background
+        )
         self._id = id
-        self._music = music
-        self._transition = transition
-        self.chapter.set_background(config=background)
-        self._event = build_event(parent=self.chapter.background, params=event)
+        self._event_store = build_event(parent=self.chapter.background, params=event)
+        self._event = next(self._event_store)
         self._background_event = Image(
             parent=self.chapter.background,
             name="contemplation-text-bg-a",
             pos=Pos(0, 672),
             align=Align.CENTER_X,
         )
-        self._delay = TimerSecond(duration=delay, callback=self._event.setup)
+        self._delay = TimerSecond(duration=delay)
 
     def setup(self) -> None:
         super().setup()
         self._delay.setup()
 
     def process_inputs(self, inputs: Inputs) -> None:
-        pass
+        if inputs.keyboard.SPACE or inputs.keyboard.ENTER:
+            if self._event.is_done():
+                try:
+                    self._event = next(self._event_store)
+                except StopIteration:
+                    self.mark_as_done()
+            else:
+                self._event.skip()
 
     def update(self, dt: float) -> None:
         if self._delay.is_done():
@@ -60,6 +67,7 @@ class ContemplationScene(Node):
     def draw(self, surface: pygame.Surface) -> None:
         self._background_event.draw(surface=surface)
         if self._delay.is_done():
+            print(self._event._text)
             self._event.draw(surface=surface)
 
     def teardown(self) -> None:

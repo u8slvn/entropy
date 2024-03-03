@@ -3,7 +3,7 @@
     "background": "color:black",
     "id": "ch01sc01n00",
     "music": "main-theme",
-    "next": "ch01sc01n01",
+    "next_id": "ch01sc01n01",
     "subtitle": "The beginning of the story",
     "title": "Chapter 1",
     "type": "intro"
@@ -12,22 +12,26 @@
     "background": "image:ch01-sc01-01",
     "delay": 1,
     "event": {
-      "align": "center_x",
       "type": "text",
-      "value": "Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit\u200b\u200b, morbo vel maleficia? "
+      "values": [
+        "Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit, morbo vel maleficia?",
+        "Aenean condimentum malesuada libero, in malesuada dolor maximus a. Duis non ante erat. Ut finibus vel orci sit amet venenatis. Mauris a gravida felis."
+      ]
     },
     "id": "ch01sc01n01",
-    "next": "ch01sc01n02",
+    "next_id": "ch01sc01n02",
     "type": "contemplation"
   },
   {
+    "delay": 0,
     "event": {
-      "align": "center",
       "type": "text",
-      "value": "Hello 2"
+      "values": [
+        "Hello 2 dqwd qwdqw dqwd qwd qwd qwd qwd qwdqwdqwqw dqwd qwd"
+      ]
     },
     "id": "ch01sc01n02",
-    "next": "ch01sc02n01",
+    "next_id": "ch01sc02n01",
     "type": "contemplation"
   }
 ]

@@ -1,14 +1,15 @@
 [
   {
     "background": "image:ch01-sc02-01",
-    "events": {
-      "align": "center",
+    "event": {
       "type": "text",
-      "value": "Hello 5"
+      "values": [
+        "Hello 5 fewfewfwe dwqd qwd qwd dqwd qwd qwdqw ddqwd qwd qwdqw dqwd I LOVE KRATOS"
+      ]
     },
     "id": "ch01sc02n01",
     "music": "main-theme",
-    "next": "end",
+    "next_id": "end",
     "transition": {
       "intro": "fade-in"
     },

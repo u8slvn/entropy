@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from typing import Generator
 
 import entropy
 
@@ -33,14 +34,16 @@ def build_background(params: str) -> Background:
             raise ValueError(f"Unknown config type: '{type_}' for background.")
 
 
-def build_event(parent: Widget, params: dict[str, str]) -> TypeWriterText:
-    return TypeWriterText(
-        parent=parent,
-        font=entropy.assets.fonts.get("LanaPixel", "medium"),
-        text=params["value"],
-        color="white",
-        width=1700,
-        speed=config.text_speed,
-        pos=Pos(0, 700),
-        align=Align(params["align"]),
-    )
+def build_event(parent: Widget, params: dict[str, str]) -> Generator:
+    for value in params["values"]:
+        align = Align(params["align"]) if params.get("align") else None
+        yield TypeWriterText(
+            parent=parent,
+            font=entropy.assets.fonts.get("LanaPixel", "medium"),
+            text=value,
+            color="white",
+            width=1700,
+            speed=config.text_speed,
+            pos=Pos(113, 700),
+            align=align,
+        )
