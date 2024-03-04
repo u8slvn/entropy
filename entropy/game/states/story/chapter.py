@@ -36,20 +36,30 @@ NODE_TYPE_MAPPING: dict[str, Type[Node]] = {
 
 
 class Chapter(BaseNode):
+    """
+    Chapter class.
+    Represent a Chapter of the game and handle all the nodes of a chapter of the game.
+    """
+
     def __init__(
         self, state: State, name: str, start_node: str, configfile: Path
     ) -> None:
         super().__init__()
-        self._background = ColorBackground(color=Color(0, 0, 0, 255))
+        self._background = ColorBackground(
+            color=Color(0, 0, 0, 255)
+        )  # Default background
         self._name = name
         self._state = state
-        self._nodes: dict[str, Callable[[], None]] = {}
-        self._load_nodes(configfile=configfile)
+        self._nodes: dict[str, Callable[[], Node]] = {}
         self._current_node: Node | None = None
-        self.transition_to_node(id=start_node)
         self._loaded = False
 
+        self._load_nodes(configfile=configfile)
+        self.transition_to_node(uuid=start_node)
+
     def _load_nodes(self, configfile: Path) -> None:
+        """Load all the Story Nodes from the given JSON config file."""
+        # TODO: add in thread with loading screen
         with open(STORY_DIR / configfile, "r") as file:
             nodes = json.load(file)
 
@@ -60,41 +70,81 @@ class Chapter(BaseNode):
                 **node,
             )
 
+    def _build_node(self, uuid: str) -> Node:
+        """Build a story node from the given uuid."""
+        try:
+            node = self._nodes[uuid]
+        except KeyError:
+            raise ValueError(f'Node with uuid "{uuid}" does not exit.')
+
+        return node()
+
+    def _get_next_node_uuid(self) -> str:
+        """Return the next node uuid."""
+        if self._current_node is None:
+            # End the Chapter if there is no Node currently loaded in it.
+            return "end"
+
+        return self._current_node.next_id
+
     @property
     def background(self) -> Background:
+        """
+        Expose the background of the Chapter as it may be used as root widget
+        for the nodes.
+        """
         return self._background
 
     def set_background(self, config: str | None) -> None:
+        """
+        Set the Chapter's background.
+        Used by the Story Nodes to set the background of the Chapter.
+        """
         if config is not None:
             self._background = build_background(params=config)
 
-    def transition_to_node(self, id: str) -> None:
-        if id == "end":
+    def transition_to_node(self, uuid: str) -> None:
+        """Transition from the Chapter current node to the one with the given uuid."""
+        if uuid == "end":  # "end" uuid indicate the end of the chapter.
             logger.debug(f'Chapter "{self._name}" ended.')
             self.mark_as_done()
             return
 
         if self._current_node is not None:
+            # Avoid teardown with the first node transition.
             self._current_node.teardown()
             cleanup(self._current_node)
 
-        self._current_node = self._nodes[id]()
+        self._current_node = self._build_node(uuid=uuid)
         self._current_node.setup()
-        logger.debug(f'Chapter "{self._name}" transition to node "{id}".')
+        logger.debug(f'Chapter "{self._name}" transition to node "{uuid}".')
 
     def setup(self) -> None:
+        """Set up the Chapter."""
         super().setup()
 
     def process_inputs(self, inputs: Inputs) -> None:
+        """Process game inputs."""
         self._current_node.process_inputs(inputs=inputs)
 
     def update(self, dt: float) -> None:
+        """Update the Chapter within the game loop."""
         self._current_node.update(dt=dt)
 
+        if self._current_node.is_done():
+            # Transition to next node
+            next_node_uuid = self._get_next_node_uuid()
+            self.transition_to_node(uuid=next_node_uuid)
+
     def draw(self, surface: pygame.Surface) -> None:
+        """
+        Draw method of the Chapter.
+        Always draws the background first then the current node.
+        """
         self._background.draw(surface=surface)
         self._current_node.draw(surface=surface)
 
     def teardown(self) -> None:
+        """Teardown the Chapter."""
         super().teardown()
         self._current_node.teardown()

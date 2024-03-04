@@ -70,21 +70,12 @@ class Node(BaseNode, ABC):
     def is_ready(self) -> bool:
         return self._ready
 
-    def mark_as_done(self) -> None:
-        super().mark_as_done()
-        self.transition_to_next()
-
     def close(self):
         if self._ease_out is not None:
             self._ease_out.activate()
+            print("activate")
         else:
             self.mark_as_done()
-
-    def transition_to_next(self):
-        if self.next_id == "end":
-            self.chapter.mark_as_done()
-        else:
-            self.chapter.transition_to_node(id=self.next_id)
 
     def setup(self) -> None:
         if self._ease_in is not None:

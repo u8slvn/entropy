@@ -11,7 +11,7 @@ from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
-    from pygame import pygame
+    import pygame
 
     from entropy.game.states.story import Chapter
     from entropy.gui.input import Inputs
