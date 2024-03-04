@@ -32,7 +32,7 @@ class Background(Widget):
         pass
 
     def draw(self, surface: pygame.Surface) -> None:
-        surface.blit(self._surf, self.pos)
+        surface.blit(self._surf, self.rect)
 
     def teardown(self) -> None:
         pass

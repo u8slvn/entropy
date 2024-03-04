@@ -10,10 +10,10 @@ from typing import Type
 
 import pygame
 
-from entropy.game.states.story.contemplation import ContemplationScene
 from entropy.game.states.story.factory import build_background
-from entropy.game.states.story.intro import IntroScene
-from entropy.game.states.story.node import BaseNode
+from entropy.game.states.story.node.base import BaseNode
+from entropy.game.states.story.node.contemplation import ContemplationScene
+from entropy.game.states.story.node.intro import IntroScene
 from entropy.gui.widgets.background import ColorBackground
 from entropy.locations import STORY_DIR
 from entropy.logging import get_logger
@@ -23,7 +23,7 @@ from entropy.utils import cleanup
 
 if TYPE_CHECKING:
     from entropy.game.states.base import State
-    from entropy.game.states.story.node import Node
+    from entropy.game.states.story.node.base import Node
     from entropy.gui.input import Inputs
     from entropy.gui.widgets.background import Background
 

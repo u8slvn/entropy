@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from entropy import assets
-from entropy.game.states.story.node import Node
+from entropy.game.states.story.node.base import Node
 from entropy.gui.transistions.fader import FadeIn
 from entropy.gui.transistions.fader import FadeOut
 from entropy.gui.widgets.base import Align
@@ -13,7 +13,7 @@ from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
-    from pygame import pygame
+    import pygame
 
     from entropy.game.states.story import Chapter
     from entropy.gui.input import Inputs

@@ -12,6 +12,7 @@ logger = get_logger()
 class Monitor:
     def __init__(self) -> None:
         self.info = pygame.display.Info()
+        self.sizes = pygame.display.get_desktop_sizes()
         logger.info(f'Monitor native resolution is "{self.res}".')
 
     @property

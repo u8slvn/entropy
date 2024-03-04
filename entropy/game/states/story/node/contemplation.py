@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from entropy.game.states.story.factory import build_event
-from entropy.game.states.story.node import Node
+from entropy.game.states.story.node.base import Node
 from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.image import Image
 from entropy.tools.timer import TimerSecond
