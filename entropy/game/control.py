@@ -10,6 +10,7 @@ import pygame
 import entropy
 
 from entropy import GAME_NAME
+from entropy.events.events import EventHandler
 from entropy.game import states
 from entropy.gui.input import Inputs
 from entropy.gui.widgets.fps import FPSViewer
@@ -39,6 +40,7 @@ class Control:
         self.dt: float = 0.0
         self.prev_time: float = 0.0
         self.fps_viewer = FPSViewer(clock=self.clock)
+        self.events = EventHandler()
 
     @property
     def current_state(self) -> State:
@@ -67,6 +69,7 @@ class Control:
 
     def get_events(self) -> None:
         for event in pygame.event.get():
+            self.events.process_event(event)
             if event.type == pygame.QUIT:
                 self.running = False
             elif event.type == pygame.VIDEORESIZE and not entropy.window.fullscreen:
