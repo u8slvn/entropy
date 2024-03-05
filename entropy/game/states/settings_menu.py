@@ -8,13 +8,14 @@ from typing import Type
 import pygame as pg
 
 from entropy import assets
-from entropy import mixer
+from entropy.commands.base import Commands
 from entropy.commands.display import DisableFullscreen
 from entropy.commands.display import EnableFullscreen
 from entropy.commands.locale import SwitchLocaleTo
-from entropy.commands.sound import SetVolume
+from entropy.commands.mixer import PlayVoice
+from entropy.commands.mixer import SaveMixerVolume
+from entropy.commands.mixer import SetVolume
 from entropy.commands.state import TransitionToNextState
-from entropy.commands.voice import PlayVoice
 from entropy.config import get_config
 from entropy.constants import GUI_BUTTON_FONT_SIZE
 from entropy.constants import GUI_BUTTON_TEXT_COLOR
@@ -81,7 +82,6 @@ class SettingsMenu(State):
         self._submenu.draw(surface=surface)
 
     def teardown(self) -> None:
-        mixer.save_volumes()
         config.save()
         self._submenu.teardown()
 
@@ -162,6 +162,7 @@ class SettingsMenu(State):
                         "command": SetVolume(channel=Channel.UISFX),
                     },
                 ]
+                back_button_action = Commands([SaveMixerVolume(), back_button_action])
 
             case Submenu.LANGUAGE:
                 text_title = "LANGUAGE"

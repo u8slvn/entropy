@@ -22,6 +22,5 @@ class ConfigurableCommand(Command, ABC):
 
 class Commands(list, Command):
     def __call__(self) -> None:
-        while self:
-            command = self.pop()
+        for command in self:
             command()
