@@ -24,3 +24,8 @@ class Commands(list, Command):
     def __call__(self) -> None:
         for command in self:
             command()
+
+    def configure(self, *args) -> None:
+        for command in self:
+            if isinstance(command, ConfigurableCommand):
+                command.configure(*args)

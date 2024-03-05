@@ -21,6 +21,7 @@ tasks:
   test:
     desc: Run tests.
     cmds:
+      - pytest tests/
       - mypy
 
   bump-version:
