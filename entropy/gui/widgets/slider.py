@@ -16,7 +16,6 @@ from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
-    from entropy.commands.base import ConfigurableCommand
     from entropy.gui.input import Inputs
     from entropy.utils import Color
     from entropy.utils import Size
@@ -32,7 +31,7 @@ class Slider(Widget):
         min_value: int,
         max_value: int,
         initial_value: float,
-        command: ConfigurableCommand,
+        update_callback: Callable[[float], None],
         button_image: pygame.Surface,
         sound_focus: str,
         sound_on_hold: Callable[[], None] | None = None,
@@ -54,7 +53,7 @@ class Slider(Widget):
         self._button = self._buttons[self._focus]
         self._button_rect = self._button.get_rect()
         self._button_x = 0
-        self._command = command
+        self._update_callback = update_callback
 
         self._progress = pygame.Rect(*pos, *size)
         rect = pygame.Rect(*pos, *size)
@@ -173,8 +172,7 @@ class Slider(Widget):
 
             value = self.get_value()
             if self._last_value != value:
-                self._command.configure(value)
-                self._command()
+                self._update_callback(value)
 
     def draw(self, surface: pygame.Surface) -> None:
         pygame.draw.rect(surface, SLIDER_BG_COLOR, self._rect)
@@ -195,7 +193,7 @@ class TitledSlider(Widget):
         min_value: int,
         max_value: int,
         initial_value: float,
-        command: ConfigurableCommand,
+        update_callback: Callable[[float], None],
         button_image: pygame.Surface,
         text: str,
         text_color: Color | str,
@@ -227,9 +225,9 @@ class TitledSlider(Widget):
             min_value=min_value,
             max_value=max_value,
             initial_value=initial_value,
+            update_callback=update_callback,
             sound_focus=sound_focus,
             sound_on_hold=sound_on_hold,
-            command=command,
             button_image=button_image,
             pos=Pos(pos.x, pos.y + self._space_between),
             align=align,

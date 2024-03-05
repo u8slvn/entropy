@@ -2,19 +2,20 @@ from __future__ import annotations
 
 from enum import StrEnum
 from enum import auto
+from functools import partial
 from typing import TYPE_CHECKING
 from typing import Type
 
 import pygame as pg
 
 from entropy import assets
+from entropy import mixer
 from entropy.commands.base import Commands
 from entropy.commands.display import DisableFullscreen
 from entropy.commands.display import EnableFullscreen
 from entropy.commands.locale import SwitchLocaleTo
 from entropy.commands.mixer import PlayVoice
 from entropy.commands.mixer import SaveMixerVolume
-from entropy.commands.mixer import SetVolume
 from entropy.commands.state import TransitionToNextState
 from entropy.config import get_config
 from entropy.constants import GUI_BUTTON_FONT_SIZE
@@ -134,32 +135,42 @@ class SettingsMenu(State):
                         "widget_cls": TitledSlider,
                         "text": "MAIN VOLUME",
                         "initial_value": config.main_volume,
-                        "command": SetVolume(channel=Channel.MAIN),
+                        "update_callback": partial(
+                            mixer.set_volume, channel=Channel.MAIN
+                        ),
                     },
                     {
                         "widget_cls": TitledSlider,
                         "text": "MUSIC VOLUME",
                         "initial_value": config.music_volume,
-                        "command": SetVolume(channel=Channel.MUSIC),
+                        "update_callback": partial(
+                            mixer.set_volume, channel=Channel.MUSIC
+                        ),
                     },
                     {
                         "widget_cls": TitledSlider,
                         "text": "ATMOSPHERE VOLUME",
                         "initial_value": config.atmosphere_volume,
-                        "command": SetVolume(channel=Channel.ATMOSPHERE),
+                        "update_callback": partial(
+                            mixer.set_volume, channel=Channel.ATMOSPHERE
+                        ),
                     },
                     {
                         "widget_cls": TitledSlider,
                         "text": "VOICE VOLUME",
                         "initial_value": config.voice_volume,
-                        "command": SetVolume(channel=Channel.VOICE),
+                        "update_callback": partial(
+                            mixer.set_volume, channel=Channel.VOICE
+                        ),
                         "sound_on_hold": PlayVoice(name="narrator"),
                     },
                     {
                         "widget_cls": TitledSlider,
                         "text": "SFX VOLUME",
                         "initial_value": config.uisfx_volume,
-                        "command": SetVolume(channel=Channel.UISFX),
+                        "update_callback": partial(
+                            mixer.set_volume, channel=Channel.UISFX
+                        ),
                     },
                 ]
                 back_button_action = Commands([SaveMixerVolume(), back_button_action])
