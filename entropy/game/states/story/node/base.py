@@ -73,7 +73,6 @@ class Node(BaseNode, ABC):
     def close(self):
         if self._ease_out is not None:
             self._ease_out.activate()
-            print("activate")
         else:
             self.mark_as_done()
 

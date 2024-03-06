@@ -60,7 +60,7 @@ class Window:
 
         fullscreen = '"fullscreen", ' if self.fullscreen else ""
         logger.info(f'Display mode set to {fullscreen}"{resolution}"')
-        return pygame.display.set_mode(resolution, flags=self.screen_flags, vsync=True)
+        return pygame.display.set_mode(resolution, flags=self.screen_flags)
 
     @property
     def screen_res(self) -> Res:

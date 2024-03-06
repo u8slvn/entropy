@@ -9,10 +9,10 @@ import pygame
 
 import entropy
 
-from entropy import GAME_NAME
-from entropy.events.events import EventHandler
+from entropy.constants import GAME_NAME
+from entropy.event.events import EventQueueHandler
+from entropy.event.types import system
 from entropy.game import states
-from entropy.gui.input import Inputs
 from entropy.gui.widgets.fps import FPSViewer
 from entropy.logging import get_logger
 from entropy.utils import Res
@@ -35,12 +35,11 @@ class Control:
         self.state_stack: list[State] = []
         self.prev_state: State | None = None
         self.running = False
-        self.inputs = Inputs()
+        self.event_manager = EventQueueHandler()
         self.clock = pygame.time.Clock()
         self.dt: float = 0.0
         self.prev_time: float = 0.0
         self.fps_viewer = FPSViewer(clock=self.clock)
-        self.events = EventHandler()
 
     @property
     def current_state(self) -> State:
@@ -67,30 +66,28 @@ class Control:
         self.dt = now - self.prev_time
         self.prev_time = now
 
-    def get_events(self) -> None:
-        for event in pygame.event.get():
-            self.events.process_event(event)
-            if event.type == pygame.QUIT:
-                self.running = False
-            elif event.type == pygame.VIDEORESIZE and not entropy.window.fullscreen:
-                entropy.window.resize_screen(resolution=Res(*event.size))
-
-            self.inputs.parse_event(event=event)
-
     def process_inputs(self) -> None:
-        if self.inputs.keyboard.F6:
-            entropy.window.toggle_fullscreen()
+        for event in self.event_manager.process_events():
+            if event.triggered and event.key == system.QUIT:
+                self.running = False
+            elif (
+                event.triggered
+                and event.key == system.DISPLAY_RESIZE
+                and not entropy.window.fullscreen
+            ):
+                entropy.window.resize_screen(resolution=Res(*event.value))
+            print(event)
 
-        entropy.mouse.process_inputs(inputs=self.inputs)
-        self.fps_viewer.process_inputs(inputs=self.inputs)
-        self.current_state.process_inputs(inputs=self.inputs)
+        # if self.inputs.keyboard.F6:
+        #     entropy.window.toggle_fullscreen()
+        # entropy.mouse.process_inputs(inputs=self.inputs)
+        # self.fps_viewer.process_inputs(inputs=self.inputs)
+        # self.current_state.process_inputs(inputs=self.inputs)
 
     def update(self) -> None:
         entropy.mouse.update()
         self.current_state.update(dt=self.dt)
         self.fps_viewer.update(dt=self.dt)
-
-        self.inputs.flush()
 
     def render(self) -> None:
         self.current_state.draw(surface=self.render_surface)
@@ -105,7 +102,6 @@ class Control:
 
         while self.running:
             self.get_dt()
-            self.get_events()
             self.process_inputs()
             self.update()
             self.render()
