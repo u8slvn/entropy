@@ -8,6 +8,8 @@ from typing import Iterator
 
 
 class EventMapping:
+    """Represent the mapping between game event and pygame event."""
+
     def __init__(self, mapping: dict[int, int]):
         self._mapping = MappingProxyType(mapping)
 
@@ -16,6 +18,16 @@ class EventMapping:
 
 
 class Event:
+    """
+    Represent a game event.
+      - Key is the name by which the event is referred in the game.
+      - Value is the value that can be associate to the event, like the mouse position.
+      - Pressed handle the press status for a button.
+      - Released handle the release status for a button.
+      - Triggered handle the trigger status for a standalone event.
+      - Time is the time in second when a button has been pressed.
+    """
+
     __slots__ = ("key", "value", "pressed", "released", "triggered", "time")
 
     def __init__(self, key: int, value: Any = 1):
@@ -28,10 +40,12 @@ class Event:
 
     @property
     def held(self) -> bool:
+        """Used to know if a button is held."""
         return bool(self.value)
 
     @property
     def hold_time(self) -> float:
+        """Returns the time an event has been held."""
         return 0 if self.time is None else time.time() - self.time
 
     def __repr__(self) -> str:
@@ -39,6 +53,8 @@ class Event:
 
 
 class EventStore(dict[int, Event]):
+    """Manage events handled by event handlers."""
+
     def __missing__(self, key) -> Event:
         self[key] = Event(key)
         return self[key]
@@ -47,4 +63,5 @@ class EventStore(dict[int, Event]):
         return iter(self.values())
 
     def flush(self) -> None:
+        """Remove all events from the store. Used between state change."""
         self.clear()

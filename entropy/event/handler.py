@@ -1,3 +1,9 @@
+"""
+Game event handler. Manage all events from pygame.
+The handlers logic comes from Tuxemon:
+https://github.com/Tuxemon/Tuxemon
+"""
+
 from __future__ import annotations
 
 import time
@@ -16,6 +22,8 @@ from entropy.event.types import system
 
 
 class EventQueueHandler:
+    """Manage a group of event handlers in order to process pygame events."""
+
     def __init__(self):
         self._event_handlers: list[EventHandler] = [
             SystemEventHandler(),
@@ -26,6 +34,9 @@ class EventQueueHandler:
         ]
 
     def process_events(self) -> Generator[Event, None, None]:
+        """
+        Process all the event coming from pygame and distribute them to the handlers.
+        """
         for event in pg.event.get():
             for event_handler in self._event_handlers:
                 event_handler.process_event(event=event)
@@ -34,11 +45,14 @@ class EventQueueHandler:
             yield from event_handler.get_events()
 
     def flush(self) -> None:
+        """Flush the event store from all the handlers."""
         for event_handler in self._event_handlers:
             event_handler.flush()
 
 
 class EventHandler(ABC):
+    """Event handler base class."""
+
     default_mapping: EventMapping
 
     def __init__(self, keymap: EventMapping | None = None):
@@ -47,9 +61,15 @@ class EventHandler(ABC):
 
     @abstractmethod
     def process_event(self, event: pg.event.Event) -> None:
+        """Process a pygame event into an entropy one."""
         raise NotImplementedError
 
     def get_events(self) -> Generator[Event, None, None]:
+        """
+        Decide which events can be returned from the store and update them after they
+        have been yield. This allows to have certain events to be sent only one time
+        with a certain value. For example a pressed key event.
+        """
         for event in self._event_store:
             if event.triggered:
                 yield event
@@ -65,24 +85,37 @@ class EventHandler(ABC):
                 event.released = False
 
     def flush(self) -> None:
+        """Flush the event store."""
         self._event_store.flush()
 
     def press(self, key: int, value: int | tuple[int, int] = 1) -> None:
+        """
+        Update a key from the store to pressed status. Used when a button is pressed.
+        """
         self._event_store[key].value = value
         self._event_store[key].pressed = True
         self._event_store[key].time = time.time()
 
     def release(self, key: int) -> None:
+        """
+        Release a key from the store. Used when a button is released.
+        """
         self._event_store[key].value = 0
         self._event_store[key].released = True
         self._event_store[key].time = None
 
     def trigger(self, key: int, value: int | tuple[int, int] = 1) -> None:
+        """
+        Trigger a key from the store. Used to send a standalone action with a value,
+        like a screen resize or a mouse motion.
+        """
         self._event_store[key].value = value
         self._event_store[key].triggered = True
 
 
 class SystemEventHandler(EventHandler):
+    """Handle the event for the system."""
+
     default_mapping = EventMapping(
         {
             pg.QUIT: system.QUIT,
@@ -99,6 +132,8 @@ class SystemEventHandler(EventHandler):
 
 
 class MouseEventHandler(EventHandler):
+    """Handle mouse events."""
+
     default_mapping = EventMapping(
         {
             pg.MOUSEBUTTONUP: inputs.CLICK,
@@ -121,6 +156,8 @@ class MouseEventHandler(EventHandler):
 
 
 class KeyboardEventHandler(EventHandler):
+    """Handle keyboard events."""
+
     default_mapping = EventMapping(
         {
             pg.K_SPACE: inputs.A,
