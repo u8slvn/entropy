@@ -31,9 +31,10 @@ class ColorFormatter(logging.Formatter):
             logging.CRITICAL: (LogColor.RED, LogColor.RED_BACKGROUND),
         }
     )
+    log_level_default = log_level_colors[logging.DEBUG]
 
-    def format(self, record):
-        base, level = self.log_level_colors.get(record.levelno)
+    def format(self, record: logging.LogRecord) -> str:
+        base, level = self.log_level_colors.get(record.levelno, self.log_level_default)
         log_format = self.log_format.format(
             base=base, level=level, reset=LogColor.RESET
         )

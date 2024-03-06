@@ -42,7 +42,7 @@ class Slider(Widget):
         self._focus = False
         self._grabbed = False
 
-        self._last_value = 0
+        self._last_value = 0.0
         self._value = initial_value
         self._min_value = min_value
         self._max_value = max_value
@@ -278,5 +278,5 @@ class TitledSlider(Widget):
     def unset_focus(self) -> None:
         self._slider.unset_focus()
 
-    def has_focus(self) -> None:
-        self._slider.has_focus()
+    def has_focus(self) -> bool:
+        return self._slider.has_focus()

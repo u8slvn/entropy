@@ -43,7 +43,7 @@ class Splash(State):
         self._fade_in = FadeIn(duration=4000, callback=self._timer.start)
         self._done = False
 
-    def mark_as_done(self):
+    def mark_as_done(self) -> None:
         self._done = True
 
     def setup(self) -> None:

@@ -12,13 +12,13 @@ from entropy.logging import get_logger
 if TYPE_CHECKING:
     import pygame
 
-    from entropy.game.states.story import Chapter
+    from entropy.game.states.story.chapter import Chapter
 
 logger = get_logger()
 
 
 class BaseNode(GameEntity, ABC):
-    def __init__(self):
+    def __init__(self) -> None:
         self._done = False
 
     def mark_as_done(self) -> None:
@@ -70,7 +70,7 @@ class Node(BaseNode, ABC):
     def is_ready(self) -> bool:
         return self._ready
 
-    def close(self):
+    def close(self) -> None:
         if self._ease_out is not None:
             self._ease_out.activate()
         else:

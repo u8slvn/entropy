@@ -52,4 +52,5 @@ required-imports = [
 
 [tool.mypy]
 files = "entropy"
-mypy_path = "entropy"
+mypy_path = "/"
+strict = true

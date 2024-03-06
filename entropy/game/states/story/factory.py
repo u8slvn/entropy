@@ -37,7 +37,9 @@ def build_background(params: str) -> Background:
             raise ValueError(f"Unknown config type: '{type_}' for background.")
 
 
-def build_event(parent: Widget, params: dict[str, str]) -> Generator:
+def build_event(
+    parent: Widget, params: dict[str, str]
+) -> Generator[TypeWriterText, None, None]:
     for value in params["values"]:
         align = Align(params["align"]) if params.get("align") else None
         yield TypeWriterText(
@@ -61,3 +63,5 @@ def build_transition(
             return FadeIn(duration=params["duration"], callback=callback)
         case "fade-out":
             return FadeOut(duration=params["duration"], callback=callback)
+        case _:
+            raise NotImplementedError

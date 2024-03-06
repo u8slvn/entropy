@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from typing import Any
 
 from entropy import assets
 from entropy.event.types import inputs
@@ -17,7 +18,7 @@ if TYPE_CHECKING:
     import pygame
 
     from entropy.event.event import Event
-    from entropy.game.states.story import Chapter
+    from entropy.game.states.story.chapter import Chapter
 
 
 class IntroScene(Node):
@@ -30,8 +31,8 @@ class IntroScene(Node):
         title: str,
         subtitle: str,
         background: str,
-        **_,
-    ):
+        **_: dict[str, Any],
+    ) -> None:
         super().__init__(
             chapter=chapter, next_id=next_id, music=music, background=background
         )

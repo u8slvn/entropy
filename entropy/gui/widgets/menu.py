@@ -24,7 +24,7 @@ class Group(Widget):
         self,
         parent: Widget,
     ) -> None:
-        self.widgets = []
+        self.widgets: list[Widget] = []
         super().__init__(parent=parent)
 
     def add_widget(self, widget: Widget) -> None:
@@ -49,7 +49,7 @@ class Group(Widget):
         for widget in self.widgets:
             widget.draw(surface=surface)
 
-    def teardown(self):
+    def teardown(self) -> None:
         for widget in self.widgets:
             widget.teardown()
 

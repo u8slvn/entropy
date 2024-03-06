@@ -6,7 +6,7 @@ from entropy.commands.base import Command
 
 
 if TYPE_CHECKING:
-    from entropy.game.states import State
+    from entropy.game.states.base import State
 
 
 class TransitionToNextState(Command):
@@ -25,5 +25,5 @@ class ExitState(Command):
     def __init__(self, state: State) -> None:
         self._state = state
 
-    def __call__(self):
+    def __call__(self) -> None:
         self._state.exit()

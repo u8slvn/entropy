@@ -29,7 +29,7 @@ if TYPE_CHECKING:
 config = get_config()
 
 
-def test_lang():
+def test_lang() -> None:
     translator.set_translation("fr")
 
 

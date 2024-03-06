@@ -80,14 +80,14 @@ class Button(Widget):
     def is_checked(self) -> bool:
         return self._state in [ButtonState.CHECKED, ButtonState.FOCUS_CHECKED]
 
-    def set_focus(self):
+    def set_focus(self) -> None:
         if self.is_checked():
             self._state = ButtonState.FOCUS_CHECKED
         else:
             self._state = ButtonState.FOCUS
         mixer.play_uisfx(self._sound_focus)
 
-    def unset_focus(self):
+    def unset_focus(self) -> None:
         if self.is_checked():
             self._state = ButtonState.CHECKED
         else:
@@ -122,7 +122,7 @@ class Button(Widget):
         elif event.pressed and event.key == inputs.B and self.has_focus():
             self.press()
 
-    def update(self, dt: float):
+    def update(self, dt: float) -> None:
         if self.is_pressed():
             self.release()
         self._image = self._images[self._state]
@@ -176,7 +176,7 @@ class TextButton(Button):
         super().setup()
         self._text.setup()
 
-    def update(self, dt: float):
+    def update(self, dt: float) -> None:
         super().update(dt=dt)
         self._text.update(dt=dt)
 
@@ -196,7 +196,7 @@ class AttrObserver:
         self.subject = subject
 
     def has_changed(self) -> bool:
-        return getattr(self.subject, self._attr) == self._match
+        return self._match == getattr(self.subject, self._attr)
 
 
 class ObserverButton(TextButton, Observer):

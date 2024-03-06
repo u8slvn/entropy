@@ -127,7 +127,7 @@ class TText(Text, Observer):
     def teardown(self) -> None:
         translator.remove_observer(observer=self)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'<TText value="{self.__text}">'
 
 
@@ -198,12 +198,12 @@ class TypeWriterText(Widget):
         if self._done is True:
             return
 
-        self._counter += self._speed * dt
+        self._counter += int(self._speed * dt)
         if self._counter >= len(self._text):
             self._done = True
 
         self._text_surf = self._font.render(
-            self._text[0 : int(self._counter)],
+            self._text[0 : self._counter],
             antialias=False,
             color=self._color,
         )

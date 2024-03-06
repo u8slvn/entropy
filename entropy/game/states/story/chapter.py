@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 
 from functools import partial
-from pathlib import Path
 from typing import TYPE_CHECKING
 from typing import Callable
 from typing import Type
@@ -42,10 +41,10 @@ class Chapter(BaseNode):
     """
 
     def __init__(
-        self, state: State, name: str, start_node: str, configfile: Path
+        self, state: State, name: str, start_node: str, configfile: str
     ) -> None:
         super().__init__()
-        self._background = ColorBackground(
+        self._background: Background = ColorBackground(
             color=Color(0, 0, 0, 255)
         )  # Default background
         self._name = name
@@ -57,7 +56,7 @@ class Chapter(BaseNode):
         self._load_nodes(configfile=configfile)
         self.transition_to_node(uuid=start_node)
 
-    def _load_nodes(self, configfile: Path) -> None:
+    def _load_nodes(self, configfile: str) -> None:
         """Load all the Story Nodes from the given JSON config file."""
         # TODO: add in thread with loading screen
         with open(STORY_DIR / configfile, "r") as file:

@@ -4,6 +4,7 @@ from enum import StrEnum
 from enum import auto
 from functools import partial
 from typing import TYPE_CHECKING
+from typing import Any
 from typing import Type
 
 import pygame as pg
@@ -42,6 +43,7 @@ from entropy.utils import cleanup
 
 
 if TYPE_CHECKING:
+    from entropy.commands.base import Command
     from entropy.event.event import Event
     from entropy.game.control import Control
     from entropy.gui.widgets.base import Widget
@@ -87,7 +89,7 @@ class SettingsMenu(State):
         config.save()
         self._submenu.teardown()
 
-    def transition_to(self, state_name: str, with_exit: bool = False):
+    def transition_to(self, state_name: str, with_exit: bool = False) -> None:
         self._submenu.teardown()
         cleanup(self._submenu)
         self._submenu = self._build_submenu(submenu=Submenu(state_name))
@@ -102,7 +104,7 @@ class SettingsMenu(State):
         group = Group(parent=self._background)
         menu_group = MenuGroup(parent=group)
 
-        back_button_action = TransitionToNextState(
+        back_button_action: Command = TransitionToNextState(
             state=self, next_state=Submenu.SETTINGS
         )
 
@@ -258,7 +260,7 @@ class SettingsMenu(State):
         return group
 
     @staticmethod
-    def _build_menu_title(parent: Widget, text: str, pos: Pos):
+    def _build_menu_title(parent: Widget, text: str, pos: Pos) -> TText:
         return TText(
             parent=parent,
             text=text,
@@ -271,7 +273,7 @@ class SettingsMenu(State):
     @staticmethod
     def _build_menu_widget(
         widget_cls: Type[TextButton] | Type[ObserverButton] | Type[TitledSlider],
-        **kwargs,
+        **kwargs: Any,
     ) -> Widget:
         text_font = assets.font.get(name=config.font, size=GUI_BUTTON_FONT_SIZE)
 
@@ -302,3 +304,6 @@ class SettingsMenu(State):
                     text_align=Align.CENTER_X,
                     align=Align.CENTER_X,
                 )
+
+            case _:
+                raise NotImplementedError

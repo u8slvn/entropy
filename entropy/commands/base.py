@@ -13,7 +13,7 @@ class Command(ABC):
     def __call__(self) -> None: ...
 
 
-class Commands(list, Command):
+class Commands(list[Command], Command):
     """Chain a list of command."""
 
     def __call__(self) -> None:

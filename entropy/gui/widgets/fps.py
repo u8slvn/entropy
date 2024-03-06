@@ -29,7 +29,7 @@ class FPSViewer(GameEntity):
         text = self._format.format(fps=round(self._fps))
         return self._font.render(text, True, "white")
 
-    def _get_pos(self):
+    def _get_pos(self) -> Pos:
         return Pos(
             entropy.window.default_res.w - self._text.get_width(),
             entropy.window.default_res.h - self._text.get_height(),

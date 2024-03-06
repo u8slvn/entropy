@@ -24,7 +24,7 @@ from entropy.event.types import system
 class EventQueueHandler:
     """Manage a group of event handlers in order to process pygame events."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._event_handlers: list[EventHandler] = [
             SystemEventHandler(),
             # Order is very important, Mouse should always be handled before keyboard,

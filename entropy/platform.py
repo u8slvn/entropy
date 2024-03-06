@@ -11,7 +11,7 @@ WIN = sys.platform.startswith("win")
 APPDATA = os.getenv("APPDATA")
 
 
-def configure():
+def configure() -> None:
     """Configure platform related needs."""
 
     if WIN:

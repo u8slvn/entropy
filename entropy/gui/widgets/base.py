@@ -52,14 +52,12 @@ class BaseWidget(GameEntity, ABC):
     def centerx(self) -> int:
         return self.rect.centerx
 
-    def set_focus(self) -> None:
-        pass
+    def set_focus(self) -> None: ...
 
-    def unset_focus(self) -> None:
-        pass
+    def unset_focus(self) -> None: ...
 
-    def has_focus(self) -> None:
-        pass
+    def has_focus(self) -> bool:
+        return False
 
 
 class DefaultRoot(BaseWidget):

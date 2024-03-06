@@ -21,7 +21,7 @@ from entropy.utils import cleanup
 
 
 if TYPE_CHECKING:
-    from entropy.game.states import State
+    from entropy.game.states.base import State
 
 logger = get_logger()
 
@@ -109,7 +109,7 @@ class Control:
         self.stop()
 
     @staticmethod
-    def stop(delay=0.2) -> None:
+    def stop(delay: float = 0.2) -> None:
         logger.info(f"Stop {GAME_NAME}.")
         sleep(delay)
         pygame.quit()

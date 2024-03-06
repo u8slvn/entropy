@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from typing import Any
 
 from entropy.event.types import inputs
 from entropy.game.states.story.factory import build_event
@@ -15,7 +16,7 @@ if TYPE_CHECKING:
     import pygame
 
     from entropy.event.event import Event
-    from entropy.game.states.story import Chapter
+    from entropy.game.states.story.chapter import Chapter
 
 
 class ContemplationScene(Node):
@@ -30,8 +31,8 @@ class ContemplationScene(Node):
         music: str | None = None,
         ease_in: dict[str, str | int] | None = None,
         ease_out: dict[str, str | int] | None = None,
-        **_,
-    ):
+        **_: dict[str, Any],
+    ) -> None:
         super().__init__(
             chapter=chapter,
             next_id=next_id,

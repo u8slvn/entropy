@@ -17,7 +17,7 @@ class Translator(Subject):
     def __init__(self, localedir: Path, locale: str) -> None:
         super().__init__()
         self._localedir = localedir
-        self.locales = []
+        self.locales: list[str] = []
         self._translations: dict[str, dict[str, gettext.GNUTranslations]] = defaultdict(
             dict
         )

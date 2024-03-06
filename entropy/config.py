@@ -28,7 +28,7 @@ def get_config() -> _Config:
 
 
 class _Config(Subject):
-    _default_config: ClassVar[OrderedDict] = OrderedDict(
+    _default_config: ClassVar[OrderedDict[str, OrderedDict[str, Any]]] = OrderedDict(
         {
             "display": OrderedDict(
                 {
@@ -94,11 +94,11 @@ class _Config(Subject):
         self.resolution_x, self.resolution_y = res
         self.notify()
 
-    def update_attr(self, name: str, value: Any):
+    def update_attr(self, name: str, value: Any) -> None:
         setattr(self, name, value)
         self.notify()
 
-    def save(self):
+    def save(self) -> None:
         for section, params in self._default_config.items():
             for param in params.keys():
                 self._config[section][param] = str(getattr(self, param))

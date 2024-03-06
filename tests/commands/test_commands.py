@@ -13,7 +13,7 @@ def command():
             self.action = action
             self._value = value
 
-        def __call__(self):
+        def __call__(self) -> None:
             self.action(self._value)
 
     return TestCommand

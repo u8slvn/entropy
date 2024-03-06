@@ -32,7 +32,7 @@ class State(GameEntity, ABC):
     def get_states(cls) -> dict[str, Type[State]]:
         return cls._states
 
-    def transition_to(self, state_name: str, with_exit: bool = False):
+    def transition_to(self, state_name: str, with_exit: bool = False) -> None:
         self.control.transition_to(state_name=state_name, with_exit=with_exit)
 
     def teardown(self) -> None:

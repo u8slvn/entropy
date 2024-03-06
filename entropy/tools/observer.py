@@ -20,6 +20,6 @@ class Subject(ABC):
     def remove_observer(self, observer: Observer) -> None:
         self._observers.remove(observer)
 
-    def notify(self):
+    def notify(self) -> None:
         for observer in self._observers:
             observer.on_notify()

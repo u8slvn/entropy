@@ -47,7 +47,7 @@ class Mixer:
         self._refresh_volume()
 
     @property
-    def currently_playing(self):
+    def currently_playing(self) -> str | None:
         return self._currently_playing
 
     def play_music(self, name: str) -> None:
@@ -55,13 +55,13 @@ class Mixer:
         sound = entropy.assets.sound.get(name=name)
         self._channels[Channel.MUSIC].play(sound, -1)
 
-    def stop_music(self, fadeout: int = 0):
+    def stop_music(self, fadeout: int = 0) -> None:
         self._channels[Channel.MUSIC].fadeout(fadeout)
 
     def play_atmos(self, sound: pygame.mixer.Sound) -> None:
         self._channels[Channel.ATMOSPHERE].play(sound, -1)
 
-    def stop_atmos(self, fadeout: int = 0):
+    def stop_atmos(self, fadeout: int = 0) -> None:
         self._channels[Channel.ATMOSPHERE].fadeout(fadeout)
 
     def play_voice(self, name: str) -> None:
@@ -71,14 +71,14 @@ class Mixer:
     def voice_is_busy(self) -> bool:
         return self._channels[Channel.VOICE].get_busy()
 
-    def stop_voice(self, fadeout: int = 0):
+    def stop_voice(self, fadeout: int = 0) -> None:
         self._channels[Channel.VOICE].fadeout(fadeout)
 
     def play_uisfx(self, name: str) -> None:
         sound = entropy.assets.sound.get(name=name)
         self._channels[Channel.UISFX].queue(sound)
 
-    def set_volume(self, value: float, channel: Channel):
+    def set_volume(self, value: float, channel: Channel) -> None:
         assert 0.0 <= value <= 1.0
         self._volumes[channel] = value
 

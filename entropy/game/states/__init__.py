@@ -12,7 +12,7 @@ from entropy.game.states.base import State
 _states: dict[str, Type[State]] = {}
 
 
-def load():
+def load() -> None:
     global _states
 
     pwd = os.path.dirname(__file__)

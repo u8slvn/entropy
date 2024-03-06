@@ -10,7 +10,7 @@ from typing import Iterator
 class EventMapping:
     """Represent the mapping between game event and pygame event."""
 
-    def __init__(self, mapping: dict[int, int]):
+    def __init__(self, mapping: dict[int, int]) -> None:
         self._mapping = MappingProxyType(mapping)
 
     def get(self, event: int) -> int | None:
@@ -30,13 +30,13 @@ class Event:
 
     __slots__ = ("key", "value", "pressed", "released", "triggered", "time")
 
-    def __init__(self, key: int, value: Any = 1):
+    def __init__(self, key: int, value: Any = 1) -> None:
         self.key = key
         self.value = value
         self.pressed = False
         self.released = False
         self.triggered = False
-        self.time = None
+        self.time: float | None = None
 
     @property
     def held(self) -> bool:
@@ -55,7 +55,7 @@ class Event:
 class EventStore(dict[int, Event]):
     """Manage events handled by event handlers."""
 
-    def __missing__(self, key) -> Event:
+    def __missing__(self, key: int) -> Event:
         self[key] = Event(key)
         return self[key]
 

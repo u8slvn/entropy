@@ -95,5 +95,5 @@ class TimerSecond(Timer):
         )
 
     @property
-    def countdown(self):
+    def countdown(self) -> int:
         return self._countdown // 1000
