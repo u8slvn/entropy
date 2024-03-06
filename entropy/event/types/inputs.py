@@ -15,6 +15,7 @@ LEFT = 15
 DOWN = 21
 BACK = 28
 
+FULLSCREEN = 32
 DEBUG = 36
 
 # Mouse

@@ -22,9 +22,9 @@ from entropy.utils import cleanup
 
 
 if TYPE_CHECKING:
+    from entropy.event.event import Event
     from entropy.game.states.base import State
     from entropy.game.states.story.node.base import Node
-    from entropy.gui.input import Inputs
     from entropy.gui.widgets.background import Background
 
 logger = get_logger()
@@ -123,9 +123,9 @@ class Chapter(BaseNode):
         """Set up the Chapter."""
         super().setup()
 
-    def process_inputs(self, inputs: Inputs) -> None:
+    def process_event(self, event: Event) -> None:
         """Process game inputs."""
-        self._current_node.process_inputs(inputs=inputs)
+        self._current_node.process_event(event=event)
 
     def update(self, dt: float) -> None:
         """Update the Chapter within the game loop."""

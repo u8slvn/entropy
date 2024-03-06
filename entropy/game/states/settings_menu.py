@@ -21,6 +21,7 @@ from entropy.config import get_config
 from entropy.constants import GUI_BUTTON_FONT_SIZE
 from entropy.constants import GUI_BUTTON_TEXT_COLOR
 from entropy.constants import GUI_TEXT_COLOR
+from entropy.event.types import inputs
 from entropy.game.states.base import State
 from entropy.gui.widgets import button
 from entropy.gui.widgets import slider
@@ -41,8 +42,8 @@ from entropy.utils import cleanup
 
 
 if TYPE_CHECKING:
+    from entropy.event.event import Event
     from entropy.game.control import Control
-    from entropy.gui.input import Inputs
     from entropy.gui.widgets.base import Widget
 
 config = get_config()
@@ -66,11 +67,11 @@ class SettingsMenu(State):
     def setup(self) -> None:
         self._submenu.setup()
 
-    def process_inputs(self, inputs: Inputs) -> None:
-        if inputs.keyboard.ESCAPE:
+    def process_event(self, event: Event) -> None:
+        if event.pressed and event.key == inputs.BACK:
             self.exit()
 
-        self._submenu.process_inputs(inputs=inputs)
+        self._submenu.process_event(event=event)
 
     def update(self, dt: float) -> None:
         self._submenu.update(dt=dt)

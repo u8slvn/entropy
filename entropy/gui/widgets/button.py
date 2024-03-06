@@ -9,6 +9,7 @@ import pygame
 
 from entropy import mixer
 from entropy import mouse
+from entropy.event.types import inputs
 from entropy.gui.widgets.base import Widget
 from entropy.gui.widgets.text import TText
 from entropy.tools.observer import Observer
@@ -16,7 +17,7 @@ from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
-    from entropy.gui.input import Inputs
+    from entropy.event.event import Event
     from entropy.gui.widgets.base import Align
     from entropy.tools.observer import Subject
     from entropy.utils import Color
@@ -109,16 +110,16 @@ class Button(Widget):
     def setup(self) -> None:
         pass
 
-    def process_inputs(self, inputs: Inputs) -> None:
+    def process_event(self, event: Event) -> None:
         if mouse.is_visible():
             if mouse.collide_with(self.rect):
                 if not self.has_focus():
                     self.set_focus()
-                if inputs.mouse.BUTTON1:
+                if event.pressed and event.key in (inputs.B, inputs.CLICK):
                     self.press()
             else:
                 self.unset_focus()
-        if inputs.keyboard.ENTER and self.has_focus():
+        elif event.pressed and event.key == inputs.B and self.has_focus():
             self.press()
 
     def update(self, dt: float):

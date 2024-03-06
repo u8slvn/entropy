@@ -22,8 +22,8 @@ from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
+    from entropy.event.event import Event
     from entropy.game.control import Control
-    from entropy.gui.input import Inputs
     from entropy.gui.widgets.base import Widget
 
 config = get_config()
@@ -50,8 +50,8 @@ class TitleScreen(State):
         self._covered = False
         self._main_menu.setup()
 
-    def process_inputs(self, inputs: Inputs) -> None:
-        self._main_menu.process_inputs(inputs=inputs)
+    def process_event(self, event: Event) -> None:
+        self._main_menu.process_event(event=event)
 
     def update(self, dt: float) -> None:
         self._main_menu.update(dt=dt)
@@ -63,6 +63,7 @@ class TitleScreen(State):
             self._main_menu.draw(surface=surface)
 
     def teardown(self) -> None:
+        super().teardown()
         self._covered = True
 
     def _build_menu(self) -> MenuGroup:

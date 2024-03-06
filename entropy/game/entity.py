@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     import pygame
 
-    from entropy.gui.input import Inputs
+    from entropy.event.event import Event
 
 
 class GameEntity(ABC):
@@ -18,7 +18,7 @@ class GameEntity(ABC):
     def setup(self) -> None: ...
 
     @abstractmethod
-    def process_inputs(self, inputs: Inputs) -> None: ...
+    def process_event(self, event: Event) -> None: ...
 
     @abstractmethod
     def update(self, dt: float) -> None: ...

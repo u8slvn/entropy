@@ -9,6 +9,7 @@ from entropy import mixer
 from entropy import mouse
 from entropy.constants import SLIDER_BG_COLOR
 from entropy.constants import SLIDER_PROGRESS_COLOR
+from entropy.event.types import inputs
 from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.base import Widget
 from entropy.gui.widgets.text import TText
@@ -16,7 +17,7 @@ from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
-    from entropy.gui.input import Inputs
+    from entropy.event.event import Event
     from entropy.utils import Color
     from entropy.utils import Size
 
@@ -133,13 +134,14 @@ class Slider(Widget):
     def setup(self) -> None:
         pass
 
-    def process_inputs(self, inputs: Inputs) -> None:
+    def process_event(self, event: Event) -> None:
         if mouse.is_visible():
             if mouse.collide_with(self._rect) or mouse.collide_with(self._button_rect):
-                if inputs.mouse.BUTTON1 and mouse.is_button_pressed(mouse.BUTTON1):
+                if event.held and event.key == inputs.CLICK:
                     self._grabbed = True
-            if not mouse.is_button_pressed(mouse.BUTTON1):
+            if not event.held:
                 self._grabbed = False
+
             if mouse.collide_with(self._button_rect) or self._grabbed:
                 self.set_focus()
             else:
@@ -151,11 +153,11 @@ class Slider(Widget):
         elif self.has_focus():
             self._grabbed = True
 
-            if inputs.keyboard.LEFT:
+            if event.pressed and event.key == inputs.LEFT:
                 value = round(self.get_value(), 1)
                 self.set_value(value - self._step)
                 mixer.play_uisfx(self._sound_focus)
-            elif inputs.keyboard.RIGHT:
+            elif event.pressed and event.key == inputs.RIGHT:
                 value = round(self.get_value(), 1)
                 self.set_value(value + self._step)
                 mixer.play_uisfx(self._sound_focus)
@@ -255,9 +257,9 @@ class TitledSlider(Widget):
         self._text.setup()
         self._slider.setup()
 
-    def process_inputs(self, inputs: Inputs) -> None:
-        self._text.process_inputs(inputs=inputs)
-        self._slider.process_inputs(inputs=inputs)
+    def process_event(self, event: Event) -> None:
+        self._text.process_event(event=event)
+        self._slider.process_event(event=event)
 
     def update(self, dt: float) -> None:
         self._text.update(dt=dt)

@@ -15,8 +15,8 @@ from entropy.locations import STORY_DIR
 
 
 if TYPE_CHECKING:
+    from entropy.event.event import Event
     from entropy.game.control import Control
-    from entropy.gui.input import Inputs
 
 logger = get_logger()
 
@@ -41,8 +41,8 @@ class Story(State):
     def setup(self) -> None:
         self._current_chapter.setup()
 
-    def process_inputs(self, inputs: Inputs) -> None:
-        self._current_chapter.process_inputs(inputs)
+    def process_event(self, event: Event) -> None:
+        self._current_chapter.process_event(event)
 
     def update(self, dt: float) -> None:
         if self._current_chapter.is_done():

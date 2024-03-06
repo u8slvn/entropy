@@ -11,7 +11,7 @@ from entropy.tools.timer import Timer
 
 
 if TYPE_CHECKING:
-    from entropy.gui.input import Inputs
+    from entropy.event.event import Event
 
 
 @final
@@ -48,7 +48,7 @@ class Transition(GameEntity, ABC):
         if self._timer.is_started():
             self._active = True
 
-    def process_inputs(self, inputs: Inputs) -> None:
+    def process_event(self, event: Event) -> None:
         pass
 
     def update(self, dt: float) -> None:

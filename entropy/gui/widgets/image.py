@@ -11,7 +11,7 @@ from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
-    from entropy.gui.input import Inputs
+    from entropy.event.event import Event
 
 
 class Image(Widget):
@@ -32,7 +32,7 @@ class Image(Widget):
     def setup(self) -> None:
         pass
 
-    def process_inputs(self, inputs: Inputs) -> None:
+    def process_event(self, event: Event) -> None:
         pass
 
     def update(self, dt: float) -> None:

@@ -6,6 +6,7 @@ import pygame
 
 import entropy
 
+from entropy.event.types import inputs
 from entropy.game.states.base import State
 from entropy.gui.transistions.fader import FadeIn
 from entropy.gui.transistions.fader import FadeOut
@@ -17,8 +18,8 @@ from entropy.utils import Color
 
 
 if TYPE_CHECKING:
+    from entropy.event.event import Event
     from entropy.game.control import Control
-    from entropy.gui.input import Inputs
 
 
 class Splash(State):
@@ -52,8 +53,8 @@ class Splash(State):
         self._fade_out.setup()
         self._timer.setup()
 
-    def process_inputs(self, inputs: Inputs) -> None:
-        if inputs.keyboard.SPACE or inputs.keyboard.ENTER:
+    def process_event(self, event: Event) -> None:
+        if event.pressed and event.key == inputs.A:
             self.mark_as_done()
 
     def update(self, dt: float) -> None:
@@ -74,6 +75,7 @@ class Splash(State):
         self._fade_in.draw(surface=surface)
 
     def teardown(self) -> None:
+        super().teardown()
         self._done = False
         self._fade_out.teardown()
         self._fade_in.teardown()

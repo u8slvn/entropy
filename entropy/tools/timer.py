@@ -9,7 +9,7 @@ from entropy.game.entity import GameEntity
 
 
 if TYPE_CHECKING:
-    from entropy.gui.input import Inputs
+    from entropy.event.event import Event
 
 
 class Timer(GameEntity):
@@ -59,7 +59,7 @@ class Timer(GameEntity):
         if self._autostart is True:
             self.start()
 
-    def process_inputs(self, inputs: Inputs) -> None:
+    def process_event(self, event: Event) -> None:
         pass
 
     def update(self, dt: float) -> None:

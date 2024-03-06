@@ -14,7 +14,7 @@ from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
-    from entropy.gui.input import Inputs
+    from entropy.event.event import Event
 
 T = translator
 
@@ -60,7 +60,7 @@ class Text(Widget):
     def setup(self) -> None:
         pass
 
-    def process_inputs(self, inputs: Inputs) -> None:
+    def process_event(self, event: Event) -> None:
         pass
 
     def update(self, dt: float) -> None:
@@ -108,7 +108,7 @@ class TText(Text, Observer):
         super().setup()
         translator.add_observer(observer=self)
 
-    def process_inputs(self, inputs: Inputs) -> None:
+    def process_event(self, event: Event) -> None:
         pass
 
     def update(self, dt: float) -> None:
@@ -191,7 +191,7 @@ class TypeWriterText(Widget):
         self._counter = 0
         self._done = False
 
-    def process_inputs(self, inputs: Inputs) -> None:
+    def process_event(self, event: Event) -> None:
         pass
 
     def update(self, dt: float) -> None:

@@ -6,12 +6,13 @@ import pygame as pygame
 
 import entropy
 
+from entropy.event.types import inputs
 from entropy.game.entity import GameEntity
 from entropy.utils import Pos
 
 
 if TYPE_CHECKING:
-    from entropy.gui.input import Inputs
+    from entropy.event.event import Event
 
 
 class FPSViewer(GameEntity):
@@ -37,8 +38,8 @@ class FPSViewer(GameEntity):
     def setup(self) -> None:
         pass
 
-    def process_inputs(self, inputs: Inputs) -> None:
-        if inputs.keyboard.F5:
+    def process_event(self, event: Event) -> None:
+        if event.pressed and event.key == inputs.DEBUG:
             self._visible = not self._visible
 
     def update(self, dt: float) -> None:

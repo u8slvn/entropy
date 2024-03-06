@@ -35,6 +35,9 @@ class State(GameEntity, ABC):
     def transition_to(self, state_name: str, with_exit: bool = False):
         self.control.transition_to(state_name=state_name, with_exit=with_exit)
 
+    def teardown(self) -> None:
+        self.control.event_manager.flush()
+
     def exit(self) -> None:
         self.teardown()
         self.control.state_stack.pop()

@@ -6,11 +6,12 @@ from typing import TYPE_CHECKING
 import pygame
 
 from entropy import mouse
+from entropy.event.types import inputs
 from entropy.gui.widgets.base import Widget
 
 
 if TYPE_CHECKING:
-    from entropy.gui.input import Inputs
+    from entropy.event.event import Event
 
 
 class Adjacent(IntEnum):
@@ -36,9 +37,9 @@ class Group(Widget):
         for widget in self.widgets:
             widget.setup()
 
-    def process_inputs(self, inputs: Inputs) -> None:
+    def process_event(self, event: Event) -> None:
         for widget in self.widgets:
-            widget.process_inputs(inputs=inputs)
+            widget.process_event(event=event)
 
     def update(self, dt: float) -> None:
         for widget in self.widgets:
@@ -76,14 +77,13 @@ class MenuGroup(Group):
         self.focus_index = (self.focus_index + adjacent) % len(self.widgets)
         self._focused_widget.set_focus()  # type: ignore
 
-    def process_inputs(self, inputs: Inputs) -> None:
-        if inputs.keyboard.KEYUP or inputs.keyboard.KEYDOWN:
-            if inputs.keyboard.UP:
-                self._select_adjacent_widget(adjacent=Adjacent.PREV)
-            elif inputs.keyboard.DOWN:
-                self._select_adjacent_widget(adjacent=Adjacent.NEXT)
+    def process_event(self, event: Event) -> None:
+        if event.pressed and event.key == inputs.UP:
+            self._select_adjacent_widget(adjacent=Adjacent.PREV)
+        elif event.pressed and event.key == inputs.DOWN:
+            self._select_adjacent_widget(adjacent=Adjacent.NEXT)
 
         for index, widget in enumerate(self.widgets):
             if mouse.is_visible() and widget.has_focus():
                 self.focus_index = index
-            widget.process_inputs(inputs=inputs)
+            widget.process_event(event=event)

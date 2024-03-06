@@ -10,7 +10,8 @@ import pygame
 import entropy
 
 from entropy.constants import GAME_NAME
-from entropy.event.events import EventQueueHandler
+from entropy.event.handler import EventQueueHandler
+from entropy.event.types import inputs
 from entropy.event.types import system
 from entropy.game import states
 from entropy.gui.widgets.fps import FPSViewer
@@ -66,7 +67,7 @@ class Control:
         self.dt = now - self.prev_time
         self.prev_time = now
 
-    def process_inputs(self) -> None:
+    def process_events(self) -> None:
         for event in self.event_manager.process_events():
             if event.triggered and event.key == system.QUIT:
                 self.running = False
@@ -76,13 +77,11 @@ class Control:
                 and not entropy.window.fullscreen
             ):
                 entropy.window.resize_screen(resolution=Res(*event.value))
-            print(event)
-
-        # if self.inputs.keyboard.F6:
-        #     entropy.window.toggle_fullscreen()
-        # entropy.mouse.process_inputs(inputs=self.inputs)
-        # self.fps_viewer.process_inputs(inputs=self.inputs)
-        # self.current_state.process_inputs(inputs=self.inputs)
+            elif event.pressed and event.key == inputs.FULLSCREEN:
+                entropy.window.toggle_fullscreen()
+            entropy.mouse.process_event(event=event)
+            self.fps_viewer.process_event(event=event)
+            self.current_state.process_event(event=event)
 
     def update(self) -> None:
         entropy.mouse.update()
@@ -102,7 +101,7 @@ class Control:
 
         while self.running:
             self.get_dt()
-            self.process_inputs()
+            self.process_events()
             self.update()
             self.render()
             self.clock.tick(self.fps)

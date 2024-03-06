@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from entropy import assets
+from entropy.event.types import inputs
 from entropy.game.states.story.node.base import Node
 from entropy.gui.transistions.fader import FadeIn
 from entropy.gui.transistions.fader import FadeOut
@@ -15,8 +16,8 @@ from entropy.utils import Pos
 if TYPE_CHECKING:
     import pygame
 
+    from entropy.event.event import Event
     from entropy.game.states.story import Chapter
-    from entropy.gui.input import Inputs
 
 
 class IntroScene(Node):
@@ -67,8 +68,8 @@ class IntroScene(Node):
         self._fade_out.setup()
         self._timer.setup()
 
-    def process_inputs(self, inputs: Inputs) -> None:
-        if inputs.keyboard.SPACE or inputs.keyboard.ENTER or inputs.mouse.BUTTON1:
+    def process_event(self, event: Event) -> None:
+        if event.pressed and event.key in (inputs.CLICK, inputs.A):
             self.mark_as_done()
 
     def update(self, dt: float) -> None:

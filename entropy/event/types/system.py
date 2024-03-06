@@ -5,5 +5,6 @@ System event types used by the game.
 from __future__ import annotations
 
 
-QUIT = 451208
-DISPLAY_RESIZE = 79834
+QUIT = 4000
+DISPLAY_RESIZE = 4100
+HIDE_MOUSE = 4200

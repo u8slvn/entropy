@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from entropy.event.types import inputs
 from entropy.game.states.story.factory import build_event
 from entropy.game.states.story.node.base import Node
 from entropy.gui.widgets.base import Align
@@ -13,8 +14,8 @@ from entropy.utils import Pos
 if TYPE_CHECKING:
     import pygame
 
+    from entropy.event.event import Event
     from entropy.game.states.story import Chapter
-    from entropy.gui.input import Inputs
 
 
 class ContemplationScene(Node):
@@ -54,8 +55,8 @@ class ContemplationScene(Node):
         super().setup()
         self._delay.setup()
 
-    def process_inputs(self, inputs: Inputs) -> None:
-        if inputs.keyboard.SPACE or inputs.keyboard.ENTER or inputs.mouse.BUTTON1:
+    def process_event(self, event: Event) -> None:
+        if event.pressed and event.key in (inputs.CLICK, inputs.A):
             if not self._delay.is_done():
                 self._delay.stop()
             elif self._event.is_done():

@@ -6,7 +6,7 @@ import pygame
 
 from entropy import assets
 from entropy import window
-from entropy.gui.input import Inputs
+from entropy.event.event import Event
 from entropy.gui.widgets.base import Widget
 
 
@@ -25,7 +25,7 @@ class Background(Widget):
     def setup(self) -> None:
         pass
 
-    def process_inputs(self, inputs: Inputs) -> None:
+    def process_event(self, event: Event) -> None:
         pass
 
     def update(self, dt: float) -> None:
