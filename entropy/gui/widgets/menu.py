@@ -84,6 +84,6 @@ class MenuGroup(Group):
             self._select_adjacent_widget(adjacent=Adjacent.NEXT)
 
         for index, widget in enumerate(self.widgets):
-            if mouse.is_visible() and widget.has_focus():
+            if mouse.visible and widget.has_focus():
                 self.focus_index = index
             widget.process_event(event=event)

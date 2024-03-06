@@ -111,7 +111,7 @@ class Button(Widget):
         pass
 
     def process_event(self, event: Event) -> None:
-        if mouse.is_visible():
+        if mouse.visible:
             if mouse.collide_with(self.rect):
                 if not self.has_focus():
                     self.set_focus()

@@ -103,8 +103,8 @@ class Slider(Widget):
     def unset_focus(self) -> None:
         self._focus = False
 
-    def has_focus(self) -> None:
-        return self._focus is True
+    def has_focus(self) -> bool:
+        return self._focus
 
     @property
     def range_value(self) -> int:
@@ -135,11 +135,12 @@ class Slider(Widget):
         pass
 
     def process_event(self, event: Event) -> None:
-        if mouse.is_visible():
+        if mouse.visible:
             if mouse.collide_with(self._rect) or mouse.collide_with(self._button_rect):
-                if event.held and event.key == inputs.CLICK:
+                if event.pressed and event.key == inputs.CLICK:
                     self._grabbed = True
             if not event.held:
+                mouse.grabbing = False
                 self._grabbed = False
 
             if mouse.collide_with(self._button_rect) or self._grabbed:
@@ -151,16 +152,14 @@ class Slider(Widget):
                 self._button_x = mouse.pos.x
 
         elif self.has_focus():
-            self._grabbed = True
+            if event.pressed and event.key in (inputs.LEFT, inputs.RIGHT):
+                value = round(self.get_value(), 1)
+                if event.key == inputs.LEFT:
+                    self.set_value(value - self._step)
+                else:
+                    self.set_value(value + self._step)
 
-            if event.pressed and event.key == inputs.LEFT:
-                value = round(self.get_value(), 1)
-                self.set_value(value - self._step)
-                mixer.play_uisfx(self._sound_focus)
-            elif event.pressed and event.key == inputs.RIGHT:
-                value = round(self.get_value(), 1)
-                self.set_value(value + self._step)
-                mixer.play_uisfx(self._sound_focus)
+                self._grabbed = True
             else:
                 self._grabbed = False
 

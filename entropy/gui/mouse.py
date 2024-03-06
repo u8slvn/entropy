@@ -21,7 +21,8 @@ class Mouse:
         self._nb_moves = 0
         self._nb_moves_before_show = 2
         self._pos: Pos = Pos(0, 0)
-        self._visible = True
+        self.visible = True
+        self.grabbing = False  # Used to know if the mouse is already grabbing a sprite.
 
     @property
     def pos(self) -> Pos:
@@ -38,18 +39,15 @@ class Mouse:
     def process_event(self, event: Event) -> None:
         if event.triggered and event.key == inputs.MOVE:
             self.pos = event.value
-            self._visible = True
+            self.visible = True
         elif event.triggered and event.key == system.HIDE_MOUSE:
-            self._visible = False
+            self.visible = False
 
     def update(self) -> None:
-        if self._visible is True:
+        if self.visible is True:
             pg.mouse.set_visible(True)
         else:
             pg.mouse.set_visible(False)
 
     def collide_with(self, rect: pg.Rect) -> bool:
         return rect.collidepoint(self.pos)
-
-    def is_visible(self) -> bool:
-        return self._visible
