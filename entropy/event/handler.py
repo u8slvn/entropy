@@ -18,6 +18,7 @@ from entropy.event.event import Event
 from entropy.event.event import EventMapping
 from entropy.event.event import EventStore
 from entropy.event.types import inputs
+from entropy.event.types import pgmouse
 from entropy.event.types import system
 
 
@@ -136,23 +137,27 @@ class MouseEventHandler(EventHandler):
 
     default_mapping = EventMapping(
         {
-            pg.MOUSEBUTTONUP: inputs.CLICK,
-            pg.MOUSEBUTTONDOWN: inputs.CLICK,
+            pgmouse.LEFTCLICK: inputs.CLICK,
             pg.MOUSEMOTION: inputs.MOVE,
             pg.KEYDOWN: system.HIDE_MOUSE,
         }
     )
 
     def process_event(self, event: pg.event.Event) -> None:
-        if key := self._mapping.get(event.type):
-            if event.type == pg.MOUSEBUTTONDOWN:
-                self.press(key, value=event.pos)
-            elif event.type == pg.MOUSEBUTTONUP:
-                self.release(key)
-            elif event.type == pg.MOUSEMOTION:
-                self.trigger(key, value=event.pos)
-            elif event.type == pg.KEYDOWN:
-                self.trigger(key)
+        pressed = event.type == pg.MOUSEBUTTONDOWN
+        released = event.type == pg.MOUSEBUTTONUP
+        if pressed or released:
+            if key := self._mapping.get(event.button):
+                if pressed:
+                    self.press(key, value=event.pos)
+                else:
+                    self.release(key)
+        else:
+            if key := self._mapping.get(event.type):
+                if event.type == pg.MOUSEMOTION:
+                    self.trigger(key, value=event.pos)
+                elif event.type == pg.KEYDOWN:
+                    self.trigger(key)
 
 
 class KeyboardEventHandler(EventHandler):

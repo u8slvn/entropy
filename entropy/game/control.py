@@ -79,6 +79,7 @@ class Control:
                 entropy.window.resize_screen(resolution=Res(*event.value))
             elif event.pressed and event.key == inputs.FULLSCREEN:
                 entropy.window.toggle_fullscreen()
+
             entropy.mouse.process_event(event=event)
             self.fps_viewer.process_event(event=event)
             self.current_state.process_event(event=event)
