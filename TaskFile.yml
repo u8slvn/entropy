@@ -47,3 +47,7 @@ tasks:
     silent: true
     cmds:
       - python ./scripts/build-story.py
+
+  profile-run:
+    cmds:
+      - python -m cProfile -s tottime main.py
