@@ -17,6 +17,7 @@ from entropy.commands.display import EnableFullscreen
 from entropy.commands.locale import SwitchLocaleTo
 from entropy.commands.mixer import PlayVoice
 from entropy.commands.mixer import SaveMixerVolume
+from entropy.commands.state import ExitState
 from entropy.commands.state import TransitionToNextState
 from entropy.config import get_config
 from entropy.constants import GUI_BUTTON_FONT_SIZE
@@ -111,7 +112,7 @@ class SettingsMenu(State):
         match submenu:
             case Submenu.DISPLAY:
                 text_title = "DISPLAY"
-                widgets = [
+                widgets: list[dict[str, Any]] = [
                     {
                         "widget_cls": ObserverButton,
                         "text": "FULLSCREEN",
@@ -235,7 +236,7 @@ class SettingsMenu(State):
                         ),
                     },
                 ]
-                back_button_action = self.exit
+                back_button_action = ExitState(self)
 
         for i, widget in enumerate(widgets, start=1):
             pos = Pos(0, margin_top_menu + space_between_buttons * i)

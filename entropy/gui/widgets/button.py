@@ -196,7 +196,7 @@ class AttrObserver:
         self.subject = subject
 
     def has_changed(self) -> bool:
-        return self._match == getattr(self.subject, self._attr)
+        return bool(self._match == getattr(self.subject, self._attr))
 
 
 class ObserverButton(TextButton, Observer):

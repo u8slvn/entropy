@@ -59,7 +59,8 @@ class EventStore(dict[int, Event]):
         self[key] = Event(key)
         return self[key]
 
-    def __iter__(self) -> Iterator[Event]:
+    @property
+    def events(self) -> Iterator[Event]:
         return iter(self.values())
 
     def flush(self) -> None:

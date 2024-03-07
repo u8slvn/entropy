@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from typing import Any
 from typing import Callable
 from typing import Generator
 
@@ -56,7 +57,7 @@ def build_event(
 
 
 def build_transition(
-    params: dict[str, str | int], callback: Callable[[], None]
+    params: dict[str, Any], callback: Callable[[], None]
 ) -> Transition:
     match params["type"]:
         case "fade-in":

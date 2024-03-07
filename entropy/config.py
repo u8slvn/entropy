@@ -57,7 +57,7 @@ class _Config(Subject):
         }
     )
 
-    def __init__(self, config_file: Path | None = None) -> None:
+    def __init__(self, config_file: Path) -> None:
         super().__init__()
         self._config_file = config_file
         self._config = self.get_default_config()

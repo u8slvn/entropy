@@ -57,7 +57,7 @@ class EventHandler(ABC):
 
     def __init__(self, keymap: EventMapping | None = None):
         self._mapping = keymap or self.default_mapping
-        self._event_store = EventStore()
+        self._store = EventStore()
 
     @abstractmethod
     def process_event(self, event: pg.event.Event) -> None:
@@ -70,7 +70,7 @@ class EventHandler(ABC):
         have been yield. This allows to have certain events to be sent only one time
         with a certain value. For example a pressed key event.
         """
-        for event in self._event_store:
+        for event in self._store.events:
             if event.triggered:
                 yield event
                 event.value = 0
@@ -86,31 +86,31 @@ class EventHandler(ABC):
 
     def flush(self) -> None:
         """Flush the event store."""
-        self._event_store.flush()
+        self._store.flush()
 
     def press(self, key: int, value: int | tuple[int, int] = 1) -> None:
         """
         Update a key from the store to pressed status. Used when a button is pressed.
         """
-        self._event_store[key].value = value
-        self._event_store[key].pressed = True
-        self._event_store[key].time = time.time()
+        self._store[key].value = value
+        self._store[key].pressed = True
+        self._store[key].time = time.time()
 
     def release(self, key: int) -> None:
         """
         Release a key from the store. Used when a button is released.
         """
-        self._event_store[key].value = 0
-        self._event_store[key].released = True
-        self._event_store[key].time = None
+        self._store[key].value = 0
+        self._store[key].released = True
+        self._store[key].time = None
 
     def trigger(self, key: int, value: int | tuple[int, int] = 1) -> None:
         """
         Trigger a key from the store. Used to send a standalone action with a value,
         like a screen resize or a mouse motion.
         """
-        self._event_store[key].value = value
-        self._event_store[key].triggered = True
+        self._store[key].value = value
+        self._store[key].triggered = True
 
 
 class SystemEventHandler(EventHandler):

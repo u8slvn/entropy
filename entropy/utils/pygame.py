@@ -5,14 +5,15 @@ import functools
 from typing import Any
 from typing import Callable
 from typing import TypeVar
+from typing import cast
 
 import pygame as pg
 
 
-FuncT = TypeVar("FuncT", bound=Callable[..., Any])
+F = TypeVar("F", bound=Callable[..., Any])
 
 
-def reset_display(func: FuncT) -> FuncT:
+def reset_display(func: F) -> F:
     """
     Avoid crash between switch mode when `pygame.display.set_mode` is called with
     `SCALED` flag after being initialized without it.
@@ -24,4 +25,4 @@ def reset_display(func: FuncT) -> FuncT:
         pg.display.init()
         return func(*args, **kwargs)
 
-    return wrapper
+    return cast(F, wrapper)

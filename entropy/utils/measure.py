@@ -8,7 +8,7 @@ from typing import NamedTuple
 import pygame
 
 
-def _is_2d_vector(value: tuple) -> bool:
+def _is_2d_vector(value: tuple[int, int]) -> bool:
     return len(value) == 2 and all(isinstance(e, int) for e in value)
 
 

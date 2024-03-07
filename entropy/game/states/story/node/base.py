@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from abc import ABC
 from typing import TYPE_CHECKING
+from typing import Any
 
 from entropy import mixer
+from entropy.event.event import Event
 from entropy.game.entity import GameEntity
 from entropy.game.states.story.factory import build_transition
 from entropy.logging import get_logger
@@ -41,8 +43,8 @@ class Node(BaseNode, ABC):
         next_id: str,
         music: str | None = None,
         background: str | None = None,
-        ease_in: dict[str, str | int] | None = None,
-        ease_out: dict[str, str | int] | None = None,
+        ease_in: dict[str, Any] | None = None,
+        ease_out: dict[str, Any] | None = None,
     ):
         super().__init__()
         self.chapter = chapter
@@ -99,3 +101,13 @@ class Node(BaseNode, ABC):
             self._ease_in.teardown()
         if self._ease_out is not None:
             self._ease_out.teardown()
+
+
+class NullNode(Node):
+    """NullObject Node."""
+
+    def __init__(self, chapter: Chapter):
+        super().__init__(chapter=chapter, next_id="end")
+
+    def process_event(self, event: Event) -> None:
+        pass

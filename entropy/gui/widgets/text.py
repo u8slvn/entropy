@@ -149,7 +149,7 @@ class TypeWriterText(Widget):
         self._font = font
         self._speed = speed
         self._voice = voice
-        self._counter = 0
+        self._counter = 0.0
         self._done = False
         self._surf = self._render_surf(width=width)
         self._text_surf = pygame.Surface((0, 0), pygame.SRCALPHA, 32)
@@ -198,17 +198,17 @@ class TypeWriterText(Widget):
         if self._done is True:
             return
 
-        self._counter += int(self._speed * dt)
+        self._counter += self._speed * dt
         if self._counter >= len(self._text):
             self._done = True
 
         self._text_surf = self._font.render(
-            self._text[0 : self._counter],
+            self._text[0 : int(self._counter)],
             antialias=False,
             color=self._color,
         )
 
-        if not mixer.voice_is_busy():
+        if self._voice and not mixer.voice_is_busy():
             mixer.play_voice(name=self._voice)
 
     def draw(self, surface: pygame.Surface) -> None:

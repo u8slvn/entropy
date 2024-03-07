@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from typing import Any
 from typing import Callable
 
 import pygame
@@ -69,7 +70,7 @@ class TitleScreen(State):
     def _build_menu(self) -> MenuGroup:
         menu_group = MenuGroup(parent=self._background)
 
-        widgets = [
+        widgets: list[dict[str, Any]] = [
             # {
             #     "text": "CONTINUE",
             #     "callback": test_lang,
@@ -94,7 +95,7 @@ class TitleScreen(State):
         space_between = 100
         for i, widget in enumerate(widgets, start=1):
             pos = Pos(0, y + space_between * i)
-            button = self._build_menu_button(parent=menu_group, **widget, pos=pos)
+            button = self._build_menu_button(parent=menu_group, pos=pos, **widget)
             menu_group.add_widget(button)
 
         return menu_group

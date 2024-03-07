@@ -11,6 +11,7 @@ import pygame
 
 from entropy.game.states.story.factory import build_background
 from entropy.game.states.story.node.base import BaseNode
+from entropy.game.states.story.node.base import NullNode
 from entropy.game.states.story.node.contemplation import ContemplationScene
 from entropy.game.states.story.node.intro import IntroScene
 from entropy.gui.widgets.background import ColorBackground
@@ -50,7 +51,7 @@ class Chapter(BaseNode):
         self._name = name
         self._state = state
         self._nodes: dict[str, Callable[[], Node]] = {}
-        self._current_node: Node | None = None
+        self._current_node: Node = NullNode(chapter=self)
         self._loaded = False
 
         self._load_nodes(configfile=configfile)
