@@ -18,7 +18,7 @@ class Pos(NamedTuple):
     x: int
     y: int
 
-    def __add__(self, other: tuple[int, int]) -> Pos:
+    def __add__(self, other: tuple[int, int]) -> Pos:  # type: ignore[override]
         assert _is_2d_vector(other)
         return Pos(self.x + other[0], self.y + other[1])
 
@@ -51,7 +51,7 @@ class Res(NamedTuple):
     def aspect_ratio(self) -> float:
         return self.w / self.h
 
-    def __add__(self, other: tuple[int, int]) -> Res:
+    def __add__(self, other: tuple[int, int]) -> Res:  # type: ignore[override]
         assert _is_2d_vector(other)
         return Res(self.w + other[0], self.h + other[1])
 
