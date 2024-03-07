@@ -21,8 +21,7 @@ class Window:
     Manage the whole game actions window related.
     """
 
-    # _fullscreen_flags = pygame.FULLSCREEN | pygame.SCALED
-    _fullscreen_flags = pygame.FULLSCREEN
+    _fullscreen_flags = pygame.FULLSCREEN | pygame.SCALED
     _framed_flags = pygame.RESIZABLE
 
     def __init__(
@@ -45,6 +44,15 @@ class Window:
             self.resize_screen()
         self.update_scale_params()
 
+    @staticmethod
+    def _reset_display() -> None:
+        """
+        Avoid crash between switch mode when `pygame.display.set_mode` is called with
+        `SCALED` flag after being initialized without it.
+        """
+        pygame.display.quit()
+        pygame.display.init()
+
     def _build_screen(self, resolution: Res) -> pygame.Surface:
         """
         Build screen surface.
@@ -58,6 +66,7 @@ class Window:
         ):
             resolution = resolution - Res(80, 75)
 
+        self._reset_display()
         fullscreen = '"fullscreen", ' if self.fullscreen else ""
         logger.info(f'Display mode set to {fullscreen}"{resolution}"')
         return pygame.display.set_mode(resolution, flags=self.screen_flags)
