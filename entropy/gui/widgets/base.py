@@ -10,8 +10,8 @@ import entropy
 
 from entropy.event.event import Event
 from entropy.game.entity import GameEntity
-from entropy.utils import Pos
-from entropy.utils import Size
+from entropy.utils.measure import Pos
+from entropy.utils.measure import Size
 
 
 class Align(StrEnum):

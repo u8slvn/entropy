@@ -11,7 +11,7 @@ from entropy.gui.widgets.base import Widget
 
 
 if TYPE_CHECKING:
-    from entropy.utils import Color
+    from entropy.utils.measure import Color
 
 
 class Background(Widget):

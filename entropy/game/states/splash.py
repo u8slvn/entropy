@@ -14,7 +14,7 @@ from entropy.gui.widgets.background import ColorBackground
 from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.text import Text
 from entropy.tools.timer import TimerSecond
-from entropy.utils import Color
+from entropy.utils.measure import Color
 
 
 if TYPE_CHECKING:

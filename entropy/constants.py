@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from entropy.utils import Color
+from entropy.utils.measure import Color
 
 
 GAME_NAME = "entropy"

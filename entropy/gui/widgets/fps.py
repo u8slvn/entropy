@@ -8,7 +8,7 @@ import entropy
 
 from entropy.event.types import inputs
 from entropy.game.entity import GameEntity
-from entropy.utils import Pos
+from entropy.utils.measure import Pos
 
 
 if TYPE_CHECKING:

@@ -11,7 +11,7 @@ from entropy.gui.transistions.fader import FadeOut
 from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.text import TText
 from entropy.tools.timer import TimerSecond
-from entropy.utils import Pos
+from entropy.utils.measure import Pos
 
 
 if TYPE_CHECKING:

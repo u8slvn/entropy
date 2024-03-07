@@ -9,8 +9,8 @@ from entropy import translator
 from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.base import Widget
 from entropy.tools.observer import Observer
-from entropy.utils import Color
-from entropy.utils import Pos
+from entropy.utils.measure import Color
+from entropy.utils.measure import Pos
 
 
 if TYPE_CHECKING:

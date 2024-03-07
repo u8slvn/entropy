@@ -36,10 +36,10 @@ from entropy.gui.widgets.menu import MenuGroup
 from entropy.gui.widgets.slider import TitledSlider
 from entropy.gui.widgets.text import TText
 from entropy.mixer import Channel
-from entropy.utils import Color
-from entropy.utils import Pos
-from entropy.utils import Size
-from entropy.utils import cleanup
+from entropy.utils.measure import Color
+from entropy.utils.measure import Pos
+from entropy.utils.measure import Size
+from entropy.utils.measure import cleanup
 
 
 if TYPE_CHECKING:

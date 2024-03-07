@@ -9,7 +9,7 @@ import entropy
 
 from entropy.event.types import inputs
 from entropy.event.types import system
-from entropy.utils import Pos
+from entropy.utils.measure import Pos
 
 
 if TYPE_CHECKING:

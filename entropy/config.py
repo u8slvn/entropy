@@ -10,7 +10,7 @@ from typing import ClassVar
 from entropy.locations import CONFIG_FILE_PATH
 from entropy.logging import get_logger
 from entropy.tools.observer import Subject
-from entropy.utils import Res
+from entropy.utils.measure import Res
 
 
 logger = get_logger()

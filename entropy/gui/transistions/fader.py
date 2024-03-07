@@ -7,7 +7,7 @@ import pygame
 from entropy.gui.transistions.base import Ease
 from entropy.gui.transistions.base import Transition
 from entropy.gui.widgets.background import ColorBackground
-from entropy.utils import Color
+from entropy.utils.measure import Color
 
 
 class _FaderTransition(Transition):

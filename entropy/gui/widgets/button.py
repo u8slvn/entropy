@@ -13,14 +13,14 @@ from entropy.event.types import inputs
 from entropy.gui.widgets.base import Widget
 from entropy.gui.widgets.text import TText
 from entropy.tools.observer import Observer
-from entropy.utils import Pos
+from entropy.utils.measure import Pos
 
 
 if TYPE_CHECKING:
     from entropy.event.event import Event
     from entropy.gui.widgets.base import Align
     from entropy.tools.observer import Subject
-    from entropy.utils import Color
+    from entropy.utils.measure import Color
 
 
 class ButtonState(IntEnum):

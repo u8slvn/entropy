@@ -18,7 +18,7 @@ from entropy.gui.widgets.background import ImageBackground
 from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.button import TextButton
 from entropy.gui.widgets.menu import MenuGroup
-from entropy.utils import Pos
+from entropy.utils.measure import Pos
 
 
 if TYPE_CHECKING:

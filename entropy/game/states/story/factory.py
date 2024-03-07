@@ -13,8 +13,8 @@ from entropy.gui.widgets.background import ColorBackground
 from entropy.gui.widgets.background import ImageBackground
 from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.text import TypeWriterText
-from entropy.utils import Color
-from entropy.utils import Pos
+from entropy.utils.measure import Color
+from entropy.utils.measure import Pos
 
 
 config = get_config()

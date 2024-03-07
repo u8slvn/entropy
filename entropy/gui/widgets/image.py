@@ -7,7 +7,7 @@ import pygame
 from entropy import assets
 from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.base import Widget
-from entropy.utils import Pos
+from entropy.utils.measure import Pos
 
 
 if TYPE_CHECKING:

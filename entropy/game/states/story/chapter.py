@@ -16,8 +16,8 @@ from entropy.game.states.story.node.intro import IntroScene
 from entropy.gui.widgets.background import ColorBackground
 from entropy.locations import STORY_DIR
 from entropy.logging import get_logger
-from entropy.utils import Color
-from entropy.utils import cleanup
+from entropy.utils.measure import Color
+from entropy.utils.measure import cleanup
 
 
 if TYPE_CHECKING:

@@ -9,7 +9,7 @@ from entropy.game.states.story.node.base import Node
 from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.image import Image
 from entropy.tools.timer import TimerSecond
-from entropy.utils import Pos
+from entropy.utils.measure import Pos
 
 
 if TYPE_CHECKING:

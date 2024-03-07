@@ -16,8 +16,8 @@ from entropy.event.types import system
 from entropy.game import states
 from entropy.gui.widgets.fps import FPSViewer
 from entropy.logging import get_logger
-from entropy.utils import Res
-from entropy.utils import cleanup
+from entropy.utils.measure import Res
+from entropy.utils.measure import cleanup
 
 
 if TYPE_CHECKING:

@@ -17,7 +17,7 @@ from entropy.locations import USER_LOCAL_DIR
 from entropy.logging import get_logger
 from entropy.mixer import Mixer
 from entropy.translator import Translator
-from entropy.utils import Res
+from entropy.utils.measure import Res
 
 
 __all__ = ["assets", "window", "translator", "mouse", "mixer"]

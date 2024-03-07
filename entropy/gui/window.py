@@ -6,9 +6,10 @@ import entropy
 
 from entropy.gui.monitor import Monitor
 from entropy.logging import get_logger
-from entropy.utils import Pos
-from entropy.utils import PosScale
-from entropy.utils import Res
+from entropy.utils.measure import Pos
+from entropy.utils.measure import PosScale
+from entropy.utils.measure import Res
+from entropy.utils.pygame import reset_display
 
 
 logger = get_logger()
@@ -34,25 +35,15 @@ class Window:
         self.monitor = Monitor()
         self.fullscreen = fullscreen
         self.default_res = default_res
-        self.render_res = self.adapt_to_ratio(entropy.config.res)
+        res = self.monitor.res if self.fullscreen is True else entropy.config.res
+        self.render_res = self.adapt_to_ratio(res)
         self.render_scale = PosScale(1.0, 1.0)
         self.render_margin = Pos(0, 0)
         self.screen = self._build_screen(resolution=self.render_res)
         self.screen_rect = self.screen.get_rect()
-
-        if self.fullscreen is True:
-            self.resize_screen()
         self.update_scale_params()
 
-    @staticmethod
-    def _reset_display() -> None:
-        """
-        Avoid crash between switch mode when `pygame.display.set_mode` is called with
-        `SCALED` flag after being initialized without it.
-        """
-        pygame.display.quit()
-        pygame.display.init()
-
+    @reset_display
     def _build_screen(self, resolution: Res) -> pygame.Surface:
         """
         Build screen surface.
@@ -66,7 +57,6 @@ class Window:
         ):
             resolution = resolution - Res(80, 75)
 
-        self._reset_display()
         fullscreen = '"fullscreen", ' if self.fullscreen else ""
         logger.info(f'Display mode set to {fullscreen}"{resolution}"')
         return pygame.display.set_mode(resolution, flags=self.screen_flags)
@@ -113,7 +103,7 @@ class Window:
         """Resize the screen to the given resolution size."""
         if resolution is not None and self.screen_res == resolution:
             logger.debug(
-                "Screen not resized because it already fit the given resolution."
+                "Screen not resized because it already fits the given resolution."
             )
             return
 
