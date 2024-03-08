@@ -120,6 +120,7 @@ class SettingsMenu(State):
                         "attr_observer": AttrObserver(
                             subject=config, attr="fullscreen", match=True
                         ),
+                        "checked": config.fullscreen,
                     },
                     {
                         "widget_cls": ObserverButton,
@@ -128,6 +129,7 @@ class SettingsMenu(State):
                         "attr_observer": AttrObserver(
                             subject=config, attr="fullscreen", match=False
                         ),
+                        "checked": not config.fullscreen,
                     },
                 ]
 
