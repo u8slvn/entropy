@@ -48,6 +48,7 @@ tasks:
     cmds:
       - python ./scripts/build-story.py
 
-  profile-run:
+  profile:
+    desc: Run a profiling game session.
     cmds:
       - python -m cProfile -s tottime main.py

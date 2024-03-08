@@ -16,11 +16,7 @@ logger = get_logger()
 
 
 class Window:
-    """
-    Window manager.
-
-    Manage the whole game actions window related.
-    """
+    """Window manager."""
 
     _fullscreen_flags = pygame.FULLSCREEN | pygame.SCALED
     _framed_flags = pygame.RESIZABLE
@@ -35,8 +31,8 @@ class Window:
         self.monitor = Monitor()
         self.fullscreen = fullscreen
         self.default_res = default_res
-        res = self.monitor.res if self.fullscreen is True else entropy.config.res
-        self.render_res = self.adapt_to_ratio(res)
+        resolution = self.monitor.res if self.fullscreen else entropy.config.res
+        self.render_res = self.adapt_to_ratio(resolution)
         self.render_scale = PosScale(1.0, 1.0)
         self.render_margin = Pos(0, 0)
         self.screen = self._build_screen(resolution=self.render_res)
@@ -107,7 +103,7 @@ class Window:
             )
             return
 
-        if self.fullscreen is True:
+        if self.fullscreen:
             resolution = self.monitor.res
         elif resolution is None:
             resolution = entropy.config.res
