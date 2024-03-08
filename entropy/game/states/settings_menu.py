@@ -189,6 +189,7 @@ class SettingsMenu(State):
                         "attr_observer": AttrObserver(
                             subject=config, attr="locale", match="en"
                         ),
+                        "checked": config.locale == "en",
                     },
                     {
                         "widget_cls": ObserverButton,
@@ -197,6 +198,7 @@ class SettingsMenu(State):
                         "attr_observer": AttrObserver(
                             subject=config, attr="locale", match="fr"
                         ),
+                        "checked": config.locale == "fr",
                     },
                 ]
 

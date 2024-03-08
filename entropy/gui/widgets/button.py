@@ -40,11 +40,12 @@ class Button(Widget):
         callback: Callable[[], None],
         pos: Pos = Pos(0, 0),
         align: Align | None = None,
+        checked: bool = False,
     ) -> None:
         self._pressed = False
         self._images = self._build_images(image=image)
-        self._image = self._images[ButtonState.NORMAL]
-        self._state = ButtonState.NORMAL
+        self._state = ButtonState.CHECKED if checked else ButtonState.NORMAL
+        self._image = self._images[self._state]
         self._sound_focus = sound_focus
         self._sound_clicked = sound_clicked
         self._callback = callback
@@ -151,6 +152,7 @@ class TextButton(Button):
         text_align_margin: Pos = Pos(0, 0),
         pos: Pos = Pos(0, 0),
         align: Align | None = None,
+        checked: bool = False,
     ) -> None:
         super().__init__(
             parent=parent,
@@ -160,6 +162,7 @@ class TextButton(Button):
             callback=callback,
             pos=pos,
             align=align,
+            checked=checked,
         )
         self._text = TText(
             parent=self,
@@ -217,6 +220,7 @@ class ObserverButton(TextButton, Observer):
         text_align_margin: Pos = Pos(0, 0),
         pos: Pos = Pos(0, 0),
         align: Align | None = None,
+        checked: bool = False,
     ) -> None:
         super().__init__(
             parent=parent,
@@ -233,6 +237,7 @@ class ObserverButton(TextButton, Observer):
             text_align_margin=text_align_margin,
             pos=pos,
             align=align,
+            checked=checked,
         )
         self._attr_observer = attr_observer
 
