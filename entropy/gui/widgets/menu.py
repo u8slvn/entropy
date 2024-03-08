@@ -6,7 +6,8 @@ from typing import TYPE_CHECKING
 import pygame
 
 from entropy import mouse
-from entropy.event.types import inputs
+from entropy.event.specs import down_is_pressed
+from entropy.event.specs import up_is_pressed
 from entropy.gui.widgets.base import Widget
 
 
@@ -78,9 +79,9 @@ class MenuGroup(Group):
         self._focused_widget.set_focus()  # type: ignore
 
     def process_event(self, event: Event) -> None:
-        if event.pressed and event.key == inputs.UP:
+        if up_is_pressed(event):
             self._select_adjacent_widget(adjacent=Adjacent.PREV)
-        elif event.pressed and event.key == inputs.DOWN:
+        elif down_is_pressed(event):
             self._select_adjacent_widget(adjacent=Adjacent.NEXT)
 
         for index, widget in enumerate(self.widgets):

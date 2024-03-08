@@ -6,7 +6,7 @@ import pygame as pygame
 
 import entropy
 
-from entropy.event.types import inputs
+from entropy.event.specs import debug_is_pressed
 from entropy.game.entity import GameEntity
 from entropy.utils.measure import Pos
 
@@ -39,7 +39,7 @@ class FPSViewer(GameEntity):
         pass
 
     def process_event(self, event: Event) -> None:
-        if event.pressed and event.key == inputs.DEBUG:
+        if debug_is_pressed(event):
             self._visible = not self._visible
 
     def update(self, dt: float) -> None:

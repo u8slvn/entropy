@@ -9,7 +9,8 @@ import pygame
 
 from entropy import mixer
 from entropy import mouse
-from entropy.event.types import inputs
+from entropy.event.specs import b_is_pressed
+from entropy.event.specs import b_or_click_is_pressed
 from entropy.gui.widgets.base import Widget
 from entropy.gui.widgets.text import TText
 from entropy.tools.observer import Observer
@@ -116,11 +117,11 @@ class Button(Widget):
             if mouse.collide_with(self.rect):
                 if not self.has_focus():
                     self.set_focus()
-                if event.pressed and event.key in (inputs.B, inputs.CLICK):
+                if b_or_click_is_pressed(event):
                     self.press()
             else:
                 self.unset_focus()
-        elif event.pressed and event.key == inputs.B and self.has_focus():
+        elif b_is_pressed(event) and self.has_focus():
             self.press()
 
     def update(self, dt: float) -> None:

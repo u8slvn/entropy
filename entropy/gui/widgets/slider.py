@@ -9,6 +9,8 @@ from entropy import mixer
 from entropy import mouse
 from entropy.constants import SLIDER_BG_COLOR
 from entropy.constants import SLIDER_PROGRESS_COLOR
+from entropy.event.specs import click_is_pressed
+from entropy.event.specs import left_or_right_is_pressed
 from entropy.event.types import inputs
 from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.base import Widget
@@ -137,7 +139,7 @@ class Slider(Widget):
     def process_event(self, event: Event) -> None:
         if mouse.visible:
             if mouse.collide_with(self._rect) or mouse.collide_with(self._button_rect):
-                if event.pressed and event.key == inputs.CLICK:
+                if click_is_pressed(event):
                     self._grabbed = True
             if not event.held:
                 mouse.grabbing = False
@@ -152,7 +154,7 @@ class Slider(Widget):
                 self._button_x = mouse.pos.x
 
         elif self.has_focus():
-            if event.pressed and event.key in (inputs.LEFT, inputs.RIGHT):
+            if left_or_right_is_pressed(event):
                 value = round(self.get_value(), 1)
                 if event.key == inputs.LEFT:
                     self.set_value(value - self._step)

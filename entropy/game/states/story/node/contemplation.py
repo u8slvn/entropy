@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from typing import Any
 
-from entropy.event.types import inputs
+from entropy.event.specs import a_or_click_is_pressed
 from entropy.game.states.story.factory import build_event
 from entropy.game.states.story.node.base import Node
 from entropy.gui.widgets.base import Align
@@ -57,7 +57,7 @@ class ContemplationScene(Node):
         self._delay.setup()
 
     def process_event(self, event: Event) -> None:
-        if event.pressed and event.key in (inputs.CLICK, inputs.A):
+        if a_or_click_is_pressed(event):
             if not self._delay.is_done():
                 self._delay.stop()
             elif self._event.is_done():

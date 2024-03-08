@@ -23,7 +23,7 @@ from entropy.config import get_config
 from entropy.constants import GUI_BUTTON_FONT_SIZE
 from entropy.constants import GUI_BUTTON_TEXT_COLOR
 from entropy.constants import GUI_TEXT_COLOR
-from entropy.event.types import inputs
+from entropy.event.specs import back_is_pressed
 from entropy.game.states.base import State
 from entropy.gui.widgets import button
 from entropy.gui.widgets import slider
@@ -71,7 +71,7 @@ class SettingsMenu(State):
         self._submenu.setup()
 
     def process_event(self, event: Event) -> None:
-        if event.pressed and event.key == inputs.BACK:
+        if back_is_pressed(event):
             self.exit()
 
         self._submenu.process_event(event=event)

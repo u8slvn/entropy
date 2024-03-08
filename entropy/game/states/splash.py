@@ -6,7 +6,7 @@ import pygame
 
 import entropy
 
-from entropy.event.types import inputs
+from entropy.event.specs import a_is_pressed
 from entropy.game.states.base import State
 from entropy.gui.transistions.fader import FadeIn
 from entropy.gui.transistions.fader import FadeOut
@@ -54,7 +54,7 @@ class Splash(State):
         self._timer.setup()
 
     def process_event(self, event: Event) -> None:
-        if event.pressed and event.key == inputs.A:
+        if a_is_pressed(event):
             self.mark_as_done()
 
     def update(self, dt: float) -> None:
