@@ -238,7 +238,7 @@ class ObserverButton(TextButton, Observer):
 
     def setup(self) -> None:
         super().setup()
-        self._attr_observer.subject.add_observer(observer=self)
+        self._attr_observer.subject.subscribe(observer=self)
 
     def on_notify(self) -> None:
         if self._attr_observer.has_changed():
@@ -248,4 +248,4 @@ class ObserverButton(TextButton, Observer):
 
     def teardown(self) -> None:
         super().teardown()
-        self._attr_observer.subject.remove_observer(observer=self)
+        self._attr_observer.subject.unsubscribe(observer=self)

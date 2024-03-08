@@ -17,10 +17,6 @@ class Specification(Generic[T], ABC):
     def is_satisfied_by(self, candidate: T) -> bool:
         raise NotImplementedError
 
-    @property
-    def class_name(self) -> str:
-        return self.__class__.__name__
-
     def __and__(self, spec: Specification[T]) -> _AndSpecification[T]:
         return _AndSpecification(self, spec)
 
@@ -33,9 +29,6 @@ class Specification(Generic[T], ABC):
     def __call__(self, candidate: Any) -> bool:
         """Additional syntax for ease of use."""
         return self.is_satisfied_by(candidate)
-
-    def __repr__(self) -> str:
-        return f"<{self.class_name}>"
 
 
 class _AndOrSpecification(Specification[T]):

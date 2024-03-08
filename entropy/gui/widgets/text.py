@@ -106,7 +106,7 @@ class TText(Text, Observer):
 
     def setup(self) -> None:
         super().setup()
-        translator.add_observer(observer=self)
+        translator.subscribe(observer=self)
 
     def process_event(self, event: Event) -> None:
         pass
@@ -125,7 +125,7 @@ class TText(Text, Observer):
         surface.blit(self._surf, self.rect)
 
     def teardown(self) -> None:
-        translator.remove_observer(observer=self)
+        translator.unsubscribe(observer=self)
 
     def __repr__(self) -> str:
         return f'<TText value="{self.__text}">'

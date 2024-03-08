@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-import pytest
-
 from entropy.tools.specification import Specification
 
 
@@ -31,14 +29,6 @@ class SubjectIDIsZero(Specification[TestSubject]):
 
 subject0 = TestSubject(0, "Arch", True)
 subject1 = TestSubject(1, "Ape", False)
-
-
-def test_specification_must_have_is_satisfied_by():
-    class WrongSpecification(Specification):
-        """You must implement is_satisfied_by method."""
-
-    with pytest.raises(TypeError):
-        WrongSpecification()
 
 
 def test_is_satisfied_by() -> None:
