@@ -79,7 +79,7 @@ class Mixer:
         self._channels[Channel.UISFX].queue(sound)
 
     def set_volume(self, value: float, channel: Channel) -> None:
-        assert 0.0 <= value <= 1.0
+        assert 0.0 <= value <= 1.0, f"Invalid channel volume: {value}"
         self._volumes[channel] = value
 
         if channel == Channel.MAIN:
