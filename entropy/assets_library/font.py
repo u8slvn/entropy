@@ -31,7 +31,6 @@ class FontsCollection(AssetsCollection):
 
     def load(self, name: str | None = None) -> None:
         configs = self._font_configs[name] if name else self._font_configs.values()
-        print(self._font_configs)
         for config in configs:
             file, sizes = config
             asset = {key: pg.font.Font(file, size) for key, size in sizes.items()}

@@ -2,19 +2,17 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import pygame
+import pygame as pg
 
 import entropy
 
 from entropy.event.specs import a_is_pressed
 from entropy.game.states.base import State
+from entropy.gui.component.text import Text
 from entropy.gui.transistions.fader import FadeIn
 from entropy.gui.transistions.fader import FadeOut
 from entropy.gui.widgets.background import ColorBackground
-from entropy.gui.widgets.base import Align
-from entropy.gui.widgets.text import Text
 from entropy.tools.timer import TimerSecond
-from entropy.utils.measure import Color
 
 
 if TYPE_CHECKING:
@@ -25,22 +23,21 @@ if TYPE_CHECKING:
 class Splash(State):
     def __init__(self, control: Control) -> None:
         super().__init__(control=control)
-        font = entropy.assets.font.get("LanaPixel", "big")
-        self._background = ColorBackground(color=Color(0, 0, 0, 255))
-        self._text = Text(
-            parent=self._background,
-            align=Align.CENTER,
-            font=font,
+        self.background = ColorBackground(pg.Color("black"))
+        Text(
+            self.sprites,
+            font=entropy.assets.font.get("LanaPixel", "big"),
             text="ENTROPY",
-            color="white",
+            color=pg.Color("white"),
+            center=self.background.rect.center,
         )
-        self._fade_out = FadeOut(duration=4000, callback=self.mark_as_done)
-        self._timer = TimerSecond(
+        self.fade_out = FadeOut(duration=4000, callback=self.mark_as_done)
+        self.timer = TimerSecond(
             duration=1,
             autostart=False,
-            callback=self._fade_out.activate,
+            callback=self.fade_out.activate,
         )
-        self._fade_in = FadeIn(duration=4000, callback=self._timer.start)
+        self.fade_in = FadeIn(duration=4000, callback=self.timer.start)
         self._done = False
 
     def mark_as_done(self) -> None:
@@ -48,10 +45,9 @@ class Splash(State):
 
     def setup(self) -> None:
         entropy.mixer.play_music("main-theme")
-        self._text.setup()
-        self._fade_in.setup()
-        self._fade_out.setup()
-        self._timer.setup()
+        self.fade_in.setup()
+        self.fade_out.setup()
+        self.timer.setup()
 
     def process_event(self, event: Event) -> None:
         if a_is_pressed(event):
@@ -61,22 +57,20 @@ class Splash(State):
         if self._done:
             self.control.transition_to("TitleScreen", with_exit=True)
 
-        self._fade_in.update(dt=dt)
-        self._fade_out.update(dt=dt)
-        self._timer.update(dt=dt)
+        super().update(dt)
+        self.fade_in.update(dt)
+        self.fade_out.update(dt)
+        self.timer.update(dt)
 
-    def draw(self, surface: pygame.Surface) -> None:
-        if self._done:
-            return
-
-        self._background.draw(surface=surface)
-        self._text.draw(surface=surface)
-        self._fade_out.draw(surface=surface)
-        self._fade_in.draw(surface=surface)
+    def draw(self, surface: pg.Surface) -> None:
+        self.background.draw(surface)
+        self.sprites.draw(surface)
+        self.fade_out.draw(surface)
+        self.fade_in.draw(surface)
 
     def teardown(self) -> None:
         super().teardown()
         self._done = False
-        self._fade_out.teardown()
-        self._fade_in.teardown()
-        self._timer.teardown()
+        self.fade_out.teardown()
+        self.fade_in.teardown()
+        self.timer.teardown()
