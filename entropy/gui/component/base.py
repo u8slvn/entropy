@@ -3,9 +3,9 @@ from __future__ import annotations
 import pygame as pg
 
 
-class GUIComponent(pg.sprite.Sprite):
+class Sprite(pg.sprite.DirtySprite):
     pass
 
 
-class GUIGroup(pg.sprite.LayeredUpdates[GUIComponent]):
+class SpriteGroup(pg.sprite.LayeredUpdates):
     pass

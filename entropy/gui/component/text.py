@@ -4,10 +4,10 @@ from typing import Any
 
 import pygame as pg
 
-from entropy.gui.component.base import GUIComponent
+from entropy.gui.component.base import Sprite
 
 
-class Text(GUIComponent):
+class Text(Sprite):
     def __init__(
         self,
         *groups: Any,

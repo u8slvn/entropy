@@ -35,8 +35,7 @@ class Group(Widget):
         self.widgets.extend(widgets)
 
     def setup(self) -> None:
-        for widget in self.widgets:
-            widget.setup()
+        pass
 
     def process_event(self, event: Event) -> None:
         for widget in self.widgets:
@@ -48,7 +47,8 @@ class Group(Widget):
 
     def draw(self, surface: pygame.Surface) -> None:
         for widget in self.widgets:
-            widget.draw(surface=surface)
+            pass
+            # widget.draw(surface=surface)
 
     def teardown(self) -> None:
         for widget in self.widgets:

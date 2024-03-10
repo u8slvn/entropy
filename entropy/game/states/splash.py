@@ -64,7 +64,7 @@ class Splash(State):
 
     def draw(self, surface: pg.Surface) -> None:
         self.background.draw(surface)
-        self.sprites.draw(surface)
+        super().draw(surface)
         self.fade_out.draw(surface)
         self.fade_in.draw(surface)
 

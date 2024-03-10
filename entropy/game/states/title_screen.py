@@ -15,9 +15,8 @@ from entropy.config import get_config
 from entropy.constants import GUI_BUTTON_FONT_SIZE
 from entropy.constants import GUI_BUTTON_TEXT_COLOR
 from entropy.game.states.base import State
+from entropy.gui.component.button import Button
 from entropy.gui.widgets.background import ImageBackground
-from entropy.gui.widgets.base import Align
-from entropy.gui.widgets.button import TextButton
 from entropy.gui.widgets.menu import MenuGroup
 from entropy.utils.measure import Pos
 
@@ -25,7 +24,6 @@ from entropy.utils.measure import Pos
 if TYPE_CHECKING:
     from entropy.event.event import Event
     from entropy.game.control import Control
-    from entropy.gui.widgets.base import Widget
 
 config = get_config()
 
@@ -40,8 +38,19 @@ class TitleScreen(State):
         self._covered = False
         self._background = ImageBackground(name="title-screen-bg")
         self._logo = assets.image.get("title-screen-logo-a")
-        self._main_menu = self._build_menu()
+        # self._main_menu = self._build_menu()
         self._music = "main-theme"
+        Button(
+            self.sprites,
+            image=assets.gui.get("main-menu-button-sheet-a"),
+            focus_sound="hover",
+            click_sound="click",
+            action=test_lang,
+            text="text",
+            text_color=GUI_BUTTON_TEXT_COLOR,
+            text_font=assets.font.get(name=config.font, size=GUI_BUTTON_FONT_SIZE),
+            topleft=(0, 200),
+        )
 
     def setup(self) -> None:
         if mixer.currently_playing != self._music:
@@ -49,19 +58,22 @@ class TitleScreen(State):
 
         translator.set_translation(config.locale, domain="base")
         self._covered = False
-        self._main_menu.setup()
+        # self._main_menu.setup()
 
     def process_event(self, event: Event) -> None:
-        self._main_menu.process_event(event=event)
+        ...
+        # self._main_menu.process_event(event=event)
 
     def update(self, dt: float) -> None:
-        self._main_menu.update(dt=dt)
+        super().update(dt)
+        # self._main_menu.update(dt=dt)
 
     def draw(self, surface: pygame.Surface) -> None:
         self._background.draw(surface=surface)
+        super().draw(surface)
         if self._covered is False:
             surface.blit(self._logo, (660, 0))
-            self._main_menu.draw(surface=surface)
+            # self._main_menu.draw(surface=surface)
 
     def teardown(self) -> None:
         super().teardown()
@@ -95,25 +107,22 @@ class TitleScreen(State):
         space_between = 100
         for i, widget in enumerate(widgets, start=1):
             pos = Pos(0, y + space_between * i)
-            button = self._build_menu_button(parent=menu_group, pos=pos, **widget)
+            button = self._build_menu_button(pos=pos, **widget)
             menu_group.add_widget(button)
 
         return menu_group
 
-    @staticmethod
     def _build_menu_button(
-        parent: Widget, callback: Callable[[], None], text: str, pos: Pos
-    ) -> TextButton:
-        return TextButton(
-            parent=parent,
+        self, callback: Callable[[], None], text: str, pos: Pos
+    ) -> Button:
+        return Button(
+            self.sprites,
             image=assets.gui.get("main-menu-button-sheet-a"),
-            sound_focus="hover",
-            sound_clicked="click",
-            callback=callback,
+            focus_sound="hover",
+            click_sound="click",
+            action=callback,
             text=text,
             text_color=GUI_BUTTON_TEXT_COLOR,
             text_font=assets.font.get(name=config.font, size=GUI_BUTTON_FONT_SIZE),
-            text_align=Align.CENTER,
-            text_align_margin=Pos(0, 4),
-            pos=pos,
+            topleft=pos,
         )
