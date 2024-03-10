@@ -45,7 +45,7 @@ def build_event(
         align = Align(params["align"]) if params.get("align") else None
         yield TypeWriterText(
             parent=parent,
-            font=entropy.assets.font.get("LanaPixel", "medium"),
+            font=entropy.assets.font.get("LanaPixel", "sm"),
             text=value,
             color="white",
             width=1700,

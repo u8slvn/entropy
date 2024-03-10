@@ -64,7 +64,7 @@ class SettingsMenu(State):
     def __init__(self, control: Control) -> None:
         super().__init__(control=control)
         self._background = ColorBackground(color=Color(0, 0, 0, 150))
-        self._font = assets.font.get("LanaPixel", "settings")
+        self._font = assets.font.get("LanaPixel", "lg")
         self._submenu = self._build_submenu(Submenu.SETTINGS)
 
     def setup(self) -> None:
@@ -269,7 +269,7 @@ class SettingsMenu(State):
         return TText(
             parent=parent,
             text=text,
-            font=assets.font.get(name=config.font, size="settings"),
+            font=assets.font.get(name=config.font, size="lg"),
             color=GUI_TEXT_COLOR,
             pos=pos,
             align=Align.CENTER_X,

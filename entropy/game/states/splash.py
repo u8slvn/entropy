@@ -26,7 +26,7 @@ class Splash(State):
         self.background = ColorBackground(pg.Color("black"))
         Text(
             self.sprites,
-            font=entropy.assets.font.get("LanaPixel", "big"),
+            font=entropy.assets.font.get("LanaPixel", "md"),
             text="ENTROPY",
             color=pg.Color("white"),
             center=self.background.rect.center,

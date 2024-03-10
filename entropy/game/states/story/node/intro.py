@@ -39,7 +39,7 @@ class IntroScene(Node):
         self._id = id
         self._title = TText(
             parent=self.chapter.background,
-            font=assets.font.get("LanaPixel", "chapter"),
+            font=assets.font.get("LanaPixel", "xxxl"),
             text=title,
             color="white",
             pos=Pos(0, 400),
@@ -47,7 +47,7 @@ class IntroScene(Node):
         )
         self._subtitle = TText(
             parent=self.chapter.background,
-            font=assets.font.get("LanaPixel", "big"),
+            font=assets.font.get("LanaPixel", "md"),
             text=subtitle,
             color="white",
             pos=Pos(0, 550),

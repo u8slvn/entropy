@@ -57,12 +57,13 @@ def init() -> None:
     assets = AssetsLibrary()
     assets.font.add_font(
         path=ASSETS_DIR / "fonts/LanaPixel.ttf",
-        small=22,
-        medium=33,
-        big=44,
-        settings=55,
-        extra=66,
-        chapter=88,
+        xs=22,
+        sm=33,
+        md=44,
+        lg=55,
+        xl=66,
+        xxl=77,
+        xxxl=88,
     )
     assets.gui.add_dir(path=ASSETS_DIR / "gui")
     assets.guisfx.add_dir(path=ASSETS_DIR / "guisfx")
