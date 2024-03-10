@@ -5,9 +5,8 @@ from typing import TYPE_CHECKING
 from typing import ClassVar
 from typing import Type
 
-import pygame as pg
-
 from entropy.game.entity import GameEntity
+from entropy.gui.component.base import GUIGroup
 from entropy.logging import get_logger
 
 
@@ -21,7 +20,7 @@ class State(GameEntity, ABC):
     _states: ClassVar[dict[str, Type[State]]] = {}
 
     def __init__(self, control: Control) -> None:
-        self.sprites = pg.sprite.LayeredUpdates()
+        self.sprites: GUIGroup = GUIGroup()
         self.control = control
 
     def __init_subclass__(cls) -> None:

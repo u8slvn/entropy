@@ -30,7 +30,7 @@ class FontsCollection(AssetsCollection):
         return self._cache[name][size]
 
     def load(self, name: str | None = None) -> None:
-        configs = self._font_configs[name] if name else self._font_configs.values()
+        configs = [self._font_configs[name]] if name else self._font_configs.values()
         for config in configs:
             file, sizes = config
             asset = {key: pg.font.Font(file, size) for key, size in sizes.items()}

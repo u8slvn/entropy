@@ -8,10 +8,10 @@ import entropy
 
 from entropy.event.specs import a_is_pressed
 from entropy.game.states.base import State
+from entropy.gui.component.background import ColorBackground
 from entropy.gui.component.text import Text
 from entropy.gui.transistions.fader import FadeIn
 from entropy.gui.transistions.fader import FadeOut
-from entropy.gui.widgets.background import ColorBackground
 from entropy.tools.timer import TimerSecond
 
 

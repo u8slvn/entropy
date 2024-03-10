@@ -52,5 +52,5 @@ class DirAssetsCollection(AssetsCollection, ABC, Generic[T]):
 
         return self._cache[name]
 
-    def clear_cache(self):
+    def clear_cache(self) -> None:
         self._cache.clear()
