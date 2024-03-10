@@ -30,17 +30,11 @@ mouse: Mouse
 translator: Translator
 assets: AssetsLibrary
 control: Control
-mixer = Mixer(
-    main_vol=config.main_volume,
-    music_vol=config.music_volume,
-    atmos_vol=config.atmosphere_volume,
-    voice_vol=config.voice_volume,
-    uisfx_vol=config.uisfx_volume,
-)
+mixer: Mixer
 
 
 def init() -> None:
-    global window, mouse, translator, assets, control
+    global window, mouse, translator, assets, control, mixer
 
     logger.info(f"Initialize {GAME_NAME}.")
 
@@ -70,12 +64,21 @@ def init() -> None:
         extra=66,
         chapter=88,
     )
-    assets.image.add_dir(path=ASSETS_DIR / "gui")
-    assets.image.add_dir(path=ASSETS_DIR / "images")
+    assets.gui.add_dir(path=ASSETS_DIR / "gui")
+    assets.guisfx.add_dir(path=ASSETS_DIR / "guisfx")
+    assets.sound.add_dir(path=ASSETS_DIR / "musics")
     assets.sound.add_dir(path=ASSETS_DIR / "sounds")
-    assets.sound.add_dir(path=ASSETS_DIR / "music")
+    assets.image.add_dir(path=ASSETS_DIR / "images")
     assets.voice.add_dir(path=ASSETS_DIR / "voices")
     assets.load()
+
+    mixer = Mixer(
+        main_vol=config.main_volume,
+        music_vol=config.music_volume,
+        atmos_vol=config.atmosphere_volume,
+        voice_vol=config.voice_volume,
+        uisfx_vol=config.uisfx_volume,
+    )
 
     control = Control(fps=config.fps)
 

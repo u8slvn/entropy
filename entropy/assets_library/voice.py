@@ -6,7 +6,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import ClassVar
 
-import pygame
+import pygame as pg
 
 from entropy.assets_library.assets_collection import AssetsCollection
 from entropy.logging import get_logger
@@ -18,16 +18,18 @@ logger = get_logger()
 class VoicesCollection(AssetsCollection):
     extensions: ClassVar[list[str]] = [".wav"]
 
-    def __init__(self) -> None:
-        self.assets: dict[str, list[pygame.mixer.Sound]] = defaultdict(list)
-        self._files: dict[str, list[Path]] = defaultdict(list)
+    def __init__(self, name: str):
+        super().__init__(name=name)
+        self._cache: dict[str, set[pg.mixer.Sound]] = defaultdict(set)
+        self._files: dict[str, set[Path]] = defaultdict(set)
 
     def debug(self) -> None:
         logger.debug(
-            f"Font library loaded with \"{', '.join(self.extensions)}\" files:"
+            f"{self._name.title()} library loaded with "
+            f"{', '.join(self.extensions)} files:"
         )
-        for voice, files in self.assets.items():
-            logger.debug(f'→ Voice "{voice}" found with "{len(files)}" file(s).')
+        for voice, files in self._files.items():
+            logger.debug(f'→ Voice "{voice}" found with {len(files)} file(s).')
 
     def add_dir(self, path: str | Path) -> None:
         path = Path(path) if isinstance(path, str) else path
@@ -39,15 +41,25 @@ class VoicesCollection(AssetsCollection):
                 if filepath.suffix not in self.extensions:
                     continue
 
-                self._files[item.name].append(filepath)
+                self._files[item.name].add(filepath)
 
-    def _load_file(self, file: Path) -> pygame.mixer.Sound:
-        return pygame.mixer.Sound(file)
+    def _load_file(self, file: Path) -> pg.mixer.Sound:
+        return pg.mixer.Sound(file)
 
-    def get(self, name: str) -> pygame.mixer.Sound:
-        return random.choice(self.assets[name])
+    def get(self, name: str) -> pg.mixer.Sound:
+        if self._cache.get(name) is None:
+            self.load(name)
 
-    def load(self) -> None:
-        for voice, files in self._files.items():
-            for file in files:
-                self.assets[voice].append(self._load_file(file=file))
+        return random.choice(list(self._cache[name]))
+
+    def load(self, name: str | None = None) -> None:
+        if name:
+            for file in self._files[name]:
+                self._cache[name].add(self._load_file(file=file))
+        else:
+            for name, files in self._files.items():
+                for file in files:
+                    self._cache[name].add(self._load_file(file=file))
+
+    def preload(self, name: str) -> None:
+        pass

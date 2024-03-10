@@ -286,7 +286,7 @@ class SettingsMenu(State):
             case button.TextButton | button.ObserverButton:
                 return widget_cls(
                     **kwargs,
-                    image=assets.image.get("settings-button-sheet"),
+                    image=assets.gui.get("settings-button-sheet"),
                     sound_focus="hover",
                     sound_clicked="click",
                     text_color=GUI_BUTTON_TEXT_COLOR,
@@ -301,7 +301,7 @@ class SettingsMenu(State):
                     size=Size(550, 30),
                     min_value=0,
                     max_value=1,
-                    button_image=assets.image.get("slider-button-sheet"),
+                    button_image=assets.gui.get("slider-button-sheet"),
                     sound_focus="hover",
                     text_color=GUI_BUTTON_TEXT_COLOR,
                     text_font=text_font,

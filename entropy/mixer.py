@@ -75,7 +75,7 @@ class Mixer:
         self._channels[Channel.VOICE].fadeout(fadeout)
 
     def play_uisfx(self, name: str) -> None:
-        sound = entropy.assets.sound.get(name=name)
+        sound = entropy.assets.guisfx.get(name=name)
         self._channels[Channel.UISFX].queue(sound)
 
     def set_volume(self, value: float, channel: Channel) -> None:

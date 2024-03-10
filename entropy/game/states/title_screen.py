@@ -106,7 +106,7 @@ class TitleScreen(State):
     ) -> TextButton:
         return TextButton(
             parent=parent,
-            image=assets.image.get("main-menu-button-sheet-a"),
+            image=assets.gui.get("main-menu-button-sheet-a"),
             sound_focus="hover",
             sound_clicked="click",
             callback=callback,
