@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from typing import Any
 from typing import Callable
 
 import pygame
@@ -16,9 +15,8 @@ from entropy.constants import GUI_BUTTON_FONT_SIZE
 from entropy.constants import GUI_BUTTON_TEXT_COLOR
 from entropy.game.states.base import State
 from entropy.gui.component.button import Button
+from entropy.gui.component.menu import Menu
 from entropy.gui.widgets.background import ImageBackground
-from entropy.gui.widgets.menu import MenuGroup
-from entropy.utils.measure import Pos
 
 
 if TYPE_CHECKING:
@@ -38,19 +36,8 @@ class TitleScreen(State):
         self._covered = False
         self._background = ImageBackground(name="title-screen-bg")
         self._logo = assets.image.get("title-screen-logo-a")
-        # self._main_menu = self._build_menu()
+        self._main_menu = self._build_menu()
         self._music = "main-theme"
-        Button(
-            self.sprites,
-            image=assets.gui.get("main-menu-button-sheet-a"),
-            focus_sound="hover",
-            click_sound="click",
-            action=test_lang,
-            text="text",
-            text_color=GUI_BUTTON_TEXT_COLOR,
-            text_font=assets.font.get(name=config.font, size=GUI_BUTTON_FONT_SIZE),
-            topleft=(0, 200),
-        )
 
     def setup(self) -> None:
         if mixer.currently_playing != self._music:
@@ -58,71 +45,55 @@ class TitleScreen(State):
 
         translator.set_translation(config.locale, domain="base")
         self._covered = False
-        # self._main_menu.setup()
 
     def process_event(self, event: Event) -> None:
-        ...
-        # self._main_menu.process_event(event=event)
+        super().process_event(event)
+        self._main_menu.process_event(event=event)
 
     def update(self, dt: float) -> None:
         super().update(dt)
-        # self._main_menu.update(dt=dt)
 
     def draw(self, surface: pygame.Surface) -> None:
         self._background.draw(surface=surface)
         super().draw(surface)
         if self._covered is False:
             surface.blit(self._logo, (660, 0))
-            # self._main_menu.draw(surface=surface)
 
     def teardown(self) -> None:
         super().teardown()
         self._covered = True
 
-    def _build_menu(self) -> MenuGroup:
-        menu_group = MenuGroup(parent=self._background)
-
-        widgets: list[dict[str, Any]] = [
-            # {
-            #     "text": "CONTINUE",
-            #     "callback": test_lang,
-            # },
-            {
-                "text": "NEW GAME",
-                "callback": TransitionToNextState(state=self, next_state="Story"),
-            },
-            {
-                "text": "SETTINGS",
-                "callback": TransitionToNextState(
-                    state=self, next_state="SettingsMenu"
-                ),
-            },
-            {
-                "text": "QUIT",
-                "callback": QuitGame(),
-            },
+    def _build_menu(self) -> Menu:
+        buttons = [
+            self._build_menu_button(
+                text="NEW GAME",
+                action=TransitionToNextState(state=self, next_state="Story"),
+            ),
+            self._build_menu_button(
+                text="SETTINGS",
+                action=TransitionToNextState(state=self, next_state="SettingsMenu"),
+            ),
+            self._build_menu_button(
+                text="QUIT",
+                action=QuitGame(),
+            ),
         ]
-
-        y = 400
-        space_between = 100
-        for i, widget in enumerate(widgets, start=1):
-            pos = Pos(0, y + space_between * i)
-            button = self._build_menu_button(pos=pos, **widget)
-            menu_group.add_widget(button)
-
-        return menu_group
+        return Menu(
+            buttons=buttons, space_between=40, direction="vertical", topleft=(0, 400)
+        )
 
     def _build_menu_button(
-        self, callback: Callable[[], None], text: str, pos: Pos
+        self,
+        action: Callable[[], None],
+        text: str,
     ) -> Button:
         return Button(
             self.sprites,
             image=assets.gui.get("main-menu-button-sheet-a"),
             focus_sound="hover",
             click_sound="click",
-            action=callback,
+            action=action,
             text=text,
             text_color=GUI_BUTTON_TEXT_COLOR,
             text_font=assets.font.get(name=config.font, size=GUI_BUTTON_FONT_SIZE),
-            topleft=pos,
         )

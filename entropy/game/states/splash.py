@@ -29,6 +29,7 @@ class Splash(State):
             font=entropy.assets.font.get("LanaPixel", "md"),
             text="ENTROPY",
             color=pg.Color("white"),
+            translate=False,
             center=self.background.rect.center,
         )
         self.fade_out = FadeOut(duration=4000, callback=self.mark_as_done)

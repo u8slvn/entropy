@@ -38,14 +38,11 @@ class Button(Sprite):
         click_sound: str,
         action: Callable[[], None],
         checked: bool = False,
-        **kwargs,
+        **kwargs: Any,
     ):
         super().__init__(*groups)
         self._baseimage = image
         self._images = self._build_images()
-        self._text = text
-        self._text_color = text_color
-        self._text_font = text_font
         self._focus_sound = focus_sound
         self._click_sound = click_sound
         self._action = action
@@ -53,13 +50,14 @@ class Button(Sprite):
         self._pressed = False
         self.image = self._images[self._state]
         self.rect = self.image.get_rect(**kwargs)
-        self.text = Text(
-            *groups,
-            text=text,
-            color=text_color,
-            font=text_font,
-            center=self.rect.center,
-        )
+        if all([text, text_color, text_font]):
+            self.text = Text(
+                *groups,
+                text=text,
+                color=text_color,
+                font=text_font,
+                center=self.rect.center,
+            )
 
     def _build_images(self) -> dict[_ButtonState, pg.Surface]:
 
@@ -74,8 +72,10 @@ class Button(Sprite):
 
         return images
 
-    def _render_text(self) -> pg.Surface:
-        return self._text_font.render(self._text, False, self._text_color)
+    def move(self, **kwargs: Any) -> None:
+        super().move(**kwargs)
+        if self.text is not None:
+            self.text.move(center=self.rect.center)
 
     def check(self) -> None:
         if self.has_focus():
