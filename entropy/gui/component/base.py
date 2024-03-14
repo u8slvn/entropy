@@ -20,7 +20,7 @@ class Sprite(pg.sprite.DirtySprite):
         if self.image is not None:
             self.rect = self.image.get_rect(**kwargs)
 
-    def teardown(self) -> None:
+    def cleanup(self) -> None:
         pass
 
 
@@ -32,6 +32,6 @@ class SpriteGroup(pg.sprite.LayeredUpdates, Generic[_Sprite]):
         for sprite in self.sprites():
             sprite.process_event(event)
 
-    def teardown(self) -> None:
+    def cleanup(self) -> None:
         for sprite in self.sprites():
-            sprite.teardown()
+            sprite.cleanup()

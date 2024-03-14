@@ -2,21 +2,17 @@ from __future__ import annotations
 
 from enum import StrEnum
 from enum import auto
-from functools import partial
 from typing import TYPE_CHECKING
 from typing import Any
+from typing import Callable
 from typing import Type
 
 import pygame as pg
 
 from entropy import assets
-from entropy import mixer
-from entropy.commands.base import Commands
 from entropy.commands.display import DisableFullscreen
 from entropy.commands.display import EnableFullscreen
 from entropy.commands.locale import SwitchLocaleTo
-from entropy.commands.mixer import PlayVoice
-from entropy.commands.mixer import SaveMixerVolume
 from entropy.commands.state import ExitState
 from entropy.commands.state import TransitionToNextState
 from entropy.config import get_config
@@ -25,22 +21,21 @@ from entropy.constants import GUI_BUTTON_TEXT_COLOR
 from entropy.constants import GUI_TEXT_COLOR
 from entropy.event.specs import back_is_pressed
 from entropy.game.states.base import State
+from entropy.gui.component.background import ColorBackground
+from entropy.gui.component.button import Button
+from entropy.gui.component.menu import Menu
+from entropy.gui.component.text import Text
+from entropy.gui.component.utils import move
 from entropy.gui.widgets import button
 from entropy.gui.widgets import slider
-from entropy.gui.widgets.background import ColorBackground
 from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.button import AttrObserver
 from entropy.gui.widgets.button import ObserverButton
 from entropy.gui.widgets.button import TextButton
-from entropy.gui.widgets.menu import Group
-from entropy.gui.widgets.menu import MenuGroup
 from entropy.gui.widgets.slider import TitledSlider
-from entropy.gui.widgets.text import TText
-from entropy.mixer import Channel
+from entropy.logging import get_logger
 from entropy.utils.measure import Color
-from entropy.utils.measure import Pos
 from entropy.utils.measure import Size
-from entropy.utils.measure import cleanup
 
 
 if TYPE_CHECKING:
@@ -49,10 +44,11 @@ if TYPE_CHECKING:
     from entropy.game.control import Control
     from entropy.gui.widgets.base import Widget
 
+logger = get_logger()
 config = get_config()
 
 
-class Submenu(StrEnum):
+class Menus(StrEnum):
     SETTINGS = auto()
     DISPLAY = auto()
     SOUND = auto()
@@ -63,216 +59,222 @@ class Submenu(StrEnum):
 class SettingsMenu(State):
     def __init__(self, control: Control) -> None:
         super().__init__(control=control)
-        self._background = ColorBackground(color=Color(0, 0, 0, 150))
+        self.background = ColorBackground(color=Color(0, 0, 0, 150))
         self._font = assets.font.get("LanaPixel", "lg")
-        self._submenu = self._build_submenu(Submenu.SETTINGS)
+        self.menu = self._build_menu(Menus.SETTINGS)
 
     def setup(self) -> None:
-        self._submenu.setup()
+        pass
 
     def process_event(self, event: Event) -> None:
         if back_is_pressed(event):
             self.exit()
 
-        self._submenu.process_event(event=event)
+        self.menu.process_event(event)
 
     def update(self, dt: float) -> None:
-        self._submenu.update(dt=dt)
+        super().update(dt)
 
     def draw(self, surface: pg.Surface) -> None:
         if self.control.prev_state is not None:
-            self.control.prev_state.draw(surface=surface)
+            self.control.prev_state.draw(surface)
 
-        self._background.draw(surface=surface)
-        self._submenu.draw(surface=surface)
+        self.background.draw(surface)
+        super().draw(surface)
 
     def teardown(self) -> None:
+        super().teardown()
         config.save()
-        self._submenu.teardown()
 
     def transition_to(self, state_name: str, with_exit: bool = False) -> None:
-        self._submenu.teardown()
-        cleanup(self._submenu)
-        self._submenu = self._build_submenu(submenu=Submenu(state_name))
-        self._submenu.setup()
+        self.sprites.empty()
+        logger.debug(f'Switch to settings menu "{state_name}".')
+        self.menu = self._build_menu(menu=Menus(state_name))
 
-    def _build_submenu(self, submenu: Submenu) -> Group:
-        margin_top_menu = 200
-        space_between_buttons = 100
+    def _build_menu(self, menu: Menus) -> Menu:
+        margin_top_menu = 280
+        space_between_buttons = 50
         margin_top_title = 150
         margin_top_back_button = 900
 
-        group = Group(parent=self._background)
-        menu_group = MenuGroup(parent=group)
-
         back_button_action: Command = TransitionToNextState(
-            state=self, next_state=Submenu.SETTINGS
+            state=self, next_state=Menus.SETTINGS
         )
 
-        match submenu:
-            case Submenu.DISPLAY:
+        match menu:
+            case Menus.DISPLAY:
                 text_title = "DISPLAY"
-                widgets: list[dict[str, Any]] = [
-                    {
-                        "widget_cls": ObserverButton,
-                        "text": "FULLSCREEN",
-                        "callback": EnableFullscreen(),
-                        "attr_observer": AttrObserver(
+                items = [
+                    self._build_menu_button(
+                        text="FULLSCREEN",
+                        action=EnableFullscreen(),
+                        attr_observer=AttrObserver(
                             subject=config, attr="fullscreen", match=True
                         ),
-                        "checked": config.fullscreen,
-                    },
-                    {
-                        "widget_cls": ObserverButton,
-                        "text": "FRAMED",
-                        "callback": DisableFullscreen(),
-                        "attr_observer": AttrObserver(
+                        checked=config.fullscreen,
+                    ),
+                    self._build_menu_button(
+                        text="FRAMED",
+                        action=DisableFullscreen(),
+                        attr_observer=AttrObserver(
                             subject=config, attr="fullscreen", match=False
                         ),
-                        "checked": not config.fullscreen,
-                    },
+                        checked=not config.fullscreen,
+                    ),
                 ]
 
-            case Submenu.SOUND:
-                margin_top_menu = 190
-                text_title = "SOUND"
-                widgets = [
-                    {
-                        "widget_cls": TitledSlider,
-                        "text": "MAIN VOLUME",
-                        "initial_value": config.main_volume,
-                        "update_callback": partial(
-                            mixer.set_volume, channel=Channel.MAIN
-                        ),
-                    },
-                    {
-                        "widget_cls": TitledSlider,
-                        "text": "MUSIC VOLUME",
-                        "initial_value": config.music_volume,
-                        "update_callback": partial(
-                            mixer.set_volume, channel=Channel.MUSIC
-                        ),
-                    },
-                    {
-                        "widget_cls": TitledSlider,
-                        "text": "ATMOSPHERE VOLUME",
-                        "initial_value": config.atmosphere_volume,
-                        "update_callback": partial(
-                            mixer.set_volume, channel=Channel.ATMOSPHERE
-                        ),
-                    },
-                    {
-                        "widget_cls": TitledSlider,
-                        "text": "VOICE VOLUME",
-                        "initial_value": config.voice_volume,
-                        "update_callback": partial(
-                            mixer.set_volume, channel=Channel.VOICE
-                        ),
-                        "sound_on_hold": PlayVoice(name="narrator"),
-                    },
-                    {
-                        "widget_cls": TitledSlider,
-                        "text": "SFX VOLUME",
-                        "initial_value": config.uisfx_volume,
-                        "update_callback": partial(
-                            mixer.set_volume, channel=Channel.UISFX
-                        ),
-                    },
-                ]
-                back_button_action = Commands([SaveMixerVolume(), back_button_action])
-
-            case Submenu.LANGUAGE:
+            # case Menus.SOUND:
+            #     margin_top_menu = 190
+            #     text_title = "SOUND"
+            #     widgets = [
+            #         {
+            #             "widget_cls": TitledSlider,
+            #             "text": "MAIN VOLUME",
+            #             "initial_value": config.main_volume,
+            #             "update_callback": partial(
+            #                 mixer.set_volume, channel=Channel.MAIN
+            #             ),
+            #         },
+            #         {
+            #             "widget_cls": TitledSlider,
+            #             "text": "MUSIC VOLUME",
+            #             "initial_value": config.music_volume,
+            #             "update_callback": partial(
+            #                 mixer.set_volume, channel=Channel.MUSIC
+            #             ),
+            #         },
+            #         {
+            #             "widget_cls": TitledSlider,
+            #             "text": "ATMOSPHERE VOLUME",
+            #             "initial_value": config.atmosphere_volume,
+            #             "update_callback": partial(
+            #                 mixer.set_volume, channel=Channel.ATMOSPHERE
+            #             ),
+            #         },
+            #         {
+            #             "widget_cls": TitledSlider,
+            #             "text": "VOICE VOLUME",
+            #             "initial_value": config.voice_volume,
+            #             "update_callback": partial(
+            #                 mixer.set_volume, channel=Channel.VOICE
+            #             ),
+            #             "sound_on_hold": PlayVoice(name="narrator"),
+            #         },
+            #         {
+            #             "widget_cls": TitledSlider,
+            #             "text": "SFX VOLUME",
+            #             "initial_value": config.uisfx_volume,
+            #             "update_callback": partial(
+            #                 mixer.set_volume, channel=Channel.UISFX
+            #             ),
+            #         },
+            #     ]
+            #     back_button_action = Commands([SaveMixerVolume(), back_button_action])
+            #
+            case Menus.LANGUAGE:
                 text_title = "LANGUAGE"
-                widgets = [
-                    {
-                        "widget_cls": ObserverButton,
-                        "text": "ENGLISH",
-                        "callback": SwitchLocaleTo(locale="en"),
-                        "attr_observer": AttrObserver(
+                items = [
+                    self._build_menu_button(
+                        text="ENGLISH",
+                        action=SwitchLocaleTo(locale="en"),
+                        attr_observer=AttrObserver(
                             subject=config, attr="locale", match="en"
                         ),
-                        "checked": config.locale == "en",
-                    },
-                    {
-                        "widget_cls": ObserverButton,
-                        "text": "FRANÇAIS",
-                        "callback": SwitchLocaleTo(locale="fr"),
-                        "attr_observer": AttrObserver(
+                        checked=config.locale == "en",
+                    ),
+                    self._build_menu_button(
+                        text="FRANÇAIS",
+                        action=SwitchLocaleTo(locale="fr"),
+                        attr_observer=AttrObserver(
                             subject=config, attr="locale", match="fr"
                         ),
-                        "checked": config.locale == "fr",
-                    },
+                        checked=config.locale == "fr",
+                    ),
                 ]
 
-            case Submenu.DIALOGUE:
+            case Menus.DIALOGUE:
                 text_title = "DIALOGUE"
-                widgets = []
+                items = []
 
             case _:
                 text_title = "SETTINGS"
-                widgets = [
-                    {
-                        "widget_cls": TextButton,
-                        "text": "DISPLAY",
-                        "callback": TransitionToNextState(
-                            state=self, next_state=Submenu.DISPLAY
+                items = [
+                    self._build_menu_button(
+                        text="DISPLAY",
+                        action=TransitionToNextState(
+                            state=self, next_state=Menus.DISPLAY
                         ),
-                    },
-                    {
-                        "widget_cls": TextButton,
-                        "text": "SOUND",
-                        "callback": TransitionToNextState(
-                            state=self, next_state=Submenu.SOUND
+                    ),
+                    self._build_menu_button(
+                        text="SOUND",
+                        action=TransitionToNextState(
+                            state=self, next_state=Menus.SOUND
                         ),
-                    },
-                    {
-                        "widget_cls": TextButton,
-                        "text": "LANGUAGE",
-                        "callback": TransitionToNextState(
-                            state=self, next_state=Submenu.LANGUAGE
+                    ),
+                    self._build_menu_button(
+                        text="LANGUAGE",
+                        action=TransitionToNextState(
+                            state=self, next_state=Menus.LANGUAGE
                         ),
-                    },
-                    {
-                        "widget_cls": TextButton,
-                        "text": "DIALOGUE",
-                        "callback": TransitionToNextState(
-                            state=self, next_state=Submenu.DIALOGUE
+                    ),
+                    self._build_menu_button(
+                        text="DIALOGUE",
+                        action=TransitionToNextState(
+                            state=self, next_state=Menus.DIALOGUE
                         ),
-                    },
+                    ),
                 ]
                 back_button_action = ExitState(self)
 
-        for i, widget in enumerate(widgets, start=1):
-            pos = Pos(0, margin_top_menu + space_between_buttons * i)
-            button = self._build_menu_widget(parent=menu_group, **widget, pos=pos)
-            menu_group.add_widget(widget=button)
-
-        title = self._build_menu_title(
-            parent=group, text=text_title, pos=Pos(0, margin_top_title)
+        self._build_menu_title(
+            text=text_title, center=(self.background.rect.centerx, margin_top_title)
         )
-        back_button = self._build_menu_widget(
-            widget_cls=TextButton,
-            parent=menu_group,
+
+        back_button = self._build_menu_button(
             text="BACK",
-            callback=back_button_action,
-            pos=Pos(0, margin_top_back_button),
+            action=back_button_action,
+            center=(self.background.rect.centerx, margin_top_back_button),
         )
 
-        menu_group.add_widget(widget=back_button)
+        move(
+            items=items,
+            space_between=space_between_buttons,
+            direction="vertical",
+            center=(self.background.rect.centerx, margin_top_menu),
+        )
 
-        group.add_widgets(widgets=[title, menu_group])
+        items.append(back_button)
+        return Menu(items=items, direction="vertical")
 
-        return group
-
-    @staticmethod
-    def _build_menu_title(parent: Widget, text: str, pos: Pos) -> TText:
-        return TText(
-            parent=parent,
-            text=text,
+    def _build_menu_title(self, text: str, **kwargs: Any) -> None:
+        Text(
+            self.sprites,
             font=assets.font.get(name=config.font, size="lg"),
+            text=text,
             color=GUI_TEXT_COLOR,
-            pos=pos,
-            align=Align.CENTER_X,
+            **kwargs,
+        )
+
+    def _build_menu_button(
+        self,
+        action: Callable[[], None],
+        text: str,
+        checked: bool = False,
+        attr_observer: AttrObserver | None = None,
+        **kwargs: Any,
+    ) -> Button:
+        return Button(
+            self.sprites,
+            image=assets.gui.get("settings-button-sheet"),
+            focus_sound="hover",
+            click_sound="click",
+            action=action,
+            text=text,
+            text_color=GUI_BUTTON_TEXT_COLOR,
+            text_font=assets.font.get(name=config.font, size=GUI_BUTTON_FONT_SIZE),
+            checked=checked,
+            attr_observer=attr_observer,
+            **kwargs,
         )
 
     @staticmethod

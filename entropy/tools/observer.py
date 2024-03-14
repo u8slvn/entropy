@@ -15,7 +15,6 @@ class Subject(ABC):
 
     def subscribe(self, observer: Observer) -> None:
         self._observers.append(observer)
-        # observer.on_notify()
 
     def unsubscribe(self, observer: Observer) -> None:
         self._observers.remove(observer)

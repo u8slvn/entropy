@@ -16,6 +16,7 @@ from entropy.constants import GUI_BUTTON_TEXT_COLOR
 from entropy.game.states.base import State
 from entropy.gui.component.button import Button
 from entropy.gui.component.menu import Menu
+from entropy.gui.component.utils import move
 from entropy.gui.widgets.background import ImageBackground
 
 
@@ -55,8 +56,9 @@ class TitleScreen(State):
 
     def draw(self, surface: pygame.Surface) -> None:
         self._background.draw(surface=surface)
-        super().draw(surface)
+
         if self._covered is False:
+            super().draw(surface)
             surface.blit(self._logo, (660, 0))
 
     def teardown(self) -> None:
@@ -78,9 +80,8 @@ class TitleScreen(State):
                 action=QuitGame(),
             ),
         ]
-        return Menu(
-            buttons=buttons, space_between=40, direction="vertical", topleft=(0, 400)
-        )
+        move(items=buttons, space_between=40, direction="vertical", topleft=(0, 400))
+        return Menu(items=buttons, direction="vertical")
 
     def _build_menu_button(
         self,

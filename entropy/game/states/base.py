@@ -51,10 +51,11 @@ class State(GameEntity, ABC):
         self.sprites.draw(surface)
 
     def teardown(self) -> None:
-        self.sprites.teardown()
-        self.control.event_manager.flush()
+        pass
+        # self.control.event_manager.flush()
 
     def exit(self) -> None:
+        self.sprites.cleanup()
         self.teardown()
         self.control.state_stack.pop()
         self.control.current_state.setup()

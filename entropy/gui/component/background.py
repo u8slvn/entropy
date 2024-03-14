@@ -6,10 +6,9 @@ from entropy import window
 
 
 class Background(pg.Surface):
-    rect = window.screen_rect
-
     def __init__(self) -> None:
-        super().__init__(self.rect.size, pg.SRCALPHA, 32)
+        super().__init__(window.default_res, pg.SRCALPHA, 32)
+        self.rect = self.get_rect()
 
 
 class ColorBackground(Background):

@@ -53,6 +53,6 @@ class Text(Sprite, Observer):
             self.image = self._render()
             self.rect = self.image.get_rect(**self._kwargs)
 
-    def teardown(self) -> None:
+    def cleanup(self) -> None:
         if self._translated:
             translator.unsubscribe(observer=self)

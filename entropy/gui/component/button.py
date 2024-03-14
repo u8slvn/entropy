@@ -13,10 +13,12 @@ from entropy.event.specs import b_is_pressed
 from entropy.event.specs import b_or_click_is_pressed
 from entropy.gui.component.base import Sprite
 from entropy.gui.component.text import Text
+from entropy.tools.observer import Observer
 
 
 if TYPE_CHECKING:
     from entropy.event.event import Event
+    from entropy.tools.observer import Subject
 
 
 class _ButtonState(IntEnum):
@@ -26,7 +28,17 @@ class _ButtonState(IntEnum):
     FOCUS_CHECKED = 3
 
 
-class Button(Sprite):
+class AttrObserver:
+    def __init__(self, subject: Subject, attr: str, match: Any) -> None:
+        self._attr = attr
+        self._match = match
+        self.subject = subject
+
+    def has_changed(self) -> bool:
+        return bool(self._match == getattr(self.subject, self._attr))
+
+
+class Button(Sprite, Observer):
     def __init__(
         self,
         *groups: Any,
@@ -38,6 +50,7 @@ class Button(Sprite):
         click_sound: str,
         action: Callable[[], None],
         checked: bool = False,
+        attr_observer: AttrObserver | None = None,
         **kwargs: Any,
     ):
         super().__init__(*groups)
@@ -46,6 +59,7 @@ class Button(Sprite):
         self._focus_sound = focus_sound
         self._click_sound = click_sound
         self._action = action
+        self._attr_observer = attr_observer
         self._state = _ButtonState.CHECKED if checked else _ButtonState.NORMAL
         self._pressed = False
         self.image = self._images[self._state]
@@ -58,6 +72,8 @@ class Button(Sprite):
                 font=text_font,
                 center=self.rect.center,
             )
+        if self._attr_observer:
+            self._attr_observer.subject.subscribe(observer=self)
 
     def _build_images(self) -> dict[_ButtonState, pg.Surface]:
 
@@ -112,8 +128,8 @@ class Button(Sprite):
         self._pressed = True
 
     def release(self) -> None:
-        self._pressed = False
         mixer.play_uisfx(self._click_sound)
+        self._pressed = False
         self._action()
 
     def is_pressed(self) -> bool:
@@ -135,3 +151,13 @@ class Button(Sprite):
         if self.is_pressed():
             self.release()
         self.image = self._images[self._state]
+
+    def on_notify(self) -> None:
+        if self._attr_observer.has_changed():
+            self.check()
+        else:
+            self.uncheck()
+
+    def cleanup(self) -> None:
+        if self._attr_observer:
+            self._attr_observer.subject.unsubscribe(observer=self)
