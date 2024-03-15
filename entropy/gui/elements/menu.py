@@ -12,7 +12,7 @@ from entropy.event.specs import up_is_pressed
 
 if TYPE_CHECKING:
     from entropy.event.event import Event
-    from entropy.gui.component.base import Sprite
+    from entropy.gui.elements.base import UIElement
 
 
 class Adjacent(IntEnum):
@@ -23,7 +23,7 @@ class Adjacent(IntEnum):
 class Menu:
     def __init__(
         self,
-        items: list[Sprite],
+        items: list[UIElement],
         direction: Literal["vertical", "horizontal"],
     ) -> None:
         self.focus_index: int | None = None
@@ -31,7 +31,7 @@ class Menu:
         self.direction = direction
 
     @property
-    def _focused_sprite(self) -> Sprite | None:
+    def _focused_sprite(self) -> UIElement | None:
         if self.focus_index is None:
             return None
         return self.items[self.focus_index]

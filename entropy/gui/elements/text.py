@@ -5,14 +5,14 @@ from typing import Any
 import pygame as pg
 
 from entropy import translator
-from entropy.gui.component.base import Sprite
+from entropy.gui.elements.base import UIElement
 from entropy.tools.observer import Observer
 
 
 T = translator
 
 
-class Text(Sprite, Observer):
+class Text(UIElement, Observer):
     def __init__(
         self,
         *groups: Any,

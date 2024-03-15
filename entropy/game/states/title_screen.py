@@ -14,9 +14,9 @@ from entropy.config import get_config
 from entropy.constants import GUI_BUTTON_FONT_SIZE
 from entropy.constants import GUI_BUTTON_TEXT_COLOR
 from entropy.game.states.base import State
-from entropy.gui.component.button import Button
-from entropy.gui.component.menu import Menu
-from entropy.gui.component.utils import move
+from entropy.gui.elements.button import Button
+from entropy.gui.elements.menu import Menu
+from entropy.gui.elements.utils import move
 from entropy.gui.widgets.background import ImageBackground
 
 
@@ -89,7 +89,7 @@ class TitleScreen(State):
         text: str,
     ) -> Button:
         return Button(
-            self.sprites,
+            self.ui_elements,
             image=assets.gui.get("main-menu-button-sheet-a"),
             focus_sound="hover",
             click_sound="click",

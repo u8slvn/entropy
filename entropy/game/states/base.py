@@ -8,8 +8,7 @@ from typing import Type
 import pygame
 
 from entropy.game.entity import GameEntity
-from entropy.gui.component.base import Sprite
-from entropy.gui.component.base import SpriteGroup
+from entropy.gui.elements.base import UIElementGroup
 from entropy.logging import get_logger
 
 
@@ -24,7 +23,7 @@ class State(GameEntity, ABC):
     _states: ClassVar[dict[str, Type[State]]] = {}
 
     def __init__(self, control: Control) -> None:
-        self.sprites: SpriteGroup[Sprite] = SpriteGroup()
+        self.ui_elements = UIElementGroup()
         self.control = control
 
     def __init_subclass__(cls) -> None:
@@ -42,20 +41,20 @@ class State(GameEntity, ABC):
         self.control.transition_to(state_name=state_name, with_exit=with_exit)
 
     def process_event(self, event: Event) -> None:
-        self.sprites.process_event(event)
+        self.ui_elements.process_event(event)
 
     def update(self, dt: float) -> None:
-        self.sprites.update(dt=dt)
+        self.ui_elements.update(dt=dt)
 
     def draw(self, surface: pygame.Surface) -> None:
-        self.sprites.draw(surface)
+        self.ui_elements.draw(surface)
 
     def teardown(self) -> None:
         pass
         # self.control.event_manager.flush()
 
     def exit(self) -> None:
-        self.sprites.cleanup()
+        self.ui_elements.cleanup()
         self.teardown()
         self.control.state_stack.pop()
         self.control.current_state.setup()

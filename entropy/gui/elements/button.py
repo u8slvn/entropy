@@ -11,8 +11,8 @@ from entropy import mixer
 from entropy import mouse
 from entropy.event.specs import b_is_pressed
 from entropy.event.specs import b_or_click_is_pressed
-from entropy.gui.component.base import Sprite
-from entropy.gui.component.text import Text
+from entropy.gui.elements.base import UIElement
+from entropy.gui.elements.text import Text
 from entropy.tools.observer import Observer
 
 
@@ -38,7 +38,7 @@ class AttrObserver:
         return bool(self._match == getattr(self.subject, self._attr))
 
 
-class Button(Sprite, Observer):
+class Button(UIElement, Observer):
     def __init__(
         self,
         *groups: Any,
@@ -72,6 +72,8 @@ class Button(Sprite, Observer):
                 font=text_font,
                 center=self.rect.center,
             )
+        else:
+            self.text = None
         if self._attr_observer:
             self._attr_observer.subject.subscribe(observer=self)
 

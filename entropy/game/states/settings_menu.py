@@ -2,17 +2,21 @@ from __future__ import annotations
 
 from enum import StrEnum
 from enum import auto
+from functools import partial
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import Callable
-from typing import Type
 
 import pygame as pg
 
 from entropy import assets
+from entropy import mixer
+from entropy.commands.base import Commands
 from entropy.commands.display import DisableFullscreen
 from entropy.commands.display import EnableFullscreen
 from entropy.commands.locale import SwitchLocaleTo
+from entropy.commands.mixer import PlayVoice
+from entropy.commands.mixer import SaveMixerVolume
 from entropy.commands.state import ExitState
 from entropy.commands.state import TransitionToNextState
 from entropy.config import get_config
@@ -21,19 +25,15 @@ from entropy.constants import GUI_BUTTON_TEXT_COLOR
 from entropy.constants import GUI_TEXT_COLOR
 from entropy.event.specs import back_is_pressed
 from entropy.game.states.base import State
-from entropy.gui.component.background import ColorBackground
-from entropy.gui.component.button import Button
-from entropy.gui.component.menu import Menu
-from entropy.gui.component.text import Text
-from entropy.gui.component.utils import move
-from entropy.gui.widgets import button
-from entropy.gui.widgets import slider
-from entropy.gui.widgets.base import Align
-from entropy.gui.widgets.button import AttrObserver
-from entropy.gui.widgets.button import ObserverButton
-from entropy.gui.widgets.button import TextButton
-from entropy.gui.widgets.slider import TitledSlider
+from entropy.gui.elements.background import ColorBackground
+from entropy.gui.elements.button import AttrObserver
+from entropy.gui.elements.button import Button
+from entropy.gui.elements.menu import Menu
+from entropy.gui.elements.slider import Slider
+from entropy.gui.elements.text import Text
+from entropy.gui.elements.utils import move
 from entropy.logging import get_logger
+from entropy.mixer import Channel
 from entropy.utils.measure import Color
 from entropy.utils.measure import Size
 
@@ -42,7 +42,6 @@ if TYPE_CHECKING:
     from entropy.commands.base import Command
     from entropy.event.event import Event
     from entropy.game.control import Control
-    from entropy.gui.widgets.base import Widget
 
 logger = get_logger()
 config = get_config()
@@ -88,7 +87,7 @@ class SettingsMenu(State):
         config.save()
 
     def transition_to(self, state_name: str, with_exit: bool = False) -> None:
-        self.sprites.empty()
+        self.ui_elements.empty()
         logger.debug(f'Switch to settings menu "{state_name}".')
         self.menu = self._build_menu(menu=Menus(state_name))
 
@@ -124,54 +123,48 @@ class SettingsMenu(State):
                     ),
                 ]
 
-            # case Menus.SOUND:
-            #     margin_top_menu = 190
-            #     text_title = "SOUND"
-            #     widgets = [
-            #         {
-            #             "widget_cls": TitledSlider,
-            #             "text": "MAIN VOLUME",
-            #             "initial_value": config.main_volume,
-            #             "update_callback": partial(
-            #                 mixer.set_volume, channel=Channel.MAIN
-            #             ),
-            #         },
-            #         {
-            #             "widget_cls": TitledSlider,
-            #             "text": "MUSIC VOLUME",
-            #             "initial_value": config.music_volume,
-            #             "update_callback": partial(
-            #                 mixer.set_volume, channel=Channel.MUSIC
-            #             ),
-            #         },
-            #         {
-            #             "widget_cls": TitledSlider,
-            #             "text": "ATMOSPHERE VOLUME",
-            #             "initial_value": config.atmosphere_volume,
-            #             "update_callback": partial(
-            #                 mixer.set_volume, channel=Channel.ATMOSPHERE
-            #             ),
-            #         },
-            #         {
-            #             "widget_cls": TitledSlider,
-            #             "text": "VOICE VOLUME",
-            #             "initial_value": config.voice_volume,
-            #             "update_callback": partial(
-            #                 mixer.set_volume, channel=Channel.VOICE
-            #             ),
-            #             "sound_on_hold": PlayVoice(name="narrator"),
-            #         },
-            #         {
-            #             "widget_cls": TitledSlider,
-            #             "text": "SFX VOLUME",
-            #             "initial_value": config.uisfx_volume,
-            #             "update_callback": partial(
-            #                 mixer.set_volume, channel=Channel.UISFX
-            #             ),
-            #         },
-            #     ]
-            #     back_button_action = Commands([SaveMixerVolume(), back_button_action])
-            #
+            case Menus.SOUND:
+                margin_top_menu = 300
+                space_between_buttons = 70
+                text_title = "SOUND"
+                items = [
+                    self._build_menu_slider(
+                        text="MAIN VOLUME",
+                        initial_value=config.main_volume,
+                        update_callback=partial(mixer.set_volume, channel=Channel.MAIN),
+                    ),
+                    self._build_menu_slider(
+                        text="MUSIC VOLUME",
+                        initial_value=config.music_volume,
+                        update_callback=partial(
+                            mixer.set_volume, channel=Channel.MUSIC
+                        ),
+                    ),
+                    self._build_menu_slider(
+                        text="ATMOSPHERE VOLUME",
+                        initial_value=config.atmosphere_volume,
+                        update_callback=partial(
+                            mixer.set_volume, channel=Channel.ATMOSPHERE
+                        ),
+                    ),
+                    self._build_menu_slider(
+                        text="VOICE VOLUME",
+                        initial_value=config.voice_volume,
+                        update_callback=partial(
+                            mixer.set_volume, channel=Channel.VOICE
+                        ),
+                        sound_on_hold=PlayVoice(name="narrator"),
+                    ),
+                    self._build_menu_slider(
+                        text="SFX VOLUME",
+                        initial_value=config.uisfx_volume,
+                        update_callback=partial(
+                            mixer.set_volume, channel=Channel.UISFX
+                        ),
+                    ),
+                ]
+                back_button_action = Commands([SaveMixerVolume(), back_button_action])
+
             case Menus.LANGUAGE:
                 text_title = "LANGUAGE"
                 items = [
@@ -249,7 +242,7 @@ class SettingsMenu(State):
 
     def _build_menu_title(self, text: str, **kwargs: Any) -> None:
         Text(
-            self.sprites,
+            self.ui_elements,
             font=assets.font.get(name=config.font, size="lg"),
             text=text,
             color=GUI_TEXT_COLOR,
@@ -265,7 +258,7 @@ class SettingsMenu(State):
         **kwargs: Any,
     ) -> Button:
         return Button(
-            self.sprites,
+            self.ui_elements,
             image=assets.gui.get("settings-button-sheet"),
             focus_sound="hover",
             click_sound="click",
@@ -278,40 +271,24 @@ class SettingsMenu(State):
             **kwargs,
         )
 
-    @staticmethod
-    def _build_menu_widget(
-        widget_cls: Type[TextButton] | Type[ObserverButton] | Type[TitledSlider],
+    def _build_menu_slider(
+        self,
+        text: str,
+        initial_value: float,
+        update_callback: Callable[[float], None],
         **kwargs: Any,
-    ) -> Widget:
-        text_font = assets.font.get(name=config.font, size=GUI_BUTTON_FONT_SIZE)
-
-        match widget_cls:
-            case button.TextButton | button.ObserverButton:
-                return widget_cls(
-                    **kwargs,
-                    image=assets.gui.get("settings-button-sheet"),
-                    sound_focus="hover",
-                    sound_clicked="click",
-                    text_color=GUI_BUTTON_TEXT_COLOR,
-                    text_font=text_font,
-                    text_align=Align.CENTER,
-                    align=Align.CENTER_X,
-                )
-
-            case slider.TitledSlider:
-                return widget_cls(
-                    **kwargs,
-                    size=Size(550, 30),
-                    min_value=0,
-                    max_value=1,
-                    button_image=assets.gui.get("slider-button-sheet"),
-                    sound_focus="hover",
-                    text_color=GUI_BUTTON_TEXT_COLOR,
-                    text_font=text_font,
-                    space_between=30,
-                    text_align=Align.CENTER_X,
-                    align=Align.CENTER_X,
-                )
-
-            case _:
-                raise NotImplementedError
+    ) -> Slider:
+        return Slider(
+            self.ui_elements,
+            initial_value=initial_value,
+            size=Size(550, 30),
+            min_value=0,
+            max_value=1,
+            update_callback=update_callback,
+            button_image=assets.gui.get("slider-button-sheet"),
+            sound_focus="hover",
+            text=text,
+            text_color=GUI_BUTTON_TEXT_COLOR,
+            text_font=assets.font.get(name=config.font, size=GUI_BUTTON_FONT_SIZE),
+            **kwargs,
+        )

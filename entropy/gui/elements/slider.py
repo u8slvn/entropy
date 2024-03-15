@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from typing import Any
 from typing import Callable
 
 import pygame as pg
@@ -12,6 +13,8 @@ from entropy.constants import SLIDER_PROGRESS_COLOR
 from entropy.event.specs import click_is_pressed
 from entropy.event.specs import left_or_right_is_pressed
 from entropy.event.types import inputs
+from entropy.gui.elements.base import UIElement
+from entropy.gui.elements.text import Text
 from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.base import Widget
 from entropy.gui.widgets.text import TText
@@ -24,12 +27,13 @@ if TYPE_CHECKING:
     from entropy.utils.measure import Color
 
 
-class Slider(Widget):
+class Slider(UIElement):
     _step = 0.1
+    _text_margin = 12
 
     def __init__(
         self,
-        parent: Widget,
+        *groups: Any,
         size: Size,
         min_value: int,
         max_value: int,
@@ -38,42 +42,68 @@ class Slider(Widget):
         button_image: pg.Surface,
         sound_focus: str,
         sound_on_hold: Callable[[], None] | None = None,
-        pos: Pos = Pos(0, 0),
-        align: Align | None = None,
+        text: str | None = None,
+        text_color: pg.Color | None = None,
+        text_font: pg.font.Font | None = None,
+        **kwargs: Any,
     ) -> None:
+        super().__init__(*groups)
         self._focus = False
         self._grabbed = False
-
         self._last_value = 0.0
         self._value = initial_value
         self._min_value = min_value
         self._max_value = max_value
-
         self._sound_focus = sound_focus
         self._sound_on_hold = sound_on_hold
-
-        self._button = _Button(image=button_image, focus=self._focus)
         self._update_callback = update_callback
-
-        self._bar = _Bar(pos=pos, size=size)
-        super().__init__(parent=parent, rect=self._bar.rect, align=align)
-
-        self._button.move(
-            Pos(
-                self.pos.x,
-                self.pos.y - (self._button.size.h - self.size.h) // 2,
-            )
+        self.image = pg.Surface(size)
+        self.rect = self.image.get_rect(**kwargs)
+        self._progress = self.rect.copy()
+        self._button = _SliderButton(
+            image=button_image, focus=self._focus, center=self.rect.center
         )
         self.set_value(value=self._value)
+        if all([text, text_color, text_font]):
+            self.text = Text(
+                *groups,
+                text=text,
+                color=text_color,
+                font=text_font,
+            )
+            self.text.move(
+                center=(
+                    self.rect.centerx,
+                    self.rect.top - self._text_margin - self.text.rect.h // 2,
+                )
+            )
+        else:
+            self.text = None
 
-    def update_align(self) -> None:
-        match self.align:
-            case Align.CENTER:
-                self._bar.center(*self.parent.center)
-            case Align.CENTER_X:
-                self._bar.center(x=self.parent.centerx)
-            case Align.CENTER_Y:
-                self._bar.center(y=self.parent.centery)
+    @property
+    def min(self) -> int:
+        return self.rect.left
+
+    @property
+    def max(self) -> int:
+        return self.rect.right
+
+    @property
+    def range(self) -> int:
+        return self.max - self.min
+
+    def move(self, **kwargs: Any) -> None:
+        self.rect = self.image.get_rect(**kwargs)
+        self._progress.topleft = self.rect.topleft
+        self._button.move(center=self.rect.center)
+        if self.text is not None:
+            self.text.move(
+                center=(
+                    self.rect.centerx,
+                    self.rect.top - self._text_margin - self.text.rect.h // 2,
+                )
+            )
+        self.set_value(value=self._value)
 
     def set_focus(self) -> None:
         if self._focus:
@@ -91,24 +121,24 @@ class Slider(Widget):
         return self._focus
 
     def move_slider(self, value: int) -> None:
-        if value < self._bar.min:
-            value = self._bar.min
-        if value > self._bar.max:
-            value = self._bar.max
+        if value < self.min:
+            value = self.min
+        if value > self.max:
+            value = self.max
 
         self._button.value = value
-        self._bar.progress = value
+        self._progress.w = value - self.min
 
     def get_value(self) -> float:
-        button_value = self._button.value - self._bar.min
-        value = (button_value / self._bar.range) * (
+        button_value = self._button.value - self.min
+        value = (button_value / self.range) * (
             self._max_value - self._min_value
         ) + self._min_value
         return round(value, 2)
 
     def set_value(self, value: float) -> None:
         self._last_value = self.get_value()
-        value = self._bar.min + self._bar.range * value
+        value = self.min + self.range * value
         self.move_slider(value=int(value))
 
     def setup(self) -> None:
@@ -156,19 +186,17 @@ class Slider(Widget):
                 self._update_callback(value)
 
     def draw(self, surface: pg.Surface) -> None:
-        self._bar.draw(surface)
+        pg.draw.rect(surface, SLIDER_BG_COLOR, self.rect)
+        pg.draw.rect(surface, SLIDER_PROGRESS_COLOR, self._progress)
         self._button.draw(surface)
 
-    def teardown(self) -> None:
-        pass
 
-
-class _Button:
-    def __init__(self, image: pg.Surface, focus: bool) -> None:
+class _SliderButton:
+    def __init__(self, image: pg.Surface, focus: bool, **kwargs: Any) -> None:
         self.focus = focus
         self._images = self._build_images(image)
         self._image = self._images[self.focus]
-        self.rect = self._image.get_rect()
+        self.rect = self._image.get_rect(**kwargs)
 
     @staticmethod
     def _build_images(image: pg.Surface) -> list[pg.Surface]:
@@ -195,52 +223,14 @@ class _Button:
     def size(self) -> Size:
         return Size(*self._image.get_size())
 
-    def move(self, pos: Pos) -> None:
-        self.rect.topleft = pos
+    def move(self, **kwargs: Any) -> None:
+        self.rect = self._image.get_rect(**kwargs)
 
     def update(self) -> None:
         self._image = self._images[self.focus]
 
     def draw(self, surface: pg.Surface) -> None:
         surface.blit(self._image, self.rect)
-
-
-class _Bar:
-    def __init__(self, pos: Pos, size: Size):
-        self.rect = pg.Rect(*pos, *size)
-        self._progress = pg.Rect(*pos, *size)
-
-    def center(self, x: int | None = None, y: int | None = None) -> None:
-        x = x or self.rect.centerx
-        y = y or self.rect.centery
-
-        self.rect.center = x, y
-        self._progress.center = x, y
-
-    @property
-    def min(self) -> int:
-        return self.rect.left
-
-    @property
-    def max(self) -> int:
-        return self.rect.right
-
-    @property
-    def range(self) -> int:
-        return self.max - self.min
-
-    @property
-    def progress(self) -> int:
-        return self._progress.w
-
-    @progress.setter
-    def progress(self, value: int) -> None:
-        self._progress.w = value - self.min
-
-    def draw(self, surface: pg.Surface) -> None:
-        # TODO: move color outside the widget.
-        pg.draw.rect(surface, SLIDER_BG_COLOR, self.rect)
-        pg.draw.rect(surface, SLIDER_PROGRESS_COLOR, self._progress)
 
 
 class TitledSlider(Widget):

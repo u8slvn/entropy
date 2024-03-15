@@ -8,8 +8,8 @@ import entropy
 
 from entropy.event.specs import a_is_pressed
 from entropy.game.states.base import State
-from entropy.gui.component.background import ColorBackground
-from entropy.gui.component.text import Text
+from entropy.gui.elements.background import ColorBackground
+from entropy.gui.elements.text import Text
 from entropy.gui.transistions.fader import FadeIn
 from entropy.gui.transistions.fader import FadeOut
 from entropy.tools.timer import TimerSecond
@@ -25,7 +25,7 @@ class Splash(State):
         super().__init__(control=control)
         self.background = ColorBackground(pg.Color("black"))
         Text(
-            self.sprites,
+            self.ui_elements,
             font=entropy.assets.font.get("LanaPixel", "md"),
             text="ENTROPY",
             color=pg.Color("white"),
