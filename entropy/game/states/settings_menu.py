@@ -67,10 +67,11 @@ class SettingsMenu(State):
         pass
 
     def process_event(self, event: Event) -> None:
+        super().process_event(event)
+        self.menu.process_event(event)
+
         if back_is_pressed(event):
             self.exit()
-
-        self.menu.process_event(event)
 
     def update(self, dt: float) -> None:
         super().update(dt)

@@ -4,7 +4,6 @@ from enum import IntEnum
 from typing import TYPE_CHECKING
 from typing import Literal
 
-from entropy import mouse
 from entropy.event.specs import down_is_pressed
 from entropy.event.specs import left_is_pressed
 from entropy.event.specs import right_is_pressed
@@ -57,8 +56,3 @@ class Menu:
                 self._select_adjacent_sprite(adjacent=Adjacent.PREV)
             elif right_is_pressed(event):
                 self._select_adjacent_sprite(adjacent=Adjacent.NEXT)
-
-        for index, sprite in enumerate(self.items):
-            if mouse.visible and sprite.has_focus():
-                self.focus_index = index
-            sprite.process_event(event=event)

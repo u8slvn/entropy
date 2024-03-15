@@ -75,6 +75,11 @@ class Mixer:
         self._channels[Channel.VOICE].fadeout(fadeout)
 
     def play_uisfx(self, name: str) -> None:
+        if self._channels[Channel.UISFX].get_queue() is not None:
+            # Dirty trick because the queue can have latency and not be empty from
+            # previous play.
+            self._channels[Channel.UISFX].stop()
+
         sound = entropy.assets.guisfx.get(name=name)
         self._channels[Channel.UISFX].queue(sound)
 
