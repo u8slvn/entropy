@@ -11,20 +11,16 @@ from entropy import mouse
 from entropy.constants import SLIDER_BG_COLOR
 from entropy.constants import SLIDER_PROGRESS_COLOR
 from entropy.event.specs import click_is_pressed
+from entropy.event.specs import click_is_released
 from entropy.event.specs import left_or_right_is_pressed
 from entropy.event.types import inputs
 from entropy.gui.elements.base import UIElement
 from entropy.gui.elements.text import Text
-from entropy.gui.widgets.base import Align
-from entropy.gui.widgets.base import Widget
-from entropy.gui.widgets.text import TText
-from entropy.utils.measure import Pos
 from entropy.utils.measure import Size
 
 
 if TYPE_CHECKING:
     from entropy.event.event import Event
-    from entropy.utils.measure import Color
 
 
 class Slider(UIElement):
@@ -146,20 +142,23 @@ class Slider(UIElement):
 
     def process_event(self, event: Event) -> None:
         if mouse.visible:
-            if mouse.collide_with(self.rect) or mouse.collide_with(self._button.rect):
+            bar_collide = mouse.collide_with(self.rect)
+            button_collide = mouse.collide_with(self._button.rect)
+
+            if bar_collide or button_collide:
                 if click_is_pressed(event):
                     self._grabbed = True
-            if not event.held:
-                mouse.grabbing = False
-                self._grabbed = False
 
-            if mouse.collide_with(self._button.rect) or self._grabbed:
+            if button_collide or self._grabbed:
                 self.set_focus()
             else:
                 self.unset_focus()
 
             if self._grabbed:
-                self._button.value = mouse.pos.x
+                if click_is_released(event):
+                    self._grabbed = False
+                else:
+                    self._button.value = min(max(mouse.pos.x, self.min), self.max)
 
         elif self.has_focus():
             if left_or_right_is_pressed(event):
@@ -231,101 +230,3 @@ class _SliderButton:
 
     def draw(self, surface: pg.Surface) -> None:
         surface.blit(self._image, self.rect)
-
-
-class TitledSlider(Widget):
-    _margin = 7
-
-    def __init__(
-        self,
-        parent: Widget,
-        size: Size,
-        min_value: int,
-        max_value: int,
-        initial_value: float,
-        update_callback: Callable[[float], None],
-        button_image: pg.Surface,
-        text: str,
-        text_color: Color | str,
-        text_font: pg.font.Font,
-        space_between: int,
-        sound_focus: str,
-        sound_on_hold: Callable[[], None] | None = None,
-        text_background: Color | str | None = None,
-        text_align: Align | None = None,
-        text_align_margin: Pos = Pos(0, 0),
-        pos: Pos = Pos(0, 0),
-        align: Align | None = None,
-    ) -> None:
-        self._space_between = space_between
-
-        self._text = TText(
-            parent=parent,
-            text=text,
-            color=text_color,
-            font=text_font,
-            background=text_background,
-            align=text_align,
-            pos=pos,
-            align_margin=text_align_margin,
-        )
-        self._slider = Slider(
-            parent=parent,
-            size=size,
-            min_value=min_value,
-            max_value=max_value,
-            initial_value=initial_value,
-            update_callback=update_callback,
-            sound_focus=sound_focus,
-            sound_on_hold=sound_on_hold,
-            button_image=button_image,
-            pos=Pos(pos.x, pos.y + self._space_between),
-            align=align,
-        )
-
-        rect = pg.Rect(*pos, 0, 0)
-        super().__init__(parent=parent, rect=rect, align=align)
-
-    def update_align(self) -> None:
-        super().update_align()
-        match self.align:
-            case Align.CENTER:
-                pass
-            case Align.CENTER_X:
-                self._text.rect.centerx = self.parent.centerx
-                self._slider.rect.centerx = self.parent.centerx
-            case Align.CENTER_Y:
-                pass
-
-    @property
-    def size(self) -> Size:
-        return Size(self.size.w, self.size.h + self._margin + self._text.size.h)
-
-    def setup(self) -> None:
-        self._text.setup()
-        self._slider.setup()
-
-    def process_event(self, event: Event) -> None:
-        self._text.process_event(event=event)
-        self._slider.process_event(event=event)
-
-    def update(self, dt: float) -> None:
-        self._text.update(dt=dt)
-        self._slider.update(dt=dt)
-
-    def draw(self, surface: pg.Surface) -> None:
-        self._text.draw(surface=surface)
-        self._slider.draw(surface=surface)
-
-    def teardown(self) -> None:
-        self._text.teardown()
-        self._slider.teardown()
-
-    def set_focus(self) -> None:
-        self._slider.set_focus()
-
-    def unset_focus(self) -> None:
-        self._slider.unset_focus()
-
-    def has_focus(self) -> bool:
-        return self._slider.has_focus()

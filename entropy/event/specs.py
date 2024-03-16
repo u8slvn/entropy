@@ -25,6 +25,14 @@ class ButtonIsHeld(Specification[Event]):
         return candidate.held and candidate.key == self._button
 
 
+class ButtonIsReleased(Specification[Event]):
+    def __init__(self, button: int) -> None:
+        self._button = button
+
+    def is_satisfied_by(self, candidate: Event) -> bool:
+        return candidate.released and candidate.key == self._button
+
+
 a_is_pressed = ButtonIsPressed(button=inputs.A)
 b_is_pressed = ButtonIsPressed(button=inputs.B)
 click_is_pressed = ButtonIsPressed(button=inputs.CLICK)
@@ -46,3 +54,5 @@ left_is_held = ButtonIsHeld(button=inputs.LEFT)
 down_is_held = ButtonIsHeld(button=inputs.DOWN)
 click_is_held = ButtonIsHeld(button=inputs.CLICK)
 back_is_held = ButtonIsHeld(button=inputs.BACK)
+
+click_is_released = ButtonIsReleased(button=inputs.CLICK)

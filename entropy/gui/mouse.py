@@ -22,7 +22,6 @@ class Mouse:
         self._nb_moves_before_show = 2
         self._pos: Pos = Pos(0, 0)
         self.visible = True
-        self.grabbing = False  # Used to know if the mouse is already grabbing a sprite.
 
     @property
     def pos(self) -> Pos:
