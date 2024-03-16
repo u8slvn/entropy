@@ -45,11 +45,10 @@ class Chapter(BaseNode):
         self, state: State, name: str, start_node: str, configfile: str
     ) -> None:
         super().__init__()
-        self._background = ColorBackground(
-            color=Color(0, 0, 0, 255)
-        )  # Default background
+        self._background = ColorBackground(color=Color(0, 0, 0, 255))
         self._name = name
         self._state = state
+        self.ui_elements = self._state.ui_elements
         self._nodes: dict[str, Callable[[], Node]] = {}
         self._current_node: Node = NullNode(chapter=self)
         self._loaded = False

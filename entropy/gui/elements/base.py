@@ -25,9 +25,8 @@ class UIElementBase(ABC):
     def draw(self, surface: pg.Surface) -> None:
         raise NotImplementedError
 
-    @abstractmethod
     def cleanup(self) -> None:
-        raise NotImplementedError
+        pass
 
 
 class UIElement(UIElementBase, ABC):

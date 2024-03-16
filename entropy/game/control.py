@@ -14,7 +14,7 @@ from entropy.event.handler import EventQueueHandler
 from entropy.event.types import inputs
 from entropy.event.types import system
 from entropy.game import states
-from entropy.gui.widgets.fps import FPSViewer
+from entropy.gui.elements.fps import FPSViewer
 from entropy.logging import get_logger
 from entropy.utils.measure import Res
 from entropy.utils.measure import cleanup

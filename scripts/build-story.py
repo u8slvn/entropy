@@ -34,3 +34,10 @@ for key, value in main.items():
 with open(OUTPUT / "main.json", "w") as file:
     print("  * Chapters config built.")
     json.dump(main, file, indent=4)
+
+
+def build_story() -> None: ...
+
+
+if __name__ == "__main__":
+    build_story()
