@@ -2,12 +2,11 @@ from __future__ import annotations
 
 from typing import Callable
 
-import pygame
+import pygame as pg
 
+from entropy.gui.elements.background import ColorBackground
 from entropy.gui.transistions.base import Ease
 from entropy.gui.transistions.base import Transition
-from entropy.gui.widgets.background import ColorBackground
-from entropy.utils.measure import Color
 
 
 class _FaderTransition(Transition):
@@ -17,7 +16,7 @@ class _FaderTransition(Transition):
         callback: Callable[[], None] | None = None,
     ) -> None:
         super().__init__(duration=duration, callback=callback)
-        self._background = ColorBackground(color=Color(0, 0, 0, 255))
+        self._background = ColorBackground(color=pg.Color(0, 0, 0, 255))
         self._alpha_rate = 255 / duration
 
     def _default_alpha_value(self) -> int:
@@ -39,7 +38,7 @@ class _FaderTransition(Transition):
             alpha = min(255 - int(self._timer.countdown * self._alpha_rate), 255)
         self._background.set_alpha(alpha)
 
-    def draw(self, surface: pygame.Surface) -> None:
+    def draw(self, surface: pg.Surface) -> None:
         if self.is_active():
             self._background.draw(surface=surface)
 

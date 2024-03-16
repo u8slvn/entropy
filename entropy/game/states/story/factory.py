@@ -8,10 +8,10 @@ from typing import Generator
 import entropy
 
 from entropy.config import get_config
+from entropy.gui.elements.background import ColorBackground
+from entropy.gui.elements.background import ImageBackground
 from entropy.gui.transistions.fader import FadeIn
 from entropy.gui.transistions.fader import FadeOut
-from entropy.gui.widgets.background import ColorBackground
-from entropy.gui.widgets.background import ImageBackground
 from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.text import TypeWriterText
 from entropy.utils.measure import Color
@@ -21,8 +21,8 @@ from entropy.utils.measure import Pos
 config = get_config()
 
 if TYPE_CHECKING:
+    from entropy.gui.elements.background import Background
     from entropy.gui.transistions.base import Transition
-    from entropy.gui.widgets.background import Background
     from entropy.gui.widgets.base import Widget
 
 

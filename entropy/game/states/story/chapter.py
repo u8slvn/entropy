@@ -14,7 +14,7 @@ from entropy.game.states.story.node.base import BaseNode
 from entropy.game.states.story.node.base import NullNode
 from entropy.game.states.story.node.contemplation import ContemplationScene
 from entropy.game.states.story.node.intro import IntroScene
-from entropy.gui.widgets.background import ColorBackground
+from entropy.gui.elements.background import ColorBackground
 from entropy.locations import STORY_DIR
 from entropy.logging import get_logger
 from entropy.utils.measure import Color
@@ -25,7 +25,7 @@ if TYPE_CHECKING:
     from entropy.event.event import Event
     from entropy.game.states.base import State
     from entropy.game.states.story.node.base import Node
-    from entropy.gui.widgets.background import Background
+    from entropy.gui.elements.background import Background
 
 logger = get_logger()
 
@@ -45,7 +45,7 @@ class Chapter(BaseNode):
         self, state: State, name: str, start_node: str, configfile: str
     ) -> None:
         super().__init__()
-        self._background: Background = ColorBackground(
+        self._background = ColorBackground(
             color=Color(0, 0, 0, 255)
         )  # Default background
         self._name = name

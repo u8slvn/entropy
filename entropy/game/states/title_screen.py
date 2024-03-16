@@ -14,10 +14,10 @@ from entropy.config import get_config
 from entropy.constants import GUI_BUTTON_FONT_SIZE
 from entropy.constants import GUI_BUTTON_TEXT_COLOR
 from entropy.game.states.base import State
+from entropy.gui.elements.background import ImageBackground
 from entropy.gui.elements.button import Button
 from entropy.gui.elements.menu import Menu
 from entropy.gui.elements.utils import move
-from entropy.gui.widgets.background import ImageBackground
 
 
 if TYPE_CHECKING:
