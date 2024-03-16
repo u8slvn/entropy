@@ -64,16 +64,16 @@ def test_parse_chapter_data():
 
     expected = {
         "entrypoint": "705cc8c4aab2c0dfb3a3f280da16760d",
-        "nodes": [
-            {
+        "nodes": {
+            "705cc8c4aab2c0dfb3a3f280da16760d": {
                 "next_uuid": "f43c51286fe1559c6253e0b37ec045c6",
                 "uuid": "705cc8c4aab2c0dfb3a3f280da16760d",
             },
-            {
+            "f43c51286fe1559c6253e0b37ec045c6": {
                 "next_uuid": "end",
                 "uuid": "f43c51286fe1559c6253e0b37ec045c6",
             },
-        ],
+        },
     }
 
     assert result == expected

@@ -50,7 +50,8 @@ def parse_chapter_data(chapter_data: list[list[dict[str, Any]]]):
                 rv["entrypoint"] = node_data["uuid"]
                 del node_data["entrypoint"]
 
-    rv["nodes"] = list(itertools.chain.from_iterable(chapter_data))
+    nodes = list(itertools.chain.from_iterable(chapter_data))
+    rv["nodes"] = {node["uuid"]: node for node in nodes}
 
     return rv
 
