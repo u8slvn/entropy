@@ -1,5 +1,4 @@
-"""
-Virtual player input types used by the game.
+"""Virtual player input types used by the game.
 All controllers event will be mapped to these values.
 """
 

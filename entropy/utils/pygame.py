@@ -14,8 +14,7 @@ F = TypeVar("F", bound=Callable[..., Any])
 
 
 def reset_display(func: F) -> F:
-    """
-    Avoid crash between switch mode when `pygame.display.set_mode` is called with
+    """Avoid crash between switch mode when `pygame.display.set_mode` is called with
     `SCALED` flag after being initialized without it.
     """
 

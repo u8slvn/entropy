@@ -1,5 +1,4 @@
-"""
-Game event handler. Manage all events from pygame.
+"""Game event handler. Manage all events from pygame.
 The handlers logic comes from Tuxemon:
 https://github.com/Tuxemon/Tuxemon
 """
@@ -35,9 +34,7 @@ class EventQueueHandler:
         ]
 
     def process_events(self) -> Generator[Event, None, None]:
-        """
-        Process all the event coming from pygame and distribute them to the handlers.
-        """
+        """Process all the event coming from pygame and distribute them to the handlers."""
         for event in pg.event.get():
             for event_handler in self._event_handlers:
                 event_handler.process_event(event=event)
@@ -66,8 +63,7 @@ class EventHandler(ABC):
         raise NotImplementedError
 
     def get_events(self) -> Generator[Event, None, None]:
-        """
-        Decide which events can be returned from the store and update them after they
+        """Decide which events can be returned from the store and update them after they
         have been yield. This allows to have certain events to be sent only one time
         with a certain value. For example a pressed key event.
         """
@@ -90,24 +86,19 @@ class EventHandler(ABC):
         self._store.flush()
 
     def press(self, key: int, value: int | tuple[int, int] = 1) -> None:
-        """
-        Update a key from the store to pressed status. Used when a button is pressed.
-        """
+        """Update a key from the store to pressed status. Used when a button is pressed."""
         self._store[key].value = value
         self._store[key].pressed = True
         self._store[key].time = time.time()
 
     def release(self, key: int) -> None:
-        """
-        Release a key from the store. Used when a button is released.
-        """
+        """Release a key from the store. Used when a button is released."""
         self._store[key].value = 0
         self._store[key].released = True
         self._store[key].time = None
 
     def trigger(self, key: int, value: int | tuple[int, int] = 1) -> None:
-        """
-        Trigger a key from the store. Used to send a standalone action with a value,
+        """Trigger a key from the store. Used to send a standalone action with a value,
         like a screen resize or a mouse motion.
         """
         self._store[key].value = value
@@ -180,9 +171,8 @@ class KeyboardEventHandler(EventHandler):
     def process_event(self, event: pg.event.Event) -> None:
         pressed = event.type == pg.KEYDOWN
         released = event.type == pg.KEYUP
-        if pressed or released:
-            if key := self._mapping.get(event.key):
-                if pressed:
-                    self.press(key)
-                else:
-                    self.release(key)
+        if (pressed or released) and (key := self._mapping.get(event.key)):
+            if pressed:
+                self.press(key)
+            else:
+                self.release(key)

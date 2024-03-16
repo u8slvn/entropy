@@ -145,9 +145,8 @@ class Slider(UIElement):
             bar_collide = mouse.collide_with(self.rect)
             button_collide = mouse.collide_with(self._button.rect)
 
-            if bar_collide or button_collide:
-                if click_is_pressed(event):
-                    self._grabbed = True
+            if (bar_collide or button_collide) and click_is_pressed(event):
+                self._grabbed = True
 
             if button_collide or self._grabbed:
                 self.set_focus()

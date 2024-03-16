@@ -21,9 +21,8 @@ uuid_cache = {}
 
 
 def generate_uuid(value: str) -> str:
-    """
-    Generate unique ID for a given string. If the given string is "end" return it as is,
-    "end" is used to mark the end of a chapter.
+    """Generate unique ID for a given string. If the given string is "end" return it as
+    is, "end" is used to mark the end of a chapter.
     """
     if value == "end":
         return value
@@ -63,8 +62,7 @@ def is_json_file(filepath: Path) -> bool:
 
 
 def load_chapters_data(story_path: Path) -> dict[str, list[dict[str:Any]]]:
-    """
-    Walk through the given directory and load every directory within as chapters.
+    """Walk through the given directory and load every directory within as chapters.
     All the JSON files from each chapter directories are loaded and concatenate
     together.
     """
@@ -99,19 +97,24 @@ def build_story(dir_path: Path) -> None:
 
 
 def dir_path_arg(value: str) -> Path:
-    """
-    Check if the given string argument is a valid directory path and return it as
+    """Check if the given string argument is a valid directory path and return it as
     Path if true.
     """
     path = Path(value)
     if path.is_dir():
         return path
+
     raise argparse.ArgumentTypeError(f"Story builder: '{value}' is not a valid path.")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--path", type=dir_path_arg, default=DEFAULT_DIR)
+    parser = argparse.ArgumentParser("Build story files.")
+    parser.add_argument(
+        "--path",
+        type=dir_path_arg,
+        default=DEFAULT_DIR,
+        help="Path to the story directory.",
+    )
     parsed_args = parser.parse_args()
 
     # Cleanup output dir before generating the story files.

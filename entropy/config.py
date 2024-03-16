@@ -100,7 +100,7 @@ class _Config(Subject):
 
     def save(self) -> None:
         for section, params in self._default_config.items():
-            for param in params.keys():
+            for param in params:
                 self._config[section][param] = str(getattr(self, param))
 
         try:

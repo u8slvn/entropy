@@ -1,5 +1,4 @@
-"""
-Define event specifications in order to avoid repeating certain logics.
+"""Define event specifications in order to avoid repeating certain logics.
 """
 
 from __future__ import annotations

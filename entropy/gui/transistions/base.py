@@ -28,7 +28,7 @@ class Transition(GameEntity, ABC):
         duration: int,
         callback: Callable[[], None] | None = None,
     ) -> None:
-        autostart = True if self._ease is Ease.IN else False
+        autostart = self._ease is Ease.IN
         self._timer = Timer(
             duration=duration,
             callback=callback,

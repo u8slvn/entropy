@@ -13,7 +13,6 @@ APPDATA = os.getenv("APPDATA")
 
 def configure() -> None:
     """Configure platform related needs."""
-
     if WIN:
         # Make pygame high DPI aware
         import ctypes

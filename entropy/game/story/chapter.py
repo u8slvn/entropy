@@ -25,8 +25,7 @@ class Chapters:
         self._index = self._load_index()
 
     def _load_index(self) -> Any:
-        """
-        Load the index file of the chapters which determine the filename and the
+        """Load the index file of the chapters which determine the filename and the
         entrypoint of each chapter.
         """
         with open(self._dir_path / f"{self._index_file}{self._ext_file}", "r") as file:
@@ -47,6 +46,10 @@ class Chapters:
 
 @dataclass
 class Chapter:
+    """Chapter class: Represent a chapter of the game. Each chapter contains an entrypoint
+    and a collection of nodes. The entrypoint is the first node uuid.
+    """
+
     entrypoint: str
     nodes: dict[str, dict[str, Any]]
 

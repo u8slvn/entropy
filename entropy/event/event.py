@@ -18,14 +18,13 @@ class EventMapping:
 
 
 class Event:
-    """
-    Represent a game event.
-      - Key is the name by which the event is referred in the game.
-      - Value is the value that can be associate to the event, like the mouse position.
-      - Pressed handle the press status for a button.
-      - Released handle the release status for a button.
-      - Triggered handle the trigger status for a standalone event.
-      - Time is the time in second when a button has been pressed.
+    """Represent a game event.
+    - Key is the name by which the event is referred in the game.
+    - Value is the value that can be associate to the event, like the mouse position.
+    - Pressed handle the press status for a button.
+    - Released handle the release status for a button.
+    - Triggered handle the trigger status for a standalone event.
+    - Time is the time in second when a button has been pressed.
     """
 
     __slots__ = ("key", "value", "pressed", "released", "triggered", "time")

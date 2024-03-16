@@ -5,9 +5,7 @@ from abc import abstractmethod
 
 
 class Command(ABC):
-    """
-    Encapsulate an action in order to pass it to an object that can execute it later.
-    """
+    """Encapsulate an action in order to pass it to an object that can execute it later."""
 
     @abstractmethod
     def __call__(self) -> None: ...

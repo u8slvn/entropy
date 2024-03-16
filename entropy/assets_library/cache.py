@@ -9,9 +9,7 @@ _cache: _AssetsCache | None = None
 
 
 class _AssetsCache:
-    """
-    Centralized cache for assets.
-    """
+    """Centralized cache for assets."""
 
     def __init__(self) -> None:
         self._cache: dict[str, dict[str, Any]] = defaultdict(dict)

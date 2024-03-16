@@ -36,8 +36,7 @@ NODE_TYPE_MAPPING: dict[str, Type[Node]] = {
 
 
 class Chapter(BaseNode):
-    """
-    Chapter class.
+    """Chapter class.
     Represent a Chapter of the game and handle all the nodes of a chapter of the game.
     """
 
@@ -88,15 +87,13 @@ class Chapter(BaseNode):
 
     @property
     def background(self) -> Background:
-        """
-        Expose the background of the Chapter as it may be used as root widget
+        """Expose the background of the Chapter as it may be used as root widget
         for the nodes.
         """
         return self._background
 
     def set_background(self, config: str | None) -> None:
-        """
-        Set the Chapter's background.
+        """Set the Chapter's background.
         Used by the Story Nodes to set the background of the Chapter.
         """
         if config is not None:
@@ -136,8 +133,7 @@ class Chapter(BaseNode):
             self.transition_to_node(uuid=next_node_uuid)
 
     def draw(self, surface: pygame.Surface) -> None:
-        """
-        Draw method of the Chapter.
+        """Draw method of the Chapter.
         Always draws the background first then the current node.
         """
         self._background.draw(surface=surface)

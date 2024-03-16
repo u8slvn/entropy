@@ -41,8 +41,7 @@ class Window:
 
     @reset_display
     def _build_screen(self, resolution: Res) -> pygame.Surface:
-        """
-        Build screen surface.
+        """Build screen surface.
 
         If the given resolution is the same as the monitor resolution the resolution is
         scale down to fit inside the monitor.
@@ -82,8 +81,7 @@ class Window:
             )
 
     def update_scale_params(self) -> None:
-        """
-        Update the scale params.
+        """Update the scale params.
 
         Used to scale the mouse position to match the display resolution.
         """
@@ -122,8 +120,7 @@ class Window:
         self.resize_screen()
 
     def render(self, surface: pygame.Surface) -> None:
-        """
-        Render the giver surface to the screen.
+        """Render the giver surface to the screen.
 
         If the screen size is not the same size as the render resolution, the surface
         is scaled to the screen size.
