@@ -104,7 +104,7 @@ class Node(BaseNode, ABC):
 class NullNode(Node):
     """Null Node: A node that does nothing."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(next_id="end")
 
     def process_event(self, event: Event) -> None:

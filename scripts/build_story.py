@@ -22,7 +22,8 @@ uuid_cache = {}
 
 def generate_uuid(value: str) -> str:
     """
-    Function to generate unique ID for a given string.
+    Generate unique ID for a given string. If the given string is "end" return it as is,
+    "end" is used to mark the end of a chapter.
     """
     if value == "end":
         return value

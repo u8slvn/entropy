@@ -21,10 +21,10 @@ class Chapters:
     _index_file = "index"
     _ext_file = ".entropy"
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._index = self._load_index()
 
-    def _load_index(self) -> dict[str, str]:
+    def _load_index(self) -> Any:
         """
         Load the index file of the chapters which determine the filename and the
         entrypoint of each chapter.
@@ -32,7 +32,7 @@ class Chapters:
         with open(self._dir_path / f"{self._index_file}{self._ext_file}", "r") as file:
             return json.load(file)
 
-    def _load_chapter(self, filename, entrypoint) -> Chapter:
+    def _load_chapter(self, filename: str, entrypoint: str) -> Chapter:
         """Load the chapter from the given filename."""
         with open(self._dir_path / f"{filename}{self._ext_file}", "r") as file:
             nodes = json.load(file)
@@ -48,11 +48,11 @@ class Chapters:
 @dataclass
 class Chapter:
     entrypoint: str
-    nodes: list[dict[str:Any]]
+    nodes: dict[str, dict[str, Any]]
 
     def get_node(self, uuid: str) -> Node | None:
         """Return the node with the given uuid."""
-        for node in self.nodes:
-            if node["uuid"] == uuid:
-                return node
+        if node := self.nodes.get(uuid):
+            return Node(**node)
+
         return None
