@@ -18,7 +18,7 @@ class UIElementBase(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def update(self, **kwargs: Any) -> None:
+    def update(self, dt: float) -> None:
         raise NotImplementedError
 
     @abstractmethod
@@ -31,7 +31,8 @@ class UIElementBase(ABC):
 
 class UIElement(UIElementBase, ABC):
     def __init__(self, group: UIElementGroup | None):
-        group.add(self)
+        if group:
+            group.add(self)
         self.image: pg.Surface | None = None
         self.rect: pg.rect.Rect | None = None
 
@@ -43,7 +44,8 @@ class UIElement(UIElementBase, ABC):
             self.rect = self.image.get_rect(**kwargs)
 
     def draw(self, surface: pg.Surface) -> None:
-        surface.blit(self.image, self.rect)
+        if self.image and self.rect:
+            surface.blit(self.image, self.rect)
 
     def cleanup(self) -> None:
         pass
@@ -60,9 +62,9 @@ class UIElementGroup(UIElementBase):
         for element in self.elements:
             element.process_event(event)
 
-    def update(self, **kwargs: Any) -> None:
+    def update(self, dt: float) -> None:
         for element in self.elements:
-            element.update(**kwargs)
+            element.update(dt)
 
     def draw(self, surface: pg.Surface) -> None:
         for element in self.elements:

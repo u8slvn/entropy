@@ -1,12 +1,13 @@
 [
   {
     "background": "color:black",
-    "id": "ch01sc01n00",
+    "entrypoint": true,
     "music": "epic-theme",
-    "next_id": "ch01sc01n01",
+    "next_uuid": "ch01sc01n01",
     "subtitle": "The beginning of the story",
     "title": "Chapter 1",
-    "type": "intro"
+    "type": "intro",
+    "uuid": "ch01sc01n00"
   },
   {
     "background": "image:ch01-sc01-01",
@@ -23,9 +24,9 @@
       ],
       "voice": "narrator"
     },
-    "id": "ch01sc01n01",
-    "next_id": "ch01sc01n02",
-    "type": "contemplation"
+    "next_uuid": "ch01sc01n02",
+    "type": "contemplation",
+    "uuid": "ch01sc01n01"
   },
   {
     "ease_out": {
@@ -39,8 +40,8 @@
       ],
       "voice": "narrator"
     },
-    "id": "ch01sc01n02",
-    "next_id": "ch01sc02n01",
-    "type": "contemplation"
+    "next_uuid": "ch01sc02n01",
+    "type": "contemplation",
+    "uuid": "ch01sc01n02"
   }
 ]

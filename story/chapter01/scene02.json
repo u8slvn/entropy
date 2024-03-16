@@ -17,10 +17,10 @@
       ],
       "voice": "narrator"
     },
-    "id": "ch01sc02n01",
     "music": "nice-theme",
-    "next_id": "end",
+    "next_uuid": "end",
     "transition-in": "fade-in",
-    "type": "contemplation"
+    "type": "contemplation",
+    "uuid": "ch01sc02n01"
   }
 ]

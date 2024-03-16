@@ -46,7 +46,7 @@ tasks:
     desc: Build story's files.
     silent: true
     cmds:
-      - python ./scripts/build-story.py
+      - python ./scripts/build_story.py
 
   profile:
     desc: Run a profiling game session.

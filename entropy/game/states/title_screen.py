@@ -15,6 +15,7 @@ from entropy.constants import GUI_BUTTON_FONT_SIZE
 from entropy.constants import GUI_BUTTON_TEXT_COLOR
 from entropy.game.states.base import State
 from entropy.gui.elements.background import ImageBackground
+from entropy.gui.elements.base import UIElement
 from entropy.gui.elements.button import Button
 from entropy.gui.elements.menu import Menu
 from entropy.gui.elements.utils import move
@@ -66,7 +67,7 @@ class TitleScreen(State):
         self._covered = True
 
     def _build_menu(self) -> Menu:
-        buttons = [
+        items: list[UIElement] = [
             self._build_menu_button(
                 text="NEW GAME",
                 action=TransitionToNextState(state=self, next_state="Story"),
@@ -80,8 +81,8 @@ class TitleScreen(State):
                 action=QuitGame(),
             ),
         ]
-        move(items=buttons, space_between=40, direction="vertical", topleft=(0, 400))
-        return Menu(items=buttons, direction="vertical")
+        move(items=items, space_between=40, direction="vertical", topleft=(0, 400))
+        return Menu(items=items, direction="vertical")
 
     def _build_menu_button(
         self,

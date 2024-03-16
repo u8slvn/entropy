@@ -26,6 +26,7 @@ from entropy.constants import GUI_TEXT_COLOR
 from entropy.event.specs import back_is_pressed
 from entropy.game.states.base import State
 from entropy.gui.elements.background import ColorBackground
+from entropy.gui.elements.base import UIElement
 from entropy.gui.elements.button import AttrObserver
 from entropy.gui.elements.button import Button
 from entropy.gui.elements.menu import Menu
@@ -104,7 +105,7 @@ class SettingsMenu(State):
         match menu:
             case Menus.DISPLAY:
                 text_title = "DISPLAY"
-                items = [
+                items: list[UIElement] = [
                     self._build_menu_button(
                         text="FULLSCREEN",
                         action=EnableFullscreen(),
