@@ -16,6 +16,7 @@ from entropy.constants import GUI_BUTTON_TEXT_COLOR
 from entropy.game.states.base import State
 from entropy.gui.elements.background import ImageBackground
 from entropy.gui.elements.base import UIElement
+from entropy.gui.elements.base import UIElementGroup
 from entropy.gui.elements.button import Button
 from entropy.gui.elements.menu import Menu
 from entropy.gui.elements.utils import move
@@ -35,6 +36,7 @@ def test_lang() -> None:
 class TitleScreen(State):
     def __init__(self, control: Control) -> None:
         super().__init__(control=control)
+        self.ui_elements = UIElementGroup()
         self._covered = False
         self._background = ImageBackground(name="title-screen-bg")
         self._logo = assets.image.get("title-screen-logo-a")
@@ -49,22 +51,26 @@ class TitleScreen(State):
         self._covered = False
 
     def process_event(self, event: Event) -> None:
-        super().process_event(event)
+        self.ui_elements.process_event(event)
         self._main_menu.process_event(event=event)
 
     def update(self, dt: float) -> None:
-        super().update(dt)
+        self.ui_elements.update(dt)
 
     def draw(self, surface: pygame.Surface) -> None:
         self._background.draw(surface=surface)
 
         if self._covered is False:
-            super().draw(surface)
+            self.ui_elements.draw(surface)
             surface.blit(self._logo, (660, 0))
 
     def teardown(self) -> None:
         super().teardown()
         self._covered = True
+
+    def exit(self) -> None:
+        self.ui_elements.cleanup()
+        super().exit()
 
     def _build_menu(self) -> Menu:
         items: list[UIElement] = [

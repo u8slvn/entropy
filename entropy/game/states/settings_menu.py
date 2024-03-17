@@ -24,9 +24,10 @@ from entropy.constants import GUI_BUTTON_FONT_SIZE
 from entropy.constants import GUI_BUTTON_TEXT_COLOR
 from entropy.constants import GUI_TEXT_COLOR
 from entropy.event.specs import back_is_pressed
-from entropy.game.states.base import State
+from entropy.game.states import State
 from entropy.gui.elements.background import ColorBackground
 from entropy.gui.elements.base import UIElement
+from entropy.gui.elements.base import UIElementGroup
 from entropy.gui.elements.button import AttrObserver
 from entropy.gui.elements.button import Button
 from entropy.gui.elements.menu import Menu
@@ -57,8 +58,11 @@ class Menus(StrEnum):
 
 
 class SettingsMenu(State):
+    """SettingsMenu state. Handle the settings menu of the game."""
+
     def __init__(self, control: Control) -> None:
         super().__init__(control=control)
+        self.ui_elements = UIElementGroup()
         self.background = ColorBackground(color=Color(0, 0, 0, 150))
         self._font = assets.font.get("LanaPixel", "lg")
         self.menu = self._build_menu(Menus.SETTINGS)
@@ -67,25 +71,29 @@ class SettingsMenu(State):
         pass
 
     def process_event(self, event: Event) -> None:
-        super().process_event(event)
+        self.ui_elements.process_event(event)
         self.menu.process_event(event)
 
         if back_is_pressed(event):
             self.exit()
 
     def update(self, dt: float) -> None:
-        super().update(dt)
+        self.ui_elements.update(dt=dt)
 
     def draw(self, surface: pg.Surface) -> None:
         if self.control.prev_state is not None:
             self.control.prev_state.draw(surface)
 
         self.background.draw(surface)
-        super().draw(surface)
+        self.ui_elements.draw(surface)
 
     def teardown(self) -> None:
         super().teardown()
         config.save()
+
+    def exit(self) -> None:
+        self.ui_elements.cleanup()
+        super().exit()
 
     def transition_to(self, state_name: str, with_exit: bool = False) -> None:
         self.ui_elements.empty()

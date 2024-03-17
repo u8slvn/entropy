@@ -24,8 +24,8 @@ class Splash(State):
     def __init__(self, control: Control) -> None:
         super().__init__(control=control)
         self.background = ColorBackground(pg.Color("black"))
-        Text(
-            self.ui_elements,
+        self.text = Text(
+            None,
             font=entropy.assets.font.get("LanaPixel", "md"),
             text="ENTROPY",
             color=pg.Color("white"),
@@ -65,7 +65,7 @@ class Splash(State):
 
     def draw(self, surface: pg.Surface) -> None:
         self.background.draw(surface)
-        super().draw(surface)
+        self.text.draw(surface)
         self.fade_out.draw(surface)
         self.fade_in.draw(surface)
 
