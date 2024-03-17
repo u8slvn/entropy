@@ -58,12 +58,14 @@ class Splash(State):
         if self._done:
             self.control.transition_to("TitleScreen", with_exit=True)
 
-        super().update(dt)
         self.fade_in.update(dt)
         self.fade_out.update(dt)
         self.timer.update(dt)
 
     def draw(self, surface: pg.Surface) -> None:
+        if self._done:
+            return
+
         self.background.draw(surface)
         self.text.draw(surface)
         self.fade_out.draw(surface)
