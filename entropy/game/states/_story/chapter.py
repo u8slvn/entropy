@@ -9,11 +9,11 @@ from typing import Type
 
 import pygame
 
-from entropy.game.states.story.factory import build_background
-from entropy.game.states.story.node.base import BaseNode
-from entropy.game.states.story.node.base import NullNode
-from entropy.game.states.story.node.contemplation import ContemplationScene
-from entropy.game.states.story.node.intro import IntroScene
+from entropy.game.states._story.factory import build_background
+from entropy.game.states._story.node.base import BaseNode
+from entropy.game.states._story.node.base import NullNode
+from entropy.game.states._story.node.contemplation import ContemplationScene
+from entropy.game.states._story.node.intro import IntroScene
 from entropy.gui.elements.background import ColorBackground
 from entropy.locations import STORY_DIR
 from entropy.logging import get_logger
@@ -23,8 +23,8 @@ from entropy.utils.measure import cleanup
 
 if TYPE_CHECKING:
     from entropy.event.event import Event
+    from entropy.game.states._story.node.base import Node
     from entropy.game.states.base import State
-    from entropy.game.states.story.node.base import Node
     from entropy.gui.elements.background import Background
 
 logger = get_logger()

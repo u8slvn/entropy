@@ -5,12 +5,12 @@ import json
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import Generator
 
 from entropy.locations import STORY_DIR
 
 
 if TYPE_CHECKING:
+    from entropy.game.states import State
     from entropy.game.story.nodes.base import Node
 
 
@@ -21,27 +21,36 @@ class Chapters:
     _index_file = "index"
     _ext_file = ".entropy"
 
-    def __init__(self) -> None:
-        self._index = self._load_index()
+    def __init__(self, chapters: dict[str, Chapter]) -> None:
+        self._chapters = chapters
 
-    def _load_index(self) -> Any:
+    @classmethod
+    def _load_index(cls) -> Any:
         """Load the index file of the chapters which determine the filename and the
         entrypoint of each chapter.
         """
-        with open(self._dir_path / f"{self._index_file}{self._ext_file}", "r") as file:
+        with open(cls._dir_path / f"{cls._index_file}{cls._ext_file}", "r") as file:
             return json.load(file)
 
-    def _load_chapter(self, filename: str, entrypoint: str) -> Chapter:
-        """Load the chapter from the given filename."""
-        with open(self._dir_path / f"{filename}{self._ext_file}", "r") as file:
-            nodes = json.load(file)
+    @classmethod
+    def load_chapters(cls, state: State) -> Chapters:
+        """Load the chapters from index file and the nodes files of each chapter."""
+        chapters = {}
+        index = cls._load_index()
+        for chapter, entrypoint in index.items():
+            with open(cls._dir_path / f"{chapter}{cls._ext_file}", "r") as file:
+                nodes = json.load(file)
 
-        return Chapter(entrypoint, nodes)
+            chapters[chapter] = Chapter(state, entrypoint, nodes)
 
-    def get_chapter(self) -> Generator[Chapter, None, None]:
-        """Generator to get all the chapters."""
-        for chapter, entrypoint in self._index.items():
-            yield self._load_chapter(chapter, entrypoint)
+        return cls(chapters)
+
+    def get_chapter(self, name: str) -> Chapter:
+        """Return the chapter with the given name."""
+        try:
+            return self._chapters[name]
+        except KeyError:
+            raise ValueError(f'Chapter with name "{name}" does not exist.')
 
 
 @dataclass
@@ -50,12 +59,24 @@ class Chapter:
     and a collection of nodes. The entrypoint is the first node uuid.
     """
 
+    state: State
     entrypoint: str
     nodes: dict[str, dict[str, Any]]
 
-    def get_node(self, uuid: str) -> Node | None:
+    def get_node(self, uuid: str | None = None) -> Node | None:
         """Return the node with the given uuid."""
+        uuid = uuid or self.entrypoint
         if node := self.nodes.get(uuid):
             return Node(**node)
 
+        return None
+
+
+class NullChapter(Chapter):
+    """NullChapter class: Represent a null chapter of the game."""
+
+    def __init__(self) -> None:
+        super().__init__("", {})
+
+    def get_node(self, uuid: str | None = None) -> Node | None:
         return None

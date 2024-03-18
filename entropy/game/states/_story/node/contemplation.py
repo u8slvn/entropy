@@ -4,8 +4,8 @@ from typing import TYPE_CHECKING
 from typing import Any
 
 from entropy.event.specs import a_or_click_is_pressed
-from entropy.game.states.story.factory import build_event
-from entropy.game.states.story.node.base import Node
+from entropy.game.states._story.factory import build_event
+from entropy.game.states._story.node.base import Node
 from entropy.gui.widgets.base import Align
 from entropy.gui.widgets.image import Image
 from entropy.tools.timer import TimerSecond
@@ -16,7 +16,7 @@ if TYPE_CHECKING:
     import pygame
 
     from entropy.event.event import Event
-    from entropy.game.states.story.chapter import Chapter
+    from entropy.game.states._story.chapter import Chapter
 
 
 class ContemplationScene(Node):

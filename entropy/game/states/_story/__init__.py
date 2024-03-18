@@ -10,8 +10,8 @@ import pygame
 
 from entropy import translator
 from entropy.config import get_config
+from entropy.game.states._story.chapter import Chapter
 from entropy.game.states.base import State
-from entropy.game.states.story.chapter import Chapter
 from entropy.locations import STORY_DIR
 from entropy.logging import get_logger
 

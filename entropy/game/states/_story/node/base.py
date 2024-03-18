@@ -7,14 +7,14 @@ from typing import Any
 from entropy import mixer
 from entropy.event.event import Event
 from entropy.game.entity import GameEntity
-from entropy.game.states.story.factory import build_transition
+from entropy.game.states._story.factory import build_transition
 from entropy.logging import get_logger
 
 
 if TYPE_CHECKING:
     import pygame
 
-    from entropy.game.states.story.chapter import Chapter
+    from entropy.game.states._story.chapter import Chapter
 
 logger = get_logger()
 

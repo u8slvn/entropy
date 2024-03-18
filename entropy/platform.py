@@ -22,6 +22,7 @@ def configure() -> None:
 
 
 def get_user_local_storage() -> Path:
+    """Return the user local storage path. Used to store user saves and config."""
     if WIN and APPDATA is not None:
         appdata = Path(APPDATA)
         return appdata.parent.joinpath("LocalLow/entropy")

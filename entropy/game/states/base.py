@@ -20,8 +20,9 @@ class State(GameEntity, ABC):
 
     _states: ClassVar[dict[str, Type[State]]] = {}
 
-    def __init__(self, control: Control) -> None:
+    def __init__(self, control: Control, **kwargs) -> None:
         self.control = control
+        self._data = kwargs or {}
 
     def __init_subclass__(cls) -> None:
         State._states[cls.get_name()] = cls
@@ -36,11 +37,16 @@ class State(GameEntity, ABC):
         """Return the available states of the game."""
         return cls._states
 
-    def transition_to(self, state_name: str, with_exit: bool = False) -> None:
+    def transition_to(self, state_name: str, with_exit: bool = False, **kwargs) -> None:
         """Transition to another state.
         If with_exit is True, the current state will be exited.
+        Raises a ValueError if the state_name is not a valid state.
         """
-        self.control.transition_to(state_name=state_name, with_exit=with_exit)
+        if state_name not in self._states:
+            raise ValueError(f"Invalid state_name: {state_name}")
+
+        self.control.transition_to(state_name=state_name, with_exit=with_exit, **kwargs)
+        logger.info(f'Transitioned to state "{state_name}".')
 
     def teardown(self) -> None:
         """Teardown the state."""

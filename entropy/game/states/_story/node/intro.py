@@ -7,7 +7,7 @@ import pygame as pg
 
 from entropy import assets
 from entropy.event.specs import a_or_click_is_pressed
-from entropy.game.states.story.node.base import Node
+from entropy.game.states._story.node.base import Node
 from entropy.gui.elements.text import Text
 from entropy.gui.transistions.fader import FadeIn
 from entropy.gui.transistions.fader import FadeOut
@@ -16,7 +16,7 @@ from entropy.tools.timer import TimerSecond
 
 if TYPE_CHECKING:
     from entropy.event.event import Event
-    from entropy.game.states.story.chapter import Chapter
+    from entropy.game.states._story.chapter import Chapter
 
 
 class IntroScene(Node):

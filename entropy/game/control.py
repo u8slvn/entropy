@@ -46,7 +46,7 @@ class Control:
     def current_state(self) -> State:
         return self.state_stack[-1]
 
-    def transition_to(self, state_name: str, with_exit: bool = False) -> None:
+    def transition_to(self, state_name: str, with_exit: bool = False, **kwargs) -> None:
         logger.info(f'Game state changed to "{state_name}".')
         if len(self.state_stack) >= 1:
             self.prev_state = self.current_state
@@ -58,7 +58,7 @@ class Control:
                 self.prev_state = None
 
         state_cls = states.get(state_name)
-        state = state_cls(control=self)
+        state = state_cls(control=self, **kwargs)
         state.setup()
         self.state_stack.append(state)
 
