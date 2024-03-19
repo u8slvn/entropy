@@ -4,6 +4,7 @@ import time
 
 from time import sleep
 from typing import TYPE_CHECKING
+from typing import Any
 
 import pygame
 
@@ -46,7 +47,9 @@ class Control:
     def current_state(self) -> State:
         return self.state_stack[-1]
 
-    def transition_to(self, state_name: str, with_exit: bool = False, **kwargs) -> None:
+    def transition_to(
+        self, state_name: str, with_exit: bool = False, **kwargs: Any
+    ) -> None:
         logger.info(f'Game state changed to "{state_name}".')
         if len(self.state_stack) >= 1:
             self.prev_state = self.current_state

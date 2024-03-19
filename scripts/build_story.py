@@ -10,6 +10,8 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 
 FILE_EXT = ".entropy"
 
@@ -56,25 +58,25 @@ def parse_chapter_data(chapter_data: list[list[dict[str, Any]]]):
     return rv
 
 
-def is_json_file(filepath: Path) -> bool:
-    """Check if the given filepath is a JSON file."""
-    return filepath.is_file() and filepath.suffix == ".json"
+def is_yaml_file(filepath: Path) -> bool:
+    """Check if the given filepath is a YAML file."""
+    return filepath.is_file() and filepath.suffix == ".yaml"
 
 
 def load_chapters_data(story_path: Path) -> dict[str, list[dict[str:Any]]]:
     """Walk through the given directory and load every directory within as chapters.
-    All the JSON files from each chapter directories are loaded and concatenate
+    All the YAML files from each chapter directories are loaded and concatenate
     together.
     """
     chapters_data = defaultdict(list)
 
     chapters = [item for item in story_path.iterdir() if item.is_dir()]
     for chapter in chapters:
-        scenes = [file for file in chapter.iterdir() if is_json_file(file)]
+        scenes = [file for file in chapter.iterdir() if is_yaml_file(file)]
 
         for scene in scenes:
             with open(scene, "r") as scene_data:
-                chapters_data[chapter.name].append(json.load(scene_data))
+                chapters_data[chapter.name].append(yaml.safe_load(scene_data))
 
     return chapters_data
 

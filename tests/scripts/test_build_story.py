@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 from scripts.build_story import dir_path_arg
-from scripts.build_story import is_json_file
+from scripts.build_story import is_yaml_file
 from scripts.build_story import load_chapters_data
 from scripts.build_story import parse_chapter_data
 from tests.scripts.conftest import DATAFIXTURES
@@ -16,12 +16,12 @@ from tests.scripts.conftest import DATAFIXTURES
 @pytest.mark.parametrize(
     "filepath, result",
     (
-        (DATAFIXTURES / "test-json.json", True),
+        (DATAFIXTURES / "test-yaml.yaml", True),
         (DATAFIXTURES / "test-txt.txt", False),
     ),
 )
-def test_is_jon_file(filepath, result):
-    assert is_json_file(filepath) is result
+def test_is_yaml_file(filepath, result):
+    assert is_yaml_file(filepath) is result
 
 
 def test_dir_path_arg_returns_path():

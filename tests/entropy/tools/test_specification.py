@@ -6,29 +6,29 @@ from entropy.tools.specification import Specification
 
 
 @dataclass
-class TestSubject:
+class SpecSubjectTest:
     id: int
     name: str
     alive: bool
 
 
-class SubjectIsAlive(Specification[TestSubject]):
-    def is_satisfied_by(self, candidate: TestSubject) -> bool:
+class SubjectIsAlive(Specification[SpecSubjectTest]):
+    def is_satisfied_by(self, candidate: SpecSubjectTest) -> bool:
         return candidate.alive is True
 
 
-class SubjectNameStartsWithAnA(Specification[TestSubject]):
-    def is_satisfied_by(self, candidate: TestSubject) -> bool:
+class SubjectNameStartsWithAnA(Specification[SpecSubjectTest]):
+    def is_satisfied_by(self, candidate: SpecSubjectTest) -> bool:
         return candidate.name.startswith(("a", "A"))
 
 
-class SubjectIDIsZero(Specification[TestSubject]):
-    def is_satisfied_by(self, candidate: TestSubject) -> bool:
+class SubjectIDIsZero(Specification[SpecSubjectTest]):
+    def is_satisfied_by(self, candidate: SpecSubjectTest) -> bool:
         return candidate.id == 0
 
 
-subject0 = TestSubject(0, "Arch", True)
-subject1 = TestSubject(1, "Ape", False)
+subject0 = SpecSubjectTest(0, "Arch", True)
+subject1 = SpecSubjectTest(1, "Ape", False)
 
 
 def test_is_satisfied_by() -> None:

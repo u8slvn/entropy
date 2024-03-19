@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from abc import ABC
 from typing import TYPE_CHECKING
+from typing import Any
 from typing import ClassVar
 from typing import Type
 
@@ -20,7 +21,7 @@ class State(GameEntity, ABC):
 
     _states: ClassVar[dict[str, Type[State]]] = {}
 
-    def __init__(self, control: Control, **kwargs) -> None:
+    def __init__(self, control: Control, **kwargs: Any) -> None:
         self.control = control
         self._data = kwargs or {}
 
@@ -37,7 +38,9 @@ class State(GameEntity, ABC):
         """Return the available states of the game."""
         return cls._states
 
-    def transition_to(self, state_name: str, with_exit: bool = False, **kwargs) -> None:
+    def transition_to(
+        self, state_name: str, with_exit: bool = False, **kwargs: Any
+    ) -> None:
         """Transition to another state.
         If with_exit is True, the current state will be exited.
         Raises a ValueError if the state_name is not a valid state.

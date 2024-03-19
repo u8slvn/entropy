@@ -1,0 +1,16 @@
+- uuid: ch01sc00n00
+  next_uuid: ch01sc01n00
+  entrypoint: true
+  background: color:black
+  template: intro
+  options:
+  - title: Chapter 1
+    subtitle: The beginning of the story
+    ease-in:
+      duration: 500
+      type: fade-in
+    ease-out:
+      duration: 150
+      type: fade-out
+  audio:
+  - music: epic-theme

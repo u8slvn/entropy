@@ -1,0 +1,19 @@
+- uuid: ch01sc02n01
+  background: image:ch01-sc02-01
+  delay: 1
+  ease_in:
+    duration: 250
+    type: fade-in
+  event:
+    type: text
+    values:
+    - Hello 5 fewfewfwe dwqd qwd qwd dqwd qwd qwddw qdw qdw qdqw dqw dqw dqwd qwd qwd qwd qwd qwd qwd qwdqwqw ddqwd qwd qwdqw dqwd I LOVE KRATOS
+    - '...'
+    - I can talk like that for ever...
+    - really...
+    - For ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever, and ever...
+    voice: narrator
+  music: nice-theme
+  next_uuid: end
+  transition-in: fade-in
+  type: contemplation

@@ -3,15 +3,11 @@ from __future__ import annotations
 import json
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
 from typing import Any
 
+from entropy.game.story.nodes.base import Node
+from entropy.game.story.nodes.base import NullNode
 from entropy.locations import STORY_DIR
-
-
-if TYPE_CHECKING:
-    from entropy.game.states import State
-    from entropy.game.story.nodes.base import Node
 
 
 class Chapters:
@@ -33,15 +29,15 @@ class Chapters:
             return json.load(file)
 
     @classmethod
-    def load_chapters(cls, state: State) -> Chapters:
+    def load_chapters(cls) -> Chapters:
         """Load the chapters from index file and the nodes files of each chapter."""
         chapters = {}
         index = cls._load_index()
-        for chapter, entrypoint in index.items():
+        for chapter, data in index.items():
             with open(cls._dir_path / f"{chapter}{cls._ext_file}", "r") as file:
                 nodes = json.load(file)
 
-            chapters[chapter] = Chapter(state, entrypoint, nodes)
+            chapters[chapter] = Chapter(data["entrypoint"], nodes)
 
         return cls(chapters)
 
@@ -59,17 +55,16 @@ class Chapter:
     and a collection of nodes. The entrypoint is the first node uuid.
     """
 
-    state: State
     entrypoint: str
     nodes: dict[str, dict[str, Any]]
 
-    def get_node(self, uuid: str | None = None) -> Node | None:
+    def get_node(self, uuid: str | None = None) -> Node:
         """Return the node with the given uuid."""
         uuid = uuid or self.entrypoint
         if node := self.nodes.get(uuid):
             return Node(**node)
 
-        return None
+        return NullNode()
 
 
 class NullChapter(Chapter):
@@ -78,5 +73,5 @@ class NullChapter(Chapter):
     def __init__(self) -> None:
         super().__init__("", {})
 
-    def get_node(self, uuid: str | None = None) -> Node | None:
-        return None
+    def get_node(self, uuid: str | None = None) -> Node:
+        return NullNode()

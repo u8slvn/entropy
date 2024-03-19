@@ -11,25 +11,27 @@ if TYPE_CHECKING:
 class NodeBuilder:
 
     @classmethod
-    def build(cls, node_data: dict[str, Any]) -> Node:
+    def build(cls, data: dict[str, Any]) -> Node:
         """Build a node from the given data."""
-        node_type = node_data.pop("type")
-        return getattr(cls, f"_build_{node_type}")(node_data)
+        template = data.pop("template")
+        # background = data.pop("background")
+        # audio = Audio(**data.pop("audio", {}))
+        return getattr(cls, f"_build_{template}")(data)
 
-    def _build_contemplation(self, node_data: dict[str, Any]) -> Node:
+    def _build_contemplation(self, data: dict[str, Any]) -> Node:
         pass
 
-    def _build_dialog(self, node_data: dict[str, Any]) -> Node:
+    def _build_dialog(self, data: dict[str, Any]) -> Node:
         pass
 
-    def _build_event(self, node_data: dict[str, Any]) -> Node:
+    def _build_event(self, data: dict[str, Any]) -> Node:
         pass
 
-    def _build_intro(self, node_data: dict[str, Any]) -> Node:
+    def _build_intro(self, data: dict[str, Any]) -> Node:
         pass
 
-    def _build_outro(self, node_data: dict[str, Any]) -> Node:
+    def _build_outro(self, data: dict[str, Any]) -> Node:
         pass
 
-    def _build_transition(self, node_data: dict[str, Any]) -> Node:
+    def _build_transition(self, data: dict[str, Any]) -> Node:
         pass

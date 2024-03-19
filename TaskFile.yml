@@ -5,24 +5,24 @@ tasks:
     desc: List all commands.
     silent: true
     cmds:
-      - task -l
+    - task -l
 
   init-pre-commit:
     desc: Init pre-commit.
     cmds:
-      - pre-commit install
-      - pre-commit install --hook-type commit-msg
+    - pre-commit install
+    - pre-commit install --hook-type commit-msg
 
   lint:
     desc: Check lint.
     cmds:
-      - pre-commit run --all-files
+    - pre-commit run --all-files
 
   test:
     desc: Run tests.
     cmds:
-      - pytest tests/
-      - mypy
+    - pytest tests/
+    - mypy
 
   bump-version:
     desc: Bump version, define target version with "VERSION=*.*.*".
@@ -30,25 +30,25 @@ tasks:
     vars:
       VERSION: '{{.VERSION}}'
     cmds:
-      - sed -i "s/^\(version = \"\)\(.\)*\"/\1{{.VERSION}}\"/" pyproject.toml
-      - echo "Version replaced by {{.VERSION}} in 'pyproject.toml'"
+    - sed -i "s/^\(version = \"\)\(.\)*\"/\1{{.VERSION}}\"/" pyproject.toml
+    - echo "Version replaced by {{.VERSION}} in 'pyproject.toml'"
 
   build-translations:
-      desc: Create MO files for existing PO translation files.
-      cmds:
-        - mkdir -p ./entropy/locales/en/LC_MESSAGES ./entropy/locales/fr/LC_MESSAGES
-        - msgfmt locales/en/LC_MESSAGES/base.po -o entropy/locales/en/LC_MESSAGES/base.mo
-        - msgfmt locales/en/LC_MESSAGES/chapter01.po -o entropy/locales/en/LC_MESSAGES/chapter01.mo
-        - msgfmt locales/fr/LC_MESSAGES/base.po -o entropy/locales/fr/LC_MESSAGES/base.mo
-        - msgfmt locales/fr/LC_MESSAGES/chapter01.po -o entropy/locales/fr/LC_MESSAGES/chapter01.mo
+    desc: Create MO files for existing PO translation files.
+    cmds:
+    - mkdir -p ./entropy/locales/en/LC_MESSAGES ./entropy/locales/fr/LC_MESSAGES
+    - msgfmt locales/en/LC_MESSAGES/base.po -o entropy/locales/en/LC_MESSAGES/base.mo
+    - msgfmt locales/en/LC_MESSAGES/chapter01.po -o entropy/locales/en/LC_MESSAGES/chapter01.mo
+    - msgfmt locales/fr/LC_MESSAGES/base.po -o entropy/locales/fr/LC_MESSAGES/base.mo
+    - msgfmt locales/fr/LC_MESSAGES/chapter01.po -o entropy/locales/fr/LC_MESSAGES/chapter01.mo
 
   build-story:
     desc: Build story's files.
     silent: true
     cmds:
-      - python ./scripts/build_story.py
+    - python ./scripts/build_story.py
 
   profile:
     desc: Run a profiling game session.
     cmds:
-      - python -m cProfile -s tottime main.py
+    - python -m cProfile -s tottime main.py

@@ -1,0 +1,34 @@
+- uuid: ch01sc01n00
+  background: color:black
+  music: epic-theme
+  next_uuid: ch01sc01n01
+  subtitle: The beginning of the story
+  title: Chapter 1
+  type: intro
+
+- uuid: ch01sc01n01
+  background: image:ch01-sc01-01
+  delay: 1
+  ease_in:
+    duration: 500
+    type: fade-in
+  event:
+    type: text
+    values:
+    - Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit, morbo vel maleficia?
+    - Aenean condimentum malesuada libero, in malesuada dolor maximus a. Duis non ante erat. Ut finibus vel orci sit amet venenatis. Mauris a gravida felis.
+    voice: narrator
+  next_uuid: ch01sc01n02
+  type: contemplation
+
+- uuid: ch01sc01n02
+  ease_out:
+    duration: 150
+    type: fade-out
+  event:
+    type: text
+    values:
+    - Hello 2 dqwd qwdqw dqwd qwd qwd qwd qwd qwdqwdqwqw dqwd qwd
+    voice: narrator
+  next_uuid: ch01sc02n01
+  type: contemplation

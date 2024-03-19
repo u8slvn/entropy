@@ -58,7 +58,8 @@ class Mixer:
     def stop_music(self, fadeout: int = 0) -> None:
         self._channels[Channel.MUSIC].fadeout(fadeout)
 
-    def play_atmos(self, sound: pygame.mixer.Sound) -> None:
+    def play_atmos(self, name: str) -> None:
+        sound = entropy.assets.sound.get(name=name)
         self._channels[Channel.ATMOSPHERE].play(sound, -1)
 
     def stop_atmos(self, fadeout: int = 0) -> None:

@@ -17,6 +17,8 @@ from entropy.logging import get_logger
 if TYPE_CHECKING:
     from entropy.event.event import Event
     from entropy.game.control import Control
+    from entropy.game.story.chapter import Chapter
+    from entropy.game.story.nodes.base import Node
 
 config = get_config()
 logger = get_logger()
@@ -26,8 +28,8 @@ class Story(State):
     def __init__(self, control: Control) -> None:
         super().__init__(control=control)
         self._chapters = Chapters.load_chapters()
-        self._current_chapter = NullChapter()
-        self._current_node = NullNode()
+        self._current_chapter: Chapter = NullChapter()
+        self._current_node: Node = NullNode()
         self.set_chapter(name="chapter01")
         self._background = pygame.Surface(window.default_res)
 
@@ -44,7 +46,7 @@ class Story(State):
         self._current_node.process_event(event)
 
     def update(self, dt: float) -> None:
-        if self._current_node.is_done():
+        if self._current_node.done:
             self.exit()
         self._current_node.update(dt=dt)
 
