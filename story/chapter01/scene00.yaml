@@ -3,9 +3,10 @@
   entrypoint: true
   background: color:black
   template: intro
-  options:
-  - title: Chapter 1
+  elements:
+    title: Chapter 1
     subtitle: The beginning of the story
+  transitions:
     ease-in:
       duration: 500
       type: fade-in
@@ -13,4 +14,4 @@
       duration: 150
       type: fade-out
   audio:
-  - music: epic-theme
+    music: epic-theme
