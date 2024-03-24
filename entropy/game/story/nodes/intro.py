@@ -27,18 +27,16 @@ class IntroNode(Node):
         next_uuid: str,
         background: Background,
         audio: Audio,
-        attributes: dict[str, Any],
+        elements: dict[str, Any],
+        events: dict[str, Any],
     ) -> None:
         super().__init__(uuid, next_uuid, background, audio)
-        self.check_attributes(attributes)
-        self.title: Text = attributes["title"]
-        self.subtitle: Text = attributes["subtitle"]
-        self.ease_in: Transition = attributes["ease_in"]
-        self.ease_out: Transition = attributes["ease_out"]
+        self.elements = elements
+        self.events = events
 
     def update(self, dt: float) -> None:
-        self.ease_in.update(dt)
-        self.ease_out.update(dt)
+        self.elements.update(dt)
+        self.events.update(dt)
 
     def draw(self, surface: pg.Surface) -> None:
         self.title.draw(surface)

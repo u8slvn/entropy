@@ -1,0 +1,599 @@
+# The configurations that used for the recording, feel free to edit them
+config:
+
+  # Specify a command to be executed
+  # like `/bin/bash -l`, `ls`, or any other commands
+  # the default is bash for Linux
+  # or powershell.exe for Windows
+  command: zsh
+  
+  # Specify the current working directory path
+  # the default is the current working directory path
+  cwd: /Users/u8slvn/workbench/entropy
+  
+  # Export additional ENV variables
+  env:
+    recording: true
+  
+  # Explicitly set the number of columns
+  # or use `auto` to take the current
+  # number of columns of your shell
+  cols: 182
+  
+  # Explicitly set the number of rows
+  # or use `auto` to take the current
+  # number of rows of your shell
+  rows: 48
+  
+  # Amount of times to repeat GIF
+  # If value is -1, play once
+  # If value is 0, loop indefinitely
+  # If value is a positive number, loop n times
+  repeat: 0
+  
+  # Quality
+  # 1 - 100
+  quality: 100
+  
+  # Delay between frames in ms
+  # If the value is `auto` use the actual recording delays
+  frameDelay: auto
+  
+  # Maximum delay between frames in ms
+  # Ignored if the `frameDelay` isn't set to `auto`
+  # Set to `auto` to prevent limiting the max idle time
+  maxIdleTime: 2000
+  
+  # The surrounding frame box
+  # The `type` can be null, window, floating, or solid`
+  # To hide the title use the value null
+  # Don't forget to add a backgroundColor style with a null as type
+  frameBox:
+    type: floating
+    title: Terminalizer
+    style:
+      border: 0px black solid
+      # boxShadow: none
+      # margin: 0px
+  
+  # Add a watermark image to the rendered gif
+  # You need to specify an absolute path for
+  # the image on your machine or a URL, and you can also
+  # add your own CSS styles
+  watermark:
+    imagePath: null
+    style:
+      position: absolute
+      right: 15px
+      bottom: 15px
+      width: 100px
+      opacity: 0.9
+  
+  # Cursor style can be one of
+  # `block`, `underline`, or `bar`
+  cursorStyle: block
+  
+  # Font family
+  # You can use any font that is installed on your machine
+  # in CSS-like syntax
+  fontFamily: "Monaco, Lucida Console, Ubuntu Mono, Monospace"
+  
+  # The size of the font
+  fontSize: 12
+  
+  # The height of lines
+  lineHeight: 1
+  
+  # The spacing between letters
+  letterSpacing: 0
+  
+  # Theme
+  theme:
+    background: "transparent"
+    foreground: "#afafaf"
+    cursor: "#c7c7c7"
+    black: "#232628"
+    red: "#fc4384"
+    green: "#b3e33b"
+    yellow: "#ffa727"
+    blue: "#75dff2"
+    magenta: "#ae89fe"
+    cyan: "#708387"
+    white: "#d5d5d0"
+    brightBlack: "#626566"
+    brightRed: "#ff7fac"
+    brightGreen: "#c8ed71"
+    brightYellow: "#ebdf86"
+    brightBlue: "#75dff2"
+    brightMagenta: "#ae89fe"
+    brightCyan: "#b1c6ca"
+    brightWhite: "#f9f9f4"
+  
+# Records, feel free to edit them
+records:
+  - delay: 329
+    content: "\e[0m\e[49m\e[39m\e[27m\e[24m\r\e[K\r\n\e[1A\e7\e[0m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;2;255;106;193m❯\e[0m\e[38;2;255;106;193m\e[49m\e[38;2;255;106;193m\e[0m\e[38;2;255;106;193m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[?2004h"
+  - delay: 423
+    content: "\e[?25l\e8\e[0m\e[49m\e[39m\e[27m\e[24m\e[J\e]2;u8slvn@entropy:~/workbench/entropy\a\e]1;..bench/entropy\a\e]7;file://entropy.lan/Users/u8slvn/workbench/entropy\e\\\e[0m\e[49m\e[39m\e[27m\e[24m\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                                                                                                                                     \r\e[0m\e[49m\e[39m\e[27m\e[24m\e[K\r\e[0m\e[27m\e[24m\e[J\e[0m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;2;255;106;193m❯\e[0m\e[38;2;255;106;193m\e[49m\e[38;2;255;106;193m\e[0m\e[38;2;255;106;193m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[159C\e[0m\e[49m\e[39m\e[159D\e[?1h\e=\e[?25h\e[?2004h\e[?25l\r\r\e[0m\e[27m\e[24m\e[J\e[0m\e[38;5;242m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242mmain\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m \e[0m\e[38;2;0;0;242m\e[49m\e[38;2;255;106;193m❯\e[0m\e[38;2;255;106;193m\e[49m\e[38;2;255;106;193m\e[0m\e[38;2;255;106;193m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[154C\e[0m\e[49m\e[39m\e[154D\e[?25h"
+  - delay: 8
+    content: "\e[?25l\r\r\e[0m\e[27m\e[24m\e[J\e[0m\e[38;5;242m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242mmain\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m*\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m \e[0m\e[38;2;0;0;242m\e[49m\e[38;2;255;106;193m❯\e[0m\e[38;2;255;106;193m\e[49m\e[38;2;255;106;193m\e[0m\e[38;2;255;106;193m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[153C\e[0m\e[49m\e[39m\e[153D\e[?25h"
+  - delay: 1409
+    content: h
+  - delay: 202
+    content: "\bhy"
+  - delay: 163
+    content: f
+  - delay: 228
+    content: "\e[?1l\e>\e[?2004l\r\r\n\e]2;hyf\a\e]1;hyf\azsh: command not found: hyf\r\n\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                                                                                                                                     \r \r\e]2;u8slvn@entropy:~/workbench/entropy\a\e]1;..bench/entropy\a\e]7;file://entropy.lan/Users/u8slvn/workbench/entropy\e\\"
+  - delay: 11
+    content: "\r\e[0m\e[27m\e[24m\e[J\e[0m\e[38;5;242m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242mmain\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m*\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m \e[0m\e[38;2;0;0;242m\e[49m\e[38;2;255;92;87m❯\e[0m\e[38;2;255;92;87m\e[49m\e[38;2;255;92;87m\e[0m\e[38;2;255;92;87m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[153C\e[0m\e[49m\e[39m\e[153D\e[?1h\e=\e[?2004h"
+  - delay: 3530
+    content: h
+  - delay: 254
+    content: "\bhy"
+  - delay: 203
+    content: f
+  - delay: 137
+    content: ' '
+  - delay: 547
+    content: "\b"
+  - delay: 189
+    content: "\b \b"
+  - delay: 188
+    content: "\b\bh \b"
+  - delay: 171
+    content: "\b \b"
+  - delay: 782
+    content: p
+  - delay: 205
+    content: "\bpi"
+  - delay: 174
+    content: p
+  - delay: 162
+    content: ' '
+  - delay: 500
+    content: "\b"
+  - delay: 252
+    content: x
+  - delay: 118
+    content: ' '
+  - delay: 261
+    content: i
+  - delay: 214
+    content: 'n'
+  - delay: 399
+    content: "\b \b"
+  - delay: 189
+    content: "\b \b"
+  - delay: 138
+    content: "\b"
+  - delay: 163
+    content: "\b \b"
+  - delay: 167
+    content: "\b \b"
+  - delay: 295
+    content: "\b\bp \b"
+  - delay: 178
+    content: "\b \b"
+  - delay: 2482
+    content: p
+  - delay: 244
+    content: "\bpi"
+  - delay: 186
+    content: p
+  - delay: 164
+    content: ' '
+  - delay: 265
+    content: i
+  - delay: 180
+    content: 'n'
+  - delay: 138
+    content: s
+  - delay: 147
+    content: t
+  - delay: 108
+    content: a
+  - delay: 208
+    content: l
+  - delay: 168
+    content: l
+  - delay: 122
+    content: ' '
+  - delay: 178
+    content: p
+  - delay: 216
+    content: i
+  - delay: 191
+    content: p
+  - delay: 178
+    content: x
+  - delay: 243
+    content: "\e[?1l\e>\e[?2004l\r\r\n\e]2;pip3 install pipx\a\e]1;pip\a"
+  - delay: 619
+    content: "Collecting pipx\r\n"
+  - delay: 124
+    content: "  Downloading pipx-1.4.3-py3-none-any.whl.metadata (17 kB)\r\n"
+  - delay: 64
+    content: "Collecting argcomplete>=1.9.4 (from pipx)\r\n"
+  - delay: 21
+    content: "  Downloading argcomplete-3.2.3-py3-none-any.whl.metadata (16 kB)\r\n"
+  - delay: 43
+    content: "Collecting packaging>=20 (from pipx)\r\n  Using cached packaging-24.0-py3-none-any.whl.metadata (3.2 kB)\r\n"
+  - delay: 34
+    content: "Collecting platformdirs>=2.1 (from pipx)\r\n  Using cached platformdirs-4.2.0-py3-none-any.whl.metadata (11 kB)\r\n"
+  - delay: 31
+    content: "Collecting userpath!=1.9.0,>=1.6 (from pipx)\r\n"
+  - delay: 22
+    content: "  Downloading userpath-1.9.2-py3-none-any.whl.metadata (3.0 kB)\r\n"
+  - delay: 42
+    content: "Collecting click (from userpath!=1.9.0,>=1.6->pipx)\r\n  Using cached click-8.1.7-py3-none-any.whl.metadata (3.0 kB)\r\n"
+  - delay: 21
+    content: "Downloading pipx-1.4.3-py3-none-any.whl (65 kB)\r\n\e[?25l   \e[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m \e[32m0.0/65.1 kB\e[0m \e[31m?\e[0m eta \e[36m-:--:--\e[0m"
+  - delay: 29
+    content: "\r\e[2K   \e[38;2;114;156;31m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m \e[32m65.1/65.1 kB\e[0m \e[31m2.1 MB/s\e[0m eta \e[36m0:00:00\e[0m\r\n\e[?25h"
+  - delay: 22
+    content: "Downloading argcomplete-3.2.3-py3-none-any.whl (42 kB)\r\n\e[?25l   \e[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m \e[32m0.0/42.6 kB\e[0m \e[31m?\e[0m eta \e[36m-:--:--\e[0m"
+  - delay: 9
+    content: "\r\e[2K   \e[38;2;114;156;31m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m \e[32m42.6/42.6 kB\e[0m \e[31m3.9 MB/s\e[0m eta \e[36m0:00:00\e[0m\r\n\e[?25hUsing cached packaging-24.0-py3-none-any.whl (53 kB)\r\nUsing cached platformdirs-4.2.0-py3-none-any.whl (17 kB)\r\n"
+  - delay: 20
+    content: "Downloading userpath-1.9.2-py3-none-any.whl (9.1 kB)\r\n"
+  - delay: 8
+    content: "Using cached click-8.1.7-py3-none-any.whl (97 kB)\r\n"
+  - delay: 32
+    content: "Installing collected packages: platformdirs, packaging, click, argcomplete, userpath, pipx\r\n"
+  - delay: 93
+    content: "Successfully installed argcomplete-3.2.3 click-8.1.7 packaging-24.0 pipx-1.4.3 platformdirs-4.2.0 userpath-1.9.2\r\n"
+  - delay: 204
+    content: "\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                                                                                                                                     \r \r\e]2;u8slvn@entropy:~/workbench/entropy\a\e]1;..bench/entropy\a\e]7;file://entropy.lan/Users/u8slvn/workbench/entropy\e\\\r\e[0m\e[27m\e[24m\e[J\e[0m\e[38;5;242m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242mmain\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m*\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m \e[0m\e[38;2;0;0;242m\e[49m\e[38;2;255;106;193m❯\e[0m\e[38;2;255;106;193m\e[49m\e[38;2;255;106;193m\e[0m\e[38;2;255;106;193m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[153C\e[0m\e[49m\e[39m\e[153D\e[?1h\e=\e[?2004h\e[?25l\r\r\e[0m\e[27m\e[24m\e[J\e[0m\e[38;5;242m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242mmain\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m*\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m \e[0m\e[38;2;0;0;242m\e[49m\e[38;2;255;106;193m❯\e[0m\e[38;2;255;106;193m\e[49m\e[38;2;255;106;193m\e[0m\e[38;2;255;106;193m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[153C\e[0m\e[49m\e[39m\e[153D\e[?25h"
+  - delay: 1227
+    content: p
+  - delay: 188
+    content: "\bpi"
+  - delay: 209
+    content: p
+  - delay: 491
+    content: x
+  - delay: 206
+    content: ' '
+  - delay: 632
+    content: i
+  - delay: 177
+    content: 'n'
+  - delay: 144
+    content: s
+  - delay: 155
+    content: t
+  - delay: 127
+    content: a
+  - delay: 271
+    content: l
+  - delay: 171
+    content: l
+  - delay: 217
+    content: ' '
+  - delay: 819
+    content: h
+  - delay: 258
+    content: 'y'
+  - delay: 349
+    content: p
+  - delay: 150
+    content: e
+  - delay: 196
+    content: r
+  - delay: 167
+    content: f
+  - delay: 181
+    content: o
+  - delay: 176
+    content: c
+  - delay: 206
+    content: u
+  - delay: 148
+    content: s
+  - delay: 236
+    content: ' '
+  - delay: 631
+    content: '-'
+  - delay: 214
+    content: '-'
+  - delay: 561
+    content: "\b \b"
+  - delay: 194
+    content: "\b \b"
+  - delay: 748
+    content: "\b"
+  - delay: 330
+    content: "\e[?1l\e>\e[?2004l\r\r\n\e]2;pipx install hyperfocus\a\e]1;pipx\a"
+  - delay: 93
+    content: "\e[?25l\r\e[K\r\e[K⣷ creating virtual environment"
+  - delay: 29
+    content: "\r\e[K\r\e[K\r\e[K\r\e[K⣷ creating shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣯ creating shared libraries"
+  - delay: 102
+    content: "\r\e[K\r\e[K⣟ creating shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⡿ creating shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⢿ creating shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣻ creating shared libraries"
+  - delay: 102
+    content: "\r\e[K\r\e[K⣽ creating shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣾ creating shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣷ creating shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣯ creating shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣟ creating shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⡿ creating shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⢿ creating shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣻ creating shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣽ creating shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣾ creating shared libraries"
+  - delay: 53
+    content: "\r\e[K\r\e[K"
+  - delay: 19
+    content: "\r\e[K\r\e[K⣷ upgrading shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣯ upgrading shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣟ upgrading shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⡿ upgrading shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⢿ upgrading shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣻ upgrading shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣽ upgrading shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣾ upgrading shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣷ upgrading shared libraries"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣯ upgrading shared libraries\r\e[K\r\e[K"
+  - delay: 40
+    content: "\r\e[K\r\e[K⣷ installing hyperfocus"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣯ installing hyperfocus"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣟ installing hyperfocus"
+  - delay: 105
+    content: "\r\e[K\r\e[K⡿ installing hyperfocus"
+  - delay: 105
+    content: "\r\e[K\r\e[K⢿ installing hyperfocus"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣻ installing hyperfocus"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣽ installing hyperfocus"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣾ installing hyperfocus"
+  - delay: 106
+    content: "\r\e[K\r\e[K⣷ installing hyperfocus"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣯ installing hyperfocus"
+  - delay: 101
+    content: "\r\e[K\r\e[K⣟ installing hyperfocus"
+  - delay: 105
+    content: "\r\e[K\r\e[K⡿ installing hyperfocus"
+  - delay: 105
+    content: "\r\e[K\r\e[K⢿ installing hyperfocus"
+  - delay: 104
+    content: "\r\e[K\r\e[K⣻ installing hyperfocus"
+  - delay: 105
+    content: "\r\e[K\r\e[K⣽ installing hyperfocus\r\e[K\r\e[K"
+  - delay: 57
+    content: "  installed package \e[1mhyperfocus\e[0m \e[1m0.2.1\e[0m, installed using Python 3.11.8\r\n  These apps are now globally available\r\n    - hyf\r\ndone! ✨ \U0001F31F ✨\r\n\e[?25h"
+  - delay: 11
+    content: "\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                                                                                                                                     \r \r\e]2;u8slvn@entropy:~/workbench/entropy\a\e]1;..bench/entropy\a\e]7;file://entropy.lan/Users/u8slvn/workbench/entropy\e\\\r\e[0m\e[27m\e[24m\e[J\e[0m\e[38;5;242m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242mmain\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m*\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m \e[0m\e[38;2;0;0;242m\e[49m\e[38;2;255;106;193m❯\e[0m\e[38;2;255;106;193m\e[49m\e[38;2;255;106;193m\e[0m\e[38;2;255;106;193m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[153C\e[0m\e[49m\e[39m\e[153D\e[?1h\e=\e[?2004h\e[?25l\r\r\e[0m\e[27m\e[24m\e[J\e[0m\e[38;5;242m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242mmain\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m*\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m \e[0m\e[38;2;0;0;242m\e[49m\e[38;2;255;106;193m❯\e[0m\e[38;2;255;106;193m\e[49m\e[38;2;255;106;193m\e[0m\e[38;2;255;106;193m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[153C\e[0m\e[49m\e[39m\e[153D\e[?25h"
+  - delay: 1380
+    content: h
+  - delay: 208
+    content: "\bhy"
+  - delay: 225
+    content: f
+  - delay: 268
+    content: "\e[?1l\e>\e[?2004l\r\r\n\e]2;hyf\a\e]1;hyf\a"
+  - delay: 399
+    content: "Usage: hyf [OPTIONS] COMMAND [ARGS]...\r\n\r\n  Minimalist task manager\r\n\r\nOptions:\r\n  --version  Show the version\r\n  --help     Show this message and exit.\r\n\r\nCommands:\r\n  add     Add task to current working day\r\n  block   Mark task as blocked\r\n  config  Get and set options\r\n  copy    Copy task details into clipboard\r\n  delete  Delete given task\r\n  done    Mark task as done\r\n  init    Initialize hyperfocus config and database\r\n  reset   Reset task as todo\r\n  show    Show task details\r\n  status  Show current working day status\r\n"
+  - delay: 8
+    content: "\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                                                                                                                                     \r \r\e]2;u8slvn@entropy:~/workbench/entropy\a\e]1;..bench/entropy\a\e]7;file://entropy.lan/Users/u8slvn/workbench/entropy\e\\\r\e[0m\e[27m\e[24m\e[J\e[0m\e[38;5;242m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242mmain\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m*\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m \e[0m\e[38;2;0;0;242m\e[49m\e[38;2;255;106;193m❯\e[0m\e[38;2;255;106;193m\e[49m\e[38;2;255;106;193m\e[0m\e[38;2;255;106;193m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[153C\e[0m\e[49m\e[39m\e[153D\e[?1h\e=\e[?2004h\e[?25l\r\r\e[0m\e[27m\e[24m\e[J\e[0m\e[38;5;242m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242mmain\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m*\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m \e[0m\e[38;2;0;0;242m\e[49m\e[38;2;255;106;193m❯\e[0m\e[38;2;255;106;193m\e[49m\e[38;2;255;106;193m\e[0m\e[38;2;255;106;193m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[153C\e[0m\e[49m\e[39m\e[153D\e[?25h"
+  - delay: 2341
+    content: h
+  - delay: 297
+    content: "\bhy"
+  - delay: 137
+    content: f
+  - delay: 120
+    content: ' '
+  - delay: 303
+    content: '-'
+  - delay: 187
+    content: '-'
+  - delay: 364
+    content: v
+  - delay: 119
+    content: e
+  - delay: 223
+    content: r
+  - delay: 210
+    content: s
+  - delay: 120
+    content: i
+  - delay: 125
+    content: o
+  - delay: 91
+    content: 'n'
+  - delay: 357
+    content: "\e[?1l\e>\e[?2004l\r\r\n\e]2;hyf --version\a\e]1;hyf\a"
+  - delay: 79
+    content: "hyperfocus, version 0.2.1\r\n"
+  - delay: 8
+    content: "\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                                                                                                                                     \r \r\e]2;u8slvn@entropy:~/workbench/entropy\a\e]1;..bench/entropy\a\e]7;file://entropy.lan/Users/u8slvn/workbench/entropy\e\\\r\e[0m\e[27m\e[24m\e[J\e[0m\e[38;5;242m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242mmain\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m*\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m \e[0m\e[38;2;0;0;242m\e[49m\e[38;2;255;106;193m❯\e[0m\e[38;2;255;106;193m\e[49m\e[38;2;255;106;193m\e[0m\e[38;2;255;106;193m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[153C\e[0m\e[49m\e[39m\e[153D\e[?1h\e=\e[?2004h\e[?25l\r\r\e[0m\e[27m\e[24m\e[J\e[0m\e[38;5;242m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242mmain\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m*\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m \e[0m\e[38;2;0;0;242m\e[49m\e[38;2;255;106;193m❯\e[0m\e[38;2;255;106;193m\e[49m\e[38;2;255;106;193m\e[0m\e[38;2;255;106;193m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[153C\e[0m\e[49m\e[39m\e[153D\e[?25h"
+  - delay: 1315
+    content: t
+  - delay: 91
+    content: "\bte"
+  - delay: 219
+    content: r
+  - delay: 119
+    content: m
+  - delay: 201
+    content: i
+  - delay: 146
+    content: 'n'
+  - delay: 693
+    content: alizer record demo -d 'zsh'
+  - delay: 386
+    content: "\e[18Dnder\e[6C        \e[9D"
+  - delay: 340
+    content: "\e[11Dinit       \b\b\b\b\b\b\b"
+  - delay: 527
+    content: "\b\b\b\brecord demo -d 'zsh'"
+  - delay: 568
+    content: "\e[18Dnder\e[6C        \e[9D"
+  - delay: 666
+    content: "\e[9Dcord\e[5C"
+  - delay: 2171
+    content: "\e[9Dnder\e[5C"
+  - delay: 373
+    content: "\e[9Dcord\e[5C -d 'zsh'"
+  - delay: 674
+    content: "\e[20Dinit                \e[16D"
+  - delay: 1245
+    content: "\b\b\b\brender demo"
+  - delay: 1850
+    content: "\e[?1l\e>\e[?2004l\r\r\n\e]2;terminalizer render demo\a\e]1;terminalizer\a"
+  - delay: 166
+    content: "Error: \r\n  The provided file doesn't exit\r\n\r\nHint:\r\n  Use the \e[32m--help\e[39m option to get help about the usage\r\n\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                                                                                                                                     \r \r\e]2;u8slvn@entropy:~/workbench/entropy\a\e]1;..bench/entropy\a\e]7;file://entropy.lan/Users/u8slvn/workbench/entropy\e\\\r\e[0m\e[27m\e[24m\e[J\e[0m\e[38;5;242m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242mmain\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m*\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m \e[0m\e[38;2;0;0;242m\e[49m\e[38;2;255;92;87m❯\e[0m\e[38;2;255;92;87m\e[49m\e[38;2;255;92;87m\e[0m\e[38;2;255;92;87m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[153C\e[0m\e[49m\e[39m\e[153D\e[?1h\e=\e[?2004h\e[?25l\r\r\e[0m\e[27m\e[24m\e[J\e[0m\e[38;5;242m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242mmain\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m*\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m \e[0m\e[38;2;0;0;242m\e[49m\e[38;2;255;92;87m❯\e[0m\e[38;2;255;92;87m\e[49m\e[38;2;255;92;87m\e[0m\e[38;2;255;92;87m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[153C\e[0m\e[49m\e[39m\e[153D\e[?25h"
+  - delay: 4372
+    content: terminalizer render demo
+  - delay: 3848
+    content: "\e[24D                        \e[24D"
+  - delay: 298
+    content: "\a"
+  - delay: 270
+    content: "\a"
+  - delay: 304
+    content: "\a"
+  - delay: 190
+    content: terminalizer render demo
+  - delay: 263
+    content: "\e[24Dhyf --version           \e[11D"
+  - delay: 1691
+    content: "\e[13Dterminalizer render demo"
+  - delay: 1107
+    content: "\b \b"
+  - delay: 185
+    content: "\b \b"
+  - delay: 148
+    content: "\b \b"
+  - delay: 155
+    content: "\b \b"
+  - delay: 214
+    content: "\b"
+  - delay: 171
+    content: "\b \b"
+  - delay: 150
+    content: "\b \b"
+  - delay: 183
+    content: "\b \b"
+  - delay: 178
+    content: "\b \b"
+  - delay: 176
+    content: "\b \b"
+  - delay: 440
+    content: "\b \b"
+  - delay: 809
+    content: s
+  - delay: 393
+    content: t
+  - delay: 166
+    content: o
+  - delay: 236
+    content: p
+  - delay: 274
+    content: "\e[?1l\e>\e[?2004l\r\r\n\e]2;terminalizer stop\a\e]1;terminalizer\a"
+  - delay: 158
+    content: "Error: \r\n  Unknown argument: stop\r\n\r\nHint:\r\n  Use the \e[32m--help\e[39m option to get help about the usage\r\n\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                                                                                                                                     \r \r\e]2;u8slvn@entropy:~/workbench/entropy\a\e]1;..bench/entropy\a\e]7;file://entropy.lan/Users/u8slvn/workbench/entropy\e\\\r\e[0m\e[27m\e[24m\e[J\e[0m\e[38;5;242m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242mmain\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m*\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m \e[0m\e[38;2;0;0;242m\e[49m\e[38;2;255;92;87m❯\e[0m\e[38;2;255;92;87m\e[49m\e[38;2;255;92;87m\e[0m\e[38;2;255;92;87m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[153C\e[0m\e[49m\e[39m\e[153D\e[?1h\e=\e[?2004h\e[?25l\r\r\e[0m\e[27m\e[24m\e[J\e[0m\e[38;5;242m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242mmain\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m*\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m \e[0m\e[38;2;0;0;242m\e[49m\e[38;2;255;92;87m❯\e[0m\e[38;2;255;92;87m\e[49m\e[38;2;255;92;87m\e[0m\e[38;2;255;92;87m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[153C\e[0m\e[49m\e[39m\e[153D\e[?25h"
+  - delay: 1172
+    content: terminalizer stop
+  - delay: 336
+    content: "\b \b"
+  - delay: 179
+    content: "\b \b"
+  - delay: 151
+    content: "\b \b"
+  - delay: 161
+    content: "\b \b"
+  - delay: 169
+    content: "\b"
+  - delay: 521
+    content: ' '
+  - delay: 471
+    content: '-'
+  - delay: 135
+    content: '-'
+  - delay: 262
+    content: h
+  - delay: 142
+    content: e
+  - delay: 166
+    content: l
+  - delay: 208
+    content: p
+  - delay: 272
+    content: "\e[?1l\e>\e[?2004l\r\r\n\e]2;terminalizer --help\a\e]1;terminalizer\a"
+  - delay: 168
+    content: "Usage: terminalizer <command> [options]\r\n\r\nCommands:\r\n  terminalizer init                      Create a global config directory\r\n  terminalizer config                    Generate a config file in the current directory\r\n  terminalizer record <recordingFile>    Record your terminal and create a recording file\r\n  terminalizer play <recordingFile>      Play a recording file on your terminal\r\n  terminalizer render <recordingFile>    Render a recording file as an animated gif image\r\n  terminalizer share <recordingFile>     Upload a recording file and get a link for an online player\r\n  terminalizer generate <recordingFile>  Generate a web player for a recording file\r\n\r\nOptions:\r\n  -v, --version  Show version number                                                       [boolean]\r\n  -h, --help     Show help                                                                 [boolean]\r\n\r\nFor more information, check https://www.terminalizer.com\r\n\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                                                                                                                                     \r \r\e]2;u8slvn@entropy:~/workbench/entropy\a\e]1;..bench/entropy\a\e]7;file://entropy.lan/Users/u8slvn/workbench/entropy\e\\\r\e[0m\e[27m\e[24m\e[J\e[0m\e[38;5;242m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242mmain\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m*\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m \e[0m\e[38;2;0;0;242m\e[49m\e[38;2;255;106;193m❯\e[0m\e[38;2;255;106;193m\e[49m\e[38;2;255;106;193m\e[0m\e[38;2;255;106;193m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[153C\e[0m\e[49m\e[39m\e[153D\e[?1h\e=\e[?2004h\e[?25l\r\r\e[0m\e[27m\e[24m\e[J\e[0m\e[38;5;242m\e[49m\e[39m\e[0m\e[49m\e[38;2;87;199;255m~/workbench/entropy\e[0m\e[38;2;87;199;255m\e[49m\e[38;2;87;199;255m\e[0m\e[38;2;87;199;255m\e[49m \e[0m\e[38;2;87;199;255m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242mmain\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m*\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m\e[38;5;242m\e[0m\e[38;2;0;0;242m\e[49m \e[0m\e[38;2;0;0;242m\e[49m\e[38;2;255;106;193m❯\e[0m\e[38;2;255;106;193m\e[49m\e[38;2;255;106;193m\e[0m\e[38;2;255;106;193m\e[49m\e[30m\e[0m\e[38;2;0;0;0m\e[49m\e[39m \e[0m\e[49m\e[39m\e[K\e[153C\e[0m\e[49m\e[39m\e[153D\e[?25h"
+  - delay: 2379
+    content: terminalizer --help
+  - delay: 9693
+    content: "\b \b"
+  - delay: 501
+    content: "\b \b"
+  - delay: 84
+    content: "\b \b"
+  - delay: 83
+    content: "\b \b"
+  - delay: 84
+    content: "\b \b"
+  - delay: 83
+    content: "\b \b"
+  - delay: 84
+    content: "\b"
+  - delay: 84
+    content: "\b \b"
+  - delay: 281
+    content: "\b \b"
+  - delay: 500
+    content: "\b \b"
+  - delay: 85
+    content: "\b \b"
+  - delay: 83
+    content: "\b \b"
+  - delay: 82
+    content: "\b \b"
+  - delay: 83
+    content: "\b \b"
+  - delay: 83
+    content: "\b \b"
+  - delay: 84
+    content: "\b \b"
+  - delay: 83
+    content: "\b \b"
+  - delay: 84
+    content: "\b\bt \b"
+  - delay: 82
+    content: "\b \b"
+  - delay: 1754
+    content: "\e[?2004l\r\r\n"

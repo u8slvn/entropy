@@ -46,7 +46,7 @@ msgstr "DIALOGUE"
 
 #: menu
 msgid "BACK"
-msgstr "RETOUR"
+msgstr "BACK"
 
 #: menu
 msgid "TEXT"

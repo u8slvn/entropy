@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC
+from collections import deque
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 from typing import Any
@@ -9,6 +10,7 @@ from typing import ClassVar
 from entropy import mixer
 from entropy.event.event import Event
 from entropy.game.entity import GameEntity
+from entropy.gui.elements.base import UIElementGroup
 from entropy.logging import get_logger
 
 
@@ -29,31 +31,8 @@ class Audio:
     sound: str | None = None
 
 
-class Node(GameEntity, ABC):
+class Node(GameEntity):
     """Node class: Represent a node of the game story."""
-
-    _mandatory_attributes: ClassVar[list[str]]
-
-    def __init__(
-        self,
-        uuid: str,
-        next_uuid: str,
-        background: Background | None = None,
-        audio: Audio | None = None,
-    ) -> None:
-        super().__init__()
-        self.uuid = uuid
-        self.next_uuid = next_uuid
-        self.audio = audio
-        self.background = background
-        self.done = False
-
-    @classmethod
-    def check_attributes(cls, attributes: dict[str, Any]) -> None:
-        if all(attr in attributes for attr in cls._mandatory_attributes):
-            return
-
-        raise ValueError(f"Missing mandatory attributes for {cls.__name__} node.")
 
     def setup(self) -> None:
         """Setup node. Audio is managed here."""
@@ -70,6 +49,24 @@ class Node(GameEntity, ABC):
 
     def process_event(self, event: Event) -> None:
         pass
+
+    def __init__(
+        self,
+        uuid: str,
+        next_uuid: str,
+        elements: Any,
+        background: Background | None = None,
+        audio: Audio | None = None,
+        events: list[Any] | None = None,
+    ) -> None:
+        super().__init__()
+        self.uuid = uuid
+        self.next_uuid = next_uuid
+        self.background = background
+        self.audio = audio
+        self.events = deque(events or [])
+        self.done = False
+        self._current_event = self.events.popleft()
 
     def teardown(self) -> None:
         pass

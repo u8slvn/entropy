@@ -19,16 +19,16 @@ class NodeBuilder:
     @classmethod
     def build(cls, data: dict[str, Any]) -> Node:
         """Build a node from the given data."""
-        template = data.pop("template")
+        type_ = data.pop("type")
         background = data.pop("background")
         audio = Audio(**data.pop("audio", {}))
 
         try:
             return cast(
-                Node, getattr(cls, f"_build_{template}")(background, audio, data)
+                Node, getattr(cls, f"_build_{type_}")(background, audio, data)
             )
         except AttributeError:
-            raise ValueError(f"Unknown node template: {template}.")
+            raise ValueError(f"Unknown node template: {type_}.")
 
     @classmethod
     def _build_intro(
@@ -44,12 +44,6 @@ class NodeBuilder:
             next_uuid=data["next_uuid"],
             background=background,
             audio=audio,
-            attributes={
-                "title": title,
-                "subtitle": subtitle,
-                # "ease_in": attributes["ease-in"],
-                # "ease_out": attributes["ease-out"],
-            },
         )
 
 
