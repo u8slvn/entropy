@@ -120,7 +120,7 @@ if __name__ == "__main__":
     parsed_args = parser.parse_args()
 
     # Cleanup output dir before generating the story files.
-    shutil.rmtree(OUTPUT)
+    shutil.rmtree(OUTPUT, ignore_errors=True)
     OUTPUT.mkdir(exist_ok=True)
 
     build_story(parsed_args.path)
